@@ -1,3 +1,9 @@
+# my files
+/Memo 1.docx
+/assets
+/Regional Geojsons
+/MERRA2
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
