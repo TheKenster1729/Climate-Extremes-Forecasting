@@ -11,6 +11,8 @@ import plotly.graph_objects as go
 from analysis import RegressionModel
 from styling import Naming
 
+print("HELLO WORLD")
+
 server = Flask(__name__)
 app = dash.Dash(__name__, server = server, external_stylesheets = [dbc.themes.MINTY])
 drawn_shapes = []
