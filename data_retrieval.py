@@ -12,6 +12,7 @@ from pprint import pprint
 import json
 from shapely.geometry import Point, shape
 import xarray as xr
+import csv
 
 def createSSHClient(server, port, user, password):
     client = paramiko.SSHClient()
@@ -351,16 +352,21 @@ class CollectRegionalDataFromFile:
         json.dump(results_dict, open(r"Regional Averages/{}".format(self.polygon_file[:-8] + ".json"), "w"))
 
 class CollectRegionalData:
-    def __init__(self, polygon_data, data_directory = r"MERRA2/Temperature Data/Max Temp", from_app = False):
+    def __init__(self, polygon_data, data_directory = r"MERRA2/Temperature Data/Max Temp", from_app = False, name = None):
         self.from_app = from_app
-        if not from_app:
-            self.polygon_file_name = os.path.basename(polygon_data)
 
         if self.from_app:
             self.polygon_data = polygon_data
+            self.polygon_file_name = name
         else:
-            assert type(polygon_data) == str # if this is not coming from the app, expect a file path
-            self.polygon_data = json.load(open(polygon_data, "r"))["features"][0]["geometry"]
+            assert type(polygon_data) == str
+            try:
+                self.polygon_data = json.load(open(polygon_data, "r"))["features"][0]["geometry"]
+            except KeyError:
+                self.polygon_data = json.load(open(polygon_data, "r"))
+
+            self.polygon_file_name = os.path.basename(polygon_data)
+
         self.data_directory = data_directory
         self.lat_points = np.linspace(start = -90, stop = 90, num = 361)
         self.lon_points = np.linspace(start = -180, stop = 179.375, num = 576)
@@ -405,47 +411,56 @@ class CollectRegionalData:
         days_in_month_regular = {"Jan": 31, "Feb": 28, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul": 31, "Aug": 31, "Sep": 30, "Oct": 31, "Nov": 30, "Dec": 31}
         days_in_month_leap = {"Jan": 31, "Feb": 29, "Mar": 31, "Apr": 30, "May": 31, "Jun": 30, "Jul": 31, "Aug": 31, "Sep": 30, "Oct": 31, "Nov": 30, "Dec": 31}
 
-        # just need to create weights once
-        weights = []
-        for lat, lon in inside_points:
-            weights.append(np.cos(np.radians(lat)))
-        weights = np.array(weights)
-        weights /= np.array(weights).mean()
+        if len(inside_points) == 0:
+            return None
+        else:
+            # just need to create weights once
+            weights = []
+            for lat, lon in inside_points:
+                weights.append(np.cos(np.radians(lat)))
+            weights = np.array(weights)
+            weights /= np.array(weights).mean()
 
-        # iterate through each year in the data set
-        for year in self.years:
-            results_dict[year] = {}
-            # each file corresponds to one day
-            for file in os.listdir(os.path.join(self.data_directory, year)):
-                time, df = self.make_dataframe(os.path.join(self.data_directory, year, file))
-                _, month, day = time.split("-")
-                # iterate through each point in the region and store it in the list
-                this_day_in_region = []
-                for lat, lon in inside_points:
-                    this_day_in_region.append(df.loc[lat, lon] - 273.15)
-                this_day_in_region = np.array(this_day_in_region)
-                this_day_in_region_avg = np.average(this_day_in_region, weights = weights)
+            # iterate through each year in the data set
+            for year in self.years:
+                results_dict[year] = {}
+                # each file corresponds to one day
+                for file in os.listdir(os.path.join(self.data_directory, year)):
+                    time, df = self.make_dataframe(os.path.join(self.data_directory, year, file))
+                    _, month, day = time.split("-")
+                    # iterate through each point in the region and store it in the list
+                    this_day_in_region = []
+                    for lat, lon in inside_points:
+                        # very unfortunate bug at the poles - the actual lat/lon point is like 1e-13
+                        # instad of 0
+                        # so we find the temperatures by the index
+                        lat_index = int((90 + lat)/0.5)
+                        lon_index = int((180 + lon)/0.625)
+                        this_day_in_region.append(df.iloc[lat_index, lon_index] - 273.15)
+                    this_day_in_region = np.array(this_day_in_region)
+                    this_day_in_region_avg = np.average(this_day_in_region, weights = weights)
 
-                month_name = months[month]
-                # ensuring days of the month are ordered correctly - using os.listdir does not guarantee order
-                if ((int(year) % 4 == 0 and int(year) % 100 != 0) or (int(year) % 400 == 0)):
-                    days_in_month = days_in_month_leap[month_name]
-                else:
-                    days_in_month = days_in_month_regular[month_name]
+                    month_name = months[month]
+                    # ensuring days of the month are ordered correctly - using os.listdir does not guarantee order
+                    if ((int(year) % 4 == 0 and int(year) % 100 != 0) or (int(year) % 400 == 0)):
+                        days_in_month = days_in_month_leap[month_name]
+                    else:
+                        days_in_month = days_in_month_regular[month_name]
 
-                # now take the average for this day and store it in the results dict
-                if results_dict[year].get(month_name):
-                    results_dict[year][month_name][int(day) - 1] = this_day_in_region_avg
-                else:
-                    results_dict[year][month_name] = [0 for i in range(days_in_month)]
-                    results_dict[year][month_name][int(day) - 1] = this_day_in_region_avg
+                    # now take the average for this day and store it in the results dict
+                    if results_dict[year].get(month_name):
+                        results_dict[year][month_name][int(day) - 1] = this_day_in_region_avg
+                    else:
+                        results_dict[year][month_name] = [0 for i in range(days_in_month)]
+                        results_dict[year][month_name][int(day) - 1] = this_day_in_region_avg
 
-            print(f"Finished year {year}")
+                print(f"Finished year {year}")
 
-        if not self.from_app: # place the results in the regional aggregates folder
-            json.dump(results_dict, open(r"MERRA2/JSON Files/Regional Aggregates/{}".format(self.polygon_file_name[:-8] + "_" + "average" + "_" + "t2mmax" + ".json"), "w"))
+            # if not self.from_app: # place the results in the regional aggregates folder
+            # json.dump(results_dict, open(r"MERRA2/JSON Files/Regional Aggregates/{}".format(self.polygon_file_name[:-8] + "_" + "average" + "_" + "t2mmax" + ".json"), "w"))
+            json.dump(results_dict, open(r"MERRA2/JSON Files/Regional Aggregates/{}".format(self.polygon_file_name + "_" + "average" + "_" + "t2mmax" + ".json"), "w"))
 
-        return results_dict
+            return results_dict
 
 class GlobalAverageByDay:
     def __init__(self, folder_of_files = r"MERRA2/Temperature Data/Max Temp") -> None:
@@ -556,5 +571,24 @@ if __name__ == "__main__":
     # print(data)
     # polygon_data = json.load(open(r"Regional Geojsons/newengland.geojson", "r"))
     # CollectRegionalDataFromApp(polygon_data = polygon_data["features"][0]["geometry"]).aggregate_inside_points_temp_data()
-    for region in ["southatlanticgulfregion", "tennesseeregion", "texasgulfregion", "uppercoloradoregion", "uppermississippiregion"]:
-        CollectRegionalData(polygon_data = r"Regional Geojsons/{}.geojson".format(region)).aggregate_inside_points_temp_data()
+    # for region in ["southatlanticgulfregion", "tennesseeregion", "texasgulfregion", "uppercoloradoregion", "uppermississippiregion"]:
+    #     CollectRegionalData(polygon_data = r"Regional Geojsons/{}.geojson".format(region)).aggregate_inside_points_temp_data()
+    directory = os.listdir(r"/Users/kcox1729/Downloads/scdoshi us-geojson master geojson-state")
+    for i, state in enumerate(directory):
+        full_name = state.split(".")[0]
+        file_name = full_name.lower().strip().replace(" ", "")
+
+        if full_name != "Antarctica":
+            # first create regional geojson and place it in folder
+            geo_data = json.loads(open(r"/Users/kcox1729/Downloads/scdoshi us-geojson master geojson-state/{}".format(state), "r").read())["geometry"]
+
+            # then run analysis
+            CollectRegionalData(polygon_data = geo_data, from_app = True, name = file_name).aggregate_inside_points_temp_data()
+
+            # then update region csv
+            geofilename, stem, region_name = file_name + ".geojson", file_name, full_name
+            with open("region_names.csv", "a", newline = "") as f:
+                writer = csv.writer(f)
+                writer.writerow([geofilename, stem, region_name, "State"])
+
+        print(full_name, "finshed", i)

@@ -755,6 +755,70 @@ class DownscaleGlobalAverageTemp:
     def downscale(self):
         pass
 
+class CNNTempGridPrediction:
+    def __init__(self):
+        pass
+
+    def main(self):
+        import tensorflow as tf
+        from tensorflow.keras import datasets, layers, models
+        from netCDF4 import Dataset
+        import os
+        import numpy as np
+        import matplotlib.pyplot as plt
+        from sklearn.metrics import r2_score
+
+        year_train = 2021
+        year_test = 2022
+
+        train_data_location = "MERRA2/Temperature Data/Max Temp/" + str(year_train)
+        test_data_location = "MERRA2/Temperature Data/Max Temp/" + str(year_test)
+        train_files = os.listdir(train_data_location)
+        test_files = os.listdir(test_data_location)
+
+        X_train = []
+        y_train = []
+        X_test = []
+        y_test = []
+
+        # training data
+        for train_file, test_file in zip(train_files, test_files):
+            data_train = Dataset(os.path.join(train_data_location, train_file))
+            data_train = data_train.variables['T2MMAX'][0, :, :]
+
+            this_day_X_train = data_train[260:280, 170:190]
+            this_day_y_train = data_train[260:280, 190]
+
+            X_train.append(this_day_X_train)
+            y_train.append(this_day_y_train)
+
+            data_test = Dataset(os.path.join(test_data_location, test_file))
+            data_test = data_test.variables['T2MMAX'][0, :, :]
+
+            this_day_X_test = data_test[260:280, 170:190]
+            this_day_y_test = data_test[260:280, 190]
+
+            X_test.append(this_day_X_test)
+            y_test.append(this_day_y_test)
+
+        X_train = np.stack(X_train)
+        y_train = np.stack(y_train)
+        X_test = np.stack(X_test)
+        y_test = np.stack(y_test)
+
+        model = models.Sequential()
+        model.add(layers.Conv2D(64, (2,2), input_shape = (20, 20, 1), activation = "relu"))
+        model.add(layers.MaxPooling2D((2, 2)))
+        model.add(layers.Conv2D(64, (2,2), activation = "relu"))
+        model.add(layers.Flatten())
+        model.add(layers.Dense(20))
+
+        model.compile(optimizer = "adam", loss = "mse", metrics = ["mae"])
+        model.fit(X_train, y_train, epochs = 10, validation_data = (X_test, y_test))
+        y_pred = model.predict(X_test)
+
+        print(r2_score(y_test, y_pred))
+        
 if __name__ == "__main__":
     # MonthlyMaxTempPatterns(42.5, -71.875, file = r"Regional Averages/global_averages.json").make_regression_table("Regression Table for World")
     # HeatWavePrediction(r"MERRA2/JSON Files/Coordinates/data_41_-73.75_t2mmax.json").num_heat_waves_per_year()

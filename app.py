@@ -1,5 +1,5 @@
 import dash
-from dash import html
+from dash import html, _dash_renderer
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from dash import dcc
@@ -10,8 +10,9 @@ from graphing_utils import TimeSeriesFromAppData
 import plotly.graph_objects as go
 from analysis import RegressionModel
 from styling import Naming
+import dash_mantine_components as dmc
 
-print("HELLO WORLD")
+_dash_renderer._set_react_version("18.2.0")
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server = server, external_stylesheets = [dbc.themes.MINTY])
@@ -29,9 +30,10 @@ card_custom_regions = html.Div(id = "card-custom-regions", children = [
                                     html.Div(id = "region-name-div", children = [
                                         dbc.Row(children = [
                                             dbc.Col(width = 6,
-                                            children = [
-                                                dbc.Input(id = "region-name-input", placeholder = "Enter Region Name", type = "text", style = {"width": "100%"}),
-                                            ]),
+                                                children = [
+                                                    dbc.Input(id = "region-name-input", placeholder = "Enter Region Name", type = "text", style = {"width": "100%"}),
+                                                ]
+                                            ),
                                         dbc.Col(width = 4,
                                             children = [
                                                 dbc.Button(id = "region-name-button", children = "Name Region", color = "primary", n_clicks = 0),
@@ -45,6 +47,11 @@ card_custom_regions = html.Div(id = "card-custom-regions", children = [
                         ]
                     )
 
+# menu items for river basins
+river_basins = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "River Basin"].values]
+countries = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "Country"].values]
+states = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "State"].values]
+
 card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                             dbc.Row(children = [
                                 dbc.Col(
@@ -52,7 +59,24 @@ card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                                     dbc.Row(children = [
                                         html.Div(id = "built-in-regions-div", children = [
                                             html.P(id = "built-in-regions-label", children = "Available Regions"),
-                                            dcc.Dropdown(id = "built-in-regions", options = [{"label": i[2], "value": i[1]} for i in naming_df.values], value = "newenglandregion", style = {"width": "60%"}),
+                                            dmc.Select(id = "built-in-regions", 
+                                                       data = [
+                                                                   {
+                                                                        "group": "River Basins",
+                                                                        "items": river_basins,
+                                                                    },
+                                                                    {
+                                                                        "group": "Countries",
+                                                                        "items": countries,
+                                                                    },
+                                                                    {
+                                                                        "group": "States",
+                                                                        "items": states,
+                                                                    }
+                                                       ],
+                                                       searchable = True,
+                                                       clearable = True,
+                                                       w = 675),
                                         ]),
                                     ]),
                                 ]
@@ -62,7 +86,7 @@ card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                     ]
                     )
 
-app.layout = html.Div(
+app.layout = dmc.MantineProvider(html.Div(
     children = [
         html.H4("Daily Max Temperature Forecasting", className = "bg-primary text-white p-2 mb-2 text-center"),
         html.Br(),
@@ -207,6 +231,7 @@ app.layout = html.Div(
         ]
         )
     ]
+)
 )
 
 # update region name - assume that the latest region drawn is the one to be named

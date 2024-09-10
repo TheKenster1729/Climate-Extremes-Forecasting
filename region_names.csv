@@ -1,19 +1,253 @@
-﻿Geo Filename,Stem,Region Name
-sourisredrainyregion.geojson,arkansaswhiteredregion,Souris-Red-Rainy
-ohioregion.geojson,californiaregion,California
-uppercoloradoregion.geojson,uppercoloradoregion,Upper Colorado
-greatbasinregion.geojson,greatbasinregion,Great Basin
-arkansaswhiteredregion.geojson,arkansaswhiteredregion,Arkansas-White
-missouriregion.geojson,missouriregion,Missouri
-lowermississippiregion.geojson,lowermississippiregion,Lower Mississippi
-californiaregion.geojson,californiaregion,California
-newenglandregion.geojson,newenglandregion,New England
-midatlanticregion.geojson,midatlanticregion,Mid Atlantic
-lowercoloradoregion.geojson,lowercoloradoregion,Lower Colorado
-tennesseeregion.geojson,tennesseeregion,Tennessee
-southatlanticgulfregion.geojson,southatlanticgulfregion,South Atlantic
-greatlakesregion.geojson,greatlakesregion,Great Lakes
-pacificnorthwestregion.geojson,pacificnorthwestregion,Pacific Northwest
-uppermississippiregion.geojson,uppermississippiregion,Upper Mississippi
-riogranderegion.geojson,riogranderegion,Rio Grande
-texasgulfregion.geojson,texasgulfregion,Texas Gulf
+﻿Geo Filename,Stem,Region Name,Type
+arkansaswhiteredregion.geojson,arkansaswhiteredregion,Arkansas-White,River Basin
+ohioregion.geojson,ohioregion,Ohio,River Basin
+californiaregion.geojson,californiaregion,California,River Basin
+greatbasinregion.geojson,greatbasinregion,Great Basin,River Basin
+greatlakesregion.geojson,greatlakesregion,Great Lakes,River Basin
+lowercoloradoregion.geojson,lowercoloradoregion,Lower Colorado,River Basin
+lowermississippiregion.geojson,lowermississippiregion,Lower Mississippi,River Basin
+midatlanticregion.geojson,midatlanticregion,Mid Atlantic,River Basin
+missouriregion.geojson,missouriregion,Missouri,River Basin
+newenglandregion.geojson,newenglandregion,New England,River Basin
+pacificnorthwestregion.geojson,pacificnorthwestregion,Pacific Northwest,River Basin
+riogranderegion.geojson,riogranderegion,Rio Grande,River Basin
+sourisredrainyregion.geojson,sourisredrainyregion,Souris-Red-Rainy,River Basin
+southatlanticgulfregion.geojson,southatlanticgulfregion,South Atlantic,River Basin
+tennesseeregion.geojson,tennesseeregion,Tennessee,River Basin
+texasgulfregion.geojson,texasgulfregion,Texas Gullf,River Basin
+uppercoloradoregion.geojson,uppercoloradoregion,Upper Colorado,River Basin
+uppermississippiregion.geojson,uppermississippiregion,Upper Mississippi,River Basin
+afghanistan.geojson,afghanistan,Afghanistan,Country
+albania.geojson,albania,Albania,Country
+algeria.geojson,algeria,Algeria,Country
+angola.geojson,angola,Angola,Country
+antarctica.geojson,antarctica,Antarctica,Country
+argentina.geojson,argentina,Argentina,Country
+armenia.geojson,armenia,Armenia,Country
+australia.geojson,australia,Australia,Country
+austria.geojson,austria,Austria,Country
+azerbaijan.geojson,azerbaijan,Azerbaijan,Country
+bangladesh.geojson,bangladesh,Bangladesh,Country
+belarus.geojson,belarus,Belarus,Country
+belgium.geojson,belgium,Belgium,Country
+belize.geojson,belize,Belize,Country
+benin.geojson,benin,Benin,Country
+bhutan.geojson,bhutan,Bhutan,Country
+bolivia.geojson,bolivia,Bolivia,Country
+bosniaandherzegovina.geojson,bosniaandherzegovina,Bosnia and Herzegovina,Country
+botswana.geojson,botswana,Botswana,Country
+brazil.geojson,brazil,Brazil,Country
+brunei.geojson,brunei,Brunei,Country
+bulgaria.geojson,bulgaria,Bulgaria,Country
+burkinafaso.geojson,burkinafaso,Burkina Faso,Country
+burundi.geojson,burundi,Burundi,Country
+cambodia.geojson,cambodia,Cambodia,Country
+cameroon.geojson,cameroon,Cameroon,Country
+canada.geojson,canada,Canada,Country
+centralafricanrepublic.geojson,centralafricanrepublic,Central African Republic,Country
+chad.geojson,chad,Chad,Country
+chile.geojson,chile,Chile,Country
+china.geojson,china,China,Country
+colombia.geojson,colombia,Colombia,Country
+costarica.geojson,costarica,Costa Rica,Country
+croatia.geojson,croatia,Croatia,Country
+cuba.geojson,cuba,Cuba,Country
+cyprus.geojson,cyprus,Cyprus,Country
+czechia.geojson,czechia,Czechia,Country
+democraticrepublicofthecongo.geojson,democraticrepublicofthecongo,Democratic Republic of the Congo,Country
+denmark.geojson,denmark,Denmark,Country
+djibouti.geojson,djibouti,Djibouti,Country
+dominicanrepublic.geojson,dominicanrepublic,Dominican Republic,Country
+easttimor.geojson,easttimor,East Timor,Country
+ecuador.geojson,ecuador,Ecuador,Country
+egypt.geojson,egypt,Egypt,Country
+elsalvador.geojson,elsalvador,El Salvador,Country
+equatorialguinea.geojson,equatorialguinea,Equatorial Guinea,Country
+eritrea.geojson,eritrea,Eritrea,Country
+estonia.geojson,estonia,Estonia,Country
+eswatini.geojson,eswatini,eSwatini,Country
+ethiopia.geojson,ethiopia,Ethiopia,Country
+falklandislands.geojson,falklandislands,Falkland Islands,Country
+fiji.geojson,fiji,Fiji,Country
+finland.geojson,finland,Finland,Country
+france.geojson,france,France,Country
+frenchsouthernandantarcticlands.geojson,frenchsouthernandantarcticlands,French Southern and Antarctic Lands,Country
+gabon.geojson,gabon,Gabon,Country
+gambia.geojson,gambia,Gambia,Country
+georgia.geojson,georgia,Georgia,Country
+germany.geojson,germany,Germany,Country
+ghana.geojson,ghana,Ghana,Country
+greece.geojson,greece,Greece,Country
+greenland.geojson,greenland,Greenland,Country
+guatemala.geojson,guatemala,Guatemala,Country
+guinea.geojson,guinea,Guinea,Country
+guinea-bissau.geojson,guinea-bissau,Guinea-Bissau,Country
+guyana.geojson,guyana,Guyana,Country
+haiti.geojson,haiti,Haiti,Country
+honduras.geojson,honduras,Honduras,Country
+hungary.geojson,hungary,Hungary,Country
+iceland.geojson,iceland,Iceland,Country
+india.geojson,india,India,Country
+indonesia.geojson,indonesia,Indonesia,Country
+iran.geojson,iran,Iran,Country
+iraq.geojson,iraq,Iraq,Country
+ireland.geojson,ireland,Ireland,Country
+israel.geojson,israel,Israel,Country
+italy.geojson,italy,Italy,Country
+ivorycoast.geojson,ivorycoast,Ivory Coast,Country
+jamaica.geojson,jamaica,Jamaica,Country
+japan.geojson,japan,Japan,Country
+jordan.geojson,jordan,Jordan,Country
+kazakhstan.geojson,kazakhstan,Kazakhstan,Country
+kenya.geojson,kenya,Kenya,Country
+kosovo.geojson,kosovo,Kosovo,Country
+kuwait.geojson,kuwait,Kuwait,Country
+kyrgyzstan.geojson,kyrgyzstan,Kyrgyzstan,Country
+laos.geojson,laos,Laos,Country
+latvia.geojson,latvia,Latvia,Country
+lebanon.geojson,lebanon,Lebanon,Country
+lesotho.geojson,lesotho,Lesotho,Country
+liberia.geojson,liberia,Liberia,Country
+libya.geojson,libya,Libya,Country
+lithuania.geojson,lithuania,Lithuania,Country
+luxembourg.geojson,luxembourg,Luxembourg,Country
+madagascar.geojson,madagascar,Madagascar,Country
+malawi.geojson,malawi,Malawi,Country
+malaysia.geojson,malaysia,Malaysia,Country
+mali.geojson,mali,Mali,Country
+mauritania.geojson,mauritania,Mauritania,Country
+mexico.geojson,mexico,Mexico,Country
+moldova.geojson,moldova,Moldova,Country
+mongolia.geojson,mongolia,Mongolia,Country
+montenegro.geojson,montenegro,Montenegro,Country
+morocco.geojson,morocco,Morocco,Country
+mozambique.geojson,mozambique,Mozambique,Country
+myanmar.geojson,myanmar,Myanmar,Country
+namibia.geojson,namibia,Namibia,Country
+nepal.geojson,nepal,Nepal,Country
+netherlands.geojson,netherlands,Netherlands,Country
+newcaledonia.geojson,newcaledonia,New Caledonia,Country
+newzealand.geojson,newzealand,New Zealand,Country
+nicaragua.geojson,nicaragua,Nicaragua,Country
+niger.geojson,niger,Niger,Country
+nigeria.geojson,nigeria,Nigeria,Country
+northkorea.geojson,northkorea,North Korea,Country
+northmacedonia.geojson,northmacedonia,North Macedonia,Country
+northerncyprus.geojson,northerncyprus,Northern Cyprus,Country
+norway.geojson,norway,Norway,Country
+oman.geojson,oman,Oman,Country
+pakistan.geojson,pakistan,Pakistan,Country
+palestine.geojson,palestine,Palestine,Country
+panama.geojson,panama,Panama,Country
+papuanewguinea.geojson,papuanewguinea,Papua New Guinea,Country
+paraguay.geojson,paraguay,Paraguay,Country
+peru.geojson,peru,Peru,Country
+philippines.geojson,philippines,Philippines,Country
+poland.geojson,poland,Poland,Country
+portugal.geojson,portugal,Portugal,Country
+puertorico.geojson,puertorico,Puerto Rico,Country
+qatar.geojson,qatar,Qatar,Country
+republicofserbia.geojson,republicofserbia,Republic of Serbia,Country
+republicofthecongo.geojson,republicofthecongo,Republic of the Congo,Country
+romania.geojson,romania,Romania,Country
+russia.geojson,russia,Russia,Country
+rwanda.geojson,rwanda,Rwanda,Country
+saudiarabia.geojson,saudiarabia,Saudi Arabia,Country
+senegal.geojson,senegal,Senegal,Country
+sierraleone.geojson,sierraleone,Sierra Leone,Country
+slovakia.geojson,slovakia,Slovakia,Country
+slovenia.geojson,slovenia,Slovenia,Country
+solomonislands.geojson,solomonislands,Solomon Islands,Country
+somalia.geojson,somalia,Somalia,Country
+somaliland.geojson,somaliland,Somaliland,Country
+southafrica.geojson,southafrica,South Africa,Country
+southkorea.geojson,southkorea,South Korea,Country
+southsudan.geojson,southsudan,South Sudan,Country
+spain.geojson,spain,Spain,Country
+srilanka.geojson,srilanka,Sri Lanka,Country
+sudan.geojson,sudan,Sudan,Country
+suriname.geojson,suriname,Suriname,Country
+sweden.geojson,sweden,Sweden,Country
+switzerland.geojson,switzerland,Switzerland,Country
+syria.geojson,syria,Syria,Country
+taiwan.geojson,taiwan,Taiwan,Country
+tajikistan.geojson,tajikistan,Tajikistan,Country
+thailand.geojson,thailand,Thailand,Country
+thebahamas.geojson,thebahamas,The Bahamas,Country
+togo.geojson,togo,Togo,Country
+trinidadandtobago.geojson,trinidadandtobago,Trinidad and Tobago,Country
+tunisia.geojson,tunisia,Tunisia,Country
+turkey.geojson,turkey,Turkey,Country
+turkmenistan.geojson,turkmenistan,Turkmenistan,Country
+uganda.geojson,uganda,Uganda,Country
+ukraine.geojson,ukraine,Ukraine,Country
+unitedarabemirates.geojson,unitedarabemirates,United Arab Emirates,Country
+unitedkingdom.geojson,unitedkingdom,United Kingdom,Country
+unitedrepublicoftanzania.geojson,unitedrepublicoftanzania,United Republic of Tanzania,Country
+unitedstatesofamerica.geojson,unitedstatesofamerica,United States of America,Country
+uruguay.geojson,uruguay,Uruguay,Country
+uzbekistan.geojson,uzbekistan,Uzbekistan,Country
+vanuatu.geojson,vanuatu,Vanuatu,Country
+venezuela.geojson,venezuela,Venezuela,Country
+vietnam.geojson,vietnam,Vietnam,Country
+westernsahara.geojson,westernsahara,Western Sahara,Country
+yemen.geojson,yemen,Yemen,Country
+zambia.geojson,zambia,Zambia,Country
+zimbabwe.geojson,zimbabwe,Zimbabwe,Country
+alabama.geojson,alabama,Alabama,State
+ak.geojson,ak,AK,State
+wy.geojson,wy,WY,State
+id.geojson,id,ID,State
+mi.geojson,mi,MI,State
+pr.geojson,pr,PR,State
+gu.geojson,gu,GU,State
+ri.geojson,ri,RI,State
+or.geojson,or,OR,State
+ga.geojson,ga,GA,State
+il.geojson,il,IL,State
+mt.geojson,mt,MT,State
+la.geojson,la,LA,State
+ma.geojson,ma,MA,State
+ne.geojson,ne,NE,State
+de.geojson,de,DE,State
+ny.geojson,ny,NY,State
+in.geojson,in,IN,State
+ut.geojson,ut,UT,State
+sc.geojson,sc,SC,State
+nm.geojson,nm,NM,State
+co.geojson,co,CO,State
+nd.geojson,nd,ND,State
+mn.geojson,mn,MN,State
+ky.geojson,ky,KY,State
+tx.geojson,tx,TX,State
+al.geojson,al,AL,State
+nh.geojson,nh,NH,State
+oh.geojson,oh,OH,State
+ms.geojson,ms,MS,State
+wv.geojson,wv,WV,State
+mo.geojson,mo,MO,State
+pa.geojson,pa,PA,State
+ks.geojson,ks,KS,State
+md.geojson,md,MD,State
+az.geojson,az,AZ,State
+hi.geojson,hi,HI,State
+ok.geojson,ok,OK,State
+vt.geojson,vt,VT,State
+as.geojson,as,AS,State
+va.geojson,va,VA,State
+wa.geojson,wa,WA,State
+tn.geojson,tn,TN,State
+ar.geojson,ar,AR,State
+nc.geojson,nc,NC,State
+ia.geojson,ia,IA,State
+nv.geojson,nv,NV,State
+mp.geojson,mp,MP,State
+vi.geojson,vi,VI,State
+wi.geojson,wi,WI,State
+me.geojson,me,ME,State
+fl.geojson,fl,FL,State
+ca.geojson,ca,CA,State
+dc.geojson,dc,DC,State
+ct.geojson,ct,CT,State
+nj.geojson,nj,NJ,State
+sd.geojson,sd,SD,State
