@@ -1,8 +1,7 @@
 import dash
-from dash import html, _dash_renderer
+from dash import html, _dash_renderer, dcc
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
-from dash import dcc
 from flask import Flask, request
 import pandas as pd
 from data_retrieval import CollectRegionalData
@@ -249,4 +248,4 @@ def update_analysis_graph(n_clicks, region_name, scenario):
     return by_temp, by_year, False, False, "Region: " + naming_df[naming_df["Stem"] == region_name]["Region Name"]
 
 if __name__ == "__main__":
-    app.run_server(debug = True)
+    app.run_server(debug = False)
