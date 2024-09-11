@@ -658,15 +658,14 @@ class RegressionModel:
                 by_year_fig.update_xaxes(tick0 = 1980, dtick=10, row=i//4 + 1, col=i%4 + 1)
 
         by_temp_fig.update_layout(height = 650, width = 910, title = "Average Monthly Max Temperature Regression - By Global Yearly Average Mean Temperature")
-        by_temp_fig.update_yaxes(title = "Regional Monthly Average Max Temperature (C)", row = 2, col = 1)
-        by_temp_fig.add_annotation(text = "Global Yearly Average Max Temperature (C)", xref = "paper", yref = "paper", x = 0.5, y = -0.15, showarrow = False, font = dict(size = 14))
+        by_temp_fig.update_yaxes(title = "Regional Monthly Average Max Temperature (°C)", row = 2, col = 1)
+        by_temp_fig.add_annotation(text = "Global Yearly Average Max Temperature (°C)", xref = "paper", yref = "paper", x = 0.5, y = -0.15, showarrow = False, font = dict(size = 14))
 
         if self.show_year_graph:
             by_year_fig.update_layout(height = 650, width = 910, title = "Accelerated Actions Difference From Current Trends Baseline")
-            by_year_fig.update_yaxes(title = "Difference in Average Max Daily Temperature (C)", row = 2, col = 1)
+            by_year_fig.update_yaxes(title = "Difference in Average Max Daily Temperature (°C)", row = 2, col = 1)
             by_year_fig.add_annotation(text = "Year", xref = "paper", yref = "paper", x = 0.5, y = -0.15, showarrow = False, font = dict(size = 14))
 
-        if self.show_year_graph:
             return by_temp_fig, by_year_fig
         else:
             return by_temp_fig
@@ -818,11 +817,11 @@ class CNNTempGridPrediction:
         y_pred = model.predict(X_test)
 
         print(r2_score(y_test, y_pred))
-        
+
 if __name__ == "__main__":
     # MonthlyMaxTempPatterns(42.5, -71.875, file = r"Regional Averages/global_averages.json").make_regression_table("Regression Table for World")
     # HeatWavePrediction(r"MERRA2/JSON Files/Coordinates/data_41_-73.75_t2mmax.json").num_heat_waves_per_year()
-    fig1, fig2 = RegressionModel(r"MERRA2/JSON Files/Regional Aggregates/areaweightednewengland_average_t2mmax.json", show_year_graph = True, scenario = "ct").main()
-    fig1.show()
-    fig2.show()
+    fig1, fig2 = RegressionModel(r"MERRA2/JSON Files/Regional Aggregates/lowermississippiregion_average_t2mmax.json", show_year_graph = True, scenario = "aa").main()
+    fig1.write_image(r"assets/high_res/lowermississippiregion_average_t2mmax_by_temp_aa.svg")
+    fig2.write_image(r"assets/high_res/lowermississippiregion_average_t2mmax_by_year_aa.svg")
     # df = GlobalMonthlyTempFromGlobalAverageTemp().train_model()
