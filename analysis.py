@@ -943,8 +943,8 @@ class AppFunctions:
         fig.update_layout(
             title=f'Historical Data with Projections (By Temperature)',
             height = 500,
-            width = 700,
-            margin = dict(l = 0, r = 0, t = 75, b = 0)
+            width = 600,
+            margin = dict(l = 100, r = 0, t = 75, b = 0)
         )
 
         fig.update_yaxes(title = "Regional Monthly-Averaged Daily Max Temperature (°C)", row = 2, col = 1)
@@ -989,9 +989,9 @@ class AppFunctions:
             ), row = i//4 + 1, col = i%4 + 1)
 
         fig.update_layout(
-            title=f'Historical Data with Predictions (By Year)',
+            title=f'Historical Data with Projections (By Year)',
             height = 500,
-            width = 700,
+            width = 600,
             margin = dict(l = 0, r = 0, t = 75, b = 0)
         )
 
@@ -2826,28 +2826,22 @@ class RiskAssessment:
         self.state_populations = pd.read_csv(r"state_populations.csv")
         self.state_flowers = pd.read_csv(r"state_flowers.csv")
         self.full_state_name = self.abbreviation_dict[self.state]
-
-    def load_data(self):
-        if self.dataset == "MERRA2":
-            data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
-        elif self.dataset == "ERA5":
-            data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))
-
-        return data
     
-    def get_global_average_temp(self):
-        if self.dataset == "MERRA2":
-            data = pd.read_csv(r"global_average_temp_by_year.csv")["Average"].values
-        elif self.dataset == "ERA5":
-            data = RegressionAnalysisComplete(dataset = "ERA5", var = self.var).get_X()
-
-        return data
-
     def get_regression_results(self):
         if self.dataset == "MERRA2":
-            data = pd.read_csv(r"Regression Results/MERRA2/Max Temp/regression_results-merra2.csv")
+            if self.var == "T2MMAX":
+                data = pd.read_csv(r"Regression Results/MERRA2/regression_results-MERRA2-T2MMAX.csv")
+            elif self.var == "T2MMIN":
+                data = pd.read_csv(r"Regression Results/MERRA2/regression_results-MERRA2-T2MMIN.csv")
+            elif self.var == "T2MMEAN":
+                data = pd.read_csv(r"Regression Results/MERRA2/regression_results-MERRA2-T2MMEAN.csv")
         elif self.dataset == "ERA5":
-            data = pd.read_csv(r"Regression Results/ERA5/Max Temp/regression_results-era5.csv")
+            if self.var == "T2MMAX":
+                data = pd.read_csv(r"Regression Results/ERA5/Max Temp/regression_results-era5.csv")
+            elif self.var == "T2MMIN":
+                data = pd.read_csv(r"Regression Results/ERA5/Min Temp/regression_results-era5.csv")
+            elif self.var == "T2MMEAN":
+                data = pd.read_csv(r"Regression Results/ERA5/Mean Temp/regression_results-era5.csv")
 
         return data
 
@@ -2881,13 +2875,6 @@ class RiskAssessment:
                         Text(f"Population: {self.state_populations[self.state_populations['State'] == self.full_state_name]['Population'].values[0]} ｜ State flower: {self.state_flowers[self.state_flowers['State'] == self.full_state_name]['Common name'].values[0]}", className = "animate__animated animate__fadeInRightBig animate__slow", style = {"fontSize": 20, "color": "black"}, id = f"state-info-{n_clicks}"),
                         html.Div(children = [Text(f"Warming Risk:", style = {"fontSize": 20, "color": "black"}, className = "animate__animated animate__fadeInRightBig animate__slow", id = f"risk-label-{n_clicks}"), Text(f"{risk}", className = "animate__animated animate__fadeInRightBig animate__slow", style = {"fontSize": 20, "color": color, "marginLeft": "10px"}, id = f"risk-value-{n_clicks}")], style = {"display": "flex", "alignItems": "left"})]
         )
-
-        # div_element = html.Div(
-        #     children = [html.H2(self.full_state_name),
-        #                 html.H4(f"Population: {self.state_populations[self.state_populations['State'] == self.full_state_name]['Population'].values[0]}｜State flower: {self.state_flowers[self.state_flowers['State'] == self.full_state_name]['Common name'].values[0]}"),
-        #                 html.Div(children = [html.H4(children = f"Warming Risk: ", style = {"marginRight": "10px"}), html.H4(children = f"{risk}", style = {"color": color, "display": "inline"})], style = {"display": "flex", "alignItems": "left"}),
-        #                 ]
-        # )
         return div_element
 
 class PatternFinding:

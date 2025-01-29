@@ -6,7 +6,6 @@ from flask import Flask, request
 import pandas as pd
 import plotly.graph_objects as go
 from analysis import RegressionModel, RiskAssessment, AppFunctions
-from styling import Naming
 import dash_mantine_components as dmc
 import json
 _dash_renderer._set_react_version("18.2.0")
@@ -16,34 +15,6 @@ app = dash.Dash(__name__, server = server, external_stylesheets = [dbc.themes.MI
 drawn_shapes = []
 naming_df = pd.read_csv(r"region_names.csv")
 
-card_custom_regions = html.Div(id = "card-custom-regions", children = [
-                            dbc.Row(children = [
-                                dbc.Col(width = 6,
-                                    children = [
-                                    dbc.Row(children = [
-                                       html.Iframe(id = "map", srcDoc = open("map.html", "r").read(), height = 600)
-                                    ]),
-                                    html.Br(),
-                                    html.Div(id = "region-name-div", children = [
-                                        dbc.Row(children = [
-                                            dbc.Col(width = 6,
-                                                children = [
-                                                    dbc.Input(id = "region-name-input", placeholder = "Enter Region Name", type = "text", style = {"width": "100%"}),
-                                                ]
-                                            ),
-                                        dbc.Col(width = 4,
-                                            children = [
-                                                dbc.Button(id = "region-name-button", children = "Name Region", color = "primary", n_clicks = 0),
-                                            ])
-                                        ])
-                                    ])
-                                ]
-                            )
-                        ]
-                    )
-                        ]
-                    )
-
 # menu items for river basins
 river_basins = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "River Basin"].values]
 countries = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "Country"].values]
@@ -52,40 +23,6 @@ only_states_json = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-sta
 conversion_dict = RiskAssessment().abbreviation_dict
 only_states = [{"value": i, "label": conversion_dict[i]} for i in only_states_json if i != "AK" and i != "HI" and i != "PR" and i != "GU" and i != "AS" and i != "MP"]
 only_states.sort(key = lambda x: x["label"])
-
-card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
-                            dbc.Row(children = [
-                                dbc.Col(
-                                    children = [
-                                    dbc.Row(children = [
-                                        html.Div(id = "built-in-regions-div", children = [
-                                            html.P(id = "built-in-regions-label", children = "Available Regions"),
-                                            dmc.Select(id = "built-in-regions",
-                                                       data = [
-                                                                   {
-                                                                        "group": "River Basins",
-                                                                        "items": river_basins,
-                                                                    },
-                                                                    {
-                                                                        "group": "Countries",
-                                                                        "items": countries,
-                                                                    },
-                                                                    {
-                                                                        "group": "States",
-                                                                        "items": states,
-                                                                    }
-                                                       ],
-                                                       searchable = True,
-                                                       clearable = True,
-                                                       w = 675),
-                                        ]),
-                                    ]),
-                                ]
-                                )
-                            ]
-                        )
-                    ]
-                    )
 
 card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                             dbc.Row(children = [
@@ -110,12 +47,13 @@ card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
 overview_tab = html.Div(
     children = [
         html.H4("Overview"),
-        html.P("This app allows you to explore and analyze regional temperature data using historical temperature data from the MERRA-2 dataset."),
-        html.P("""To get started, click on the 'Existing Region' tab and select a region from the dropdown menu. You can select a scenario (Accelerated Actions, Current Trends, or Difference from CT) 
-               to see the temperature trends. The Accelerated Actions scenario assumes decisive steps are taken to limit warming to 1.5° C by the end of the 21st century
+        html.P("This app allows you to explore state-level daily temperature trends using the MERRA-2 dataset."),
+        html.P("""To get started, click on the 'Visualize State Trends' tab and select a state from the dropdown menu. The 'Scenario Selection' dropdown
+                allows you to select a projection scenario (Accelerated Actions or Current Trends), and the 'Variable Selection' dropdown allows you to select whether you want to view the daily max, min, or mean temperature trends.
+                The Accelerated Actions scenario assumes decisive steps are taken to limit warming to 1.5° C by the end of the 21st century
                with 50% probability. Current Trends assumes nations meet their Paris Agreement targets through 2030, which is enough to slow but not halt continued growth in greenhouse gas emissions.
-               The Difference from CT scenario shows the difference in temperature between the Accelerated Actions and Current Trends scenarios (i.e. the benefit of accelerated mitigation action)."""),
-        html.P("""The app uses linear regression of global warming data against regional temperature data to estimate regional daily maximum temperature change. 
+               """),
+        html.P("""The app uses linear regression of global warming data against regional temperature data to state-level daily temperature changes. 
                Extrapolation to 2050 is accomplished by using projections of global average temperature from the Current Trends and Accelerated Actions scenarios,
                as determined by the MIT Earth Systems Model (MESM)."""),
         html.P("""The app is designed to be used by researchers, policymakers, and the general public 
@@ -125,13 +63,13 @@ overview_tab = html.Div(
                 dbc.AccordionItem(title=  "Technical Details",
                     children = [
                         html.P("""MERRA-2 is a reanalysis dataset provided by NASA that uses satellite observations coupled with an underlying forecast model to provide
-                               detailed records of Earth's climate from 1980 to the present. The MERRA-2 daily maximum temperature product ('T2MMAX') used for this app consists
+                               detailed records of Earth's climate from 1980 to the present. The MERRA-2 daily maximum, mean, and minimum temperature products ('T2MMAX', 'T2MMEAN', and 'T2MMIN') used for this app consists
                                of daily maximum temperature data observations from 1980 to 2022, gridded to a 0.5x0.625 degree latitude-longitude resolution. Historical 
                                global mean temperature used to train the regression model is obtained by taking an area-weighted average of the daily mean temperature product
                                ('T2MMEAN') over each year."""),
                         html.P("""The slope and constant coefficient of the model are obtained, as well as their standard errors, after the data are centered to 0 and scaled
                                to unit variance. Each region has its own model fit to its specific data. The model is then used to project temperature in each region under the
-                               three scenarios (Accelerated Actions, Current Trends, and Difference from CT) by using the global mean temperature projections from MESM."""),
+                               two scenarios (Accelerated Actions and Current Trends) by using the global mean temperature projections from MESM."""),
                         html.P("""There are two sources of uncertainty used in the construction of the uncertainty bands seen in the plots. The first source is from the MESM 
                                projections. MESM provides a probabilistic ensemble of 400 time series of global mean temperature through 2150 (we only use projects through 2050). 
                                The second source of uncertainty is from the regression. We sample 400 times from the normal distributions the of slope and coefficient and 
@@ -201,7 +139,7 @@ app.layout = dmc.MantineProvider(html.Div(
                                                                                             dbc.Col(
                                                                                                 children = [
                                                                                                     html.P("Scenario Selection", className = "primary"),
-                                                                                                    dcc.Dropdown(id = "scenarios-dropdown-built-in", options = [{"label": "Accelerated Actions", "value": "aa"}, {"label": "Current Trends", "value": "ct"}, {"label": "Difference From CT", "value": "diff"}], value = "ct",
+                                                                                                    dcc.Dropdown(id = "scenarios-dropdown-built-in", options = [{"label": "Accelerated Actions", "value": "aa"}, {"label": "Current Trends", "value": "ct"}], value = "ct",
                                                                                                         style = {"width": "100%"}),
                                                                                             ]
                                                                                         ),
@@ -268,7 +206,7 @@ app.layout = dmc.MantineProvider(html.Div(
                             )
                         ]
                     ),
-                dbc.Tab(label = "Visualize State Data", children = [state_tab])
+                # dbc.Tab(label = "Visualize State Data", children = [state_tab])
                 ]
             )
         ]
