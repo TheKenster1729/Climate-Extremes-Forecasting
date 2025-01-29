@@ -194,13 +194,12 @@ westernsahara.geojson,westernsahara,Western Sahara,Country
 yemen.geojson,yemen,Yemen,Country
 zambia.geojson,zambia,Zambia,Country
 zimbabwe.geojson,zimbabwe,Zimbabwe,Country
-alabama.geojson,alabama,Alabama,State
+al.geojson,al,AL,State
 ak.geojson,ak,AK,State
 wy.geojson,wy,WY,State
 id.geojson,id,ID,State
 mi.geojson,mi,MI,State
 pr.geojson,pr,PR,State
-gu.geojson,gu,GU,State
 ri.geojson,ri,RI,State
 or.geojson,or,OR,State
 ga.geojson,ga,GA,State
@@ -220,7 +219,6 @@ nd.geojson,nd,ND,State
 mn.geojson,mn,MN,State
 ky.geojson,ky,KY,State
 tx.geojson,tx,TX,State
-al.geojson,al,AL,State
 nh.geojson,nh,NH,State
 oh.geojson,oh,OH,State
 ms.geojson,ms,MS,State
@@ -233,7 +231,6 @@ az.geojson,az,AZ,State
 hi.geojson,hi,HI,State
 ok.geojson,ok,OK,State
 vt.geojson,vt,VT,State
-as.geojson,as,AS,State
 va.geojson,va,VA,State
 wa.geojson,wa,WA,State
 tn.geojson,tn,TN,State
@@ -242,12 +239,10 @@ nc.geojson,nc,NC,State
 ia.geojson,ia,IA,State
 nv.geojson,nv,NV,State
 mp.geojson,mp,MP,State
-vi.geojson,vi,VI,State
 wi.geojson,wi,WI,State
 me.geojson,me,ME,State
 fl.geojson,fl,FL,State
 ca.geojson,ca,CA,State
-dc.geojson,dc,DC,State
 ct.geojson,ct,CT,State
 nj.geojson,nj,NJ,State
 sd.geojson,sd,SD,State

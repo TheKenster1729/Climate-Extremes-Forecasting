@@ -4,13 +4,11 @@ import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from flask import Flask, request
 import pandas as pd
-from data_retrieval import CollectRegionalData
-from graphing_utils import TimeSeriesFromAppData
 import plotly.graph_objects as go
-from analysis import RegressionModel
+from analysis import RegressionModel, RiskAssessment, AppFunctions
 from styling import Naming
 import dash_mantine_components as dmc
-
+import json
 _dash_renderer._set_react_version("18.2.0")
 
 server = Flask(__name__)
@@ -50,6 +48,10 @@ card_custom_regions = html.Div(id = "card-custom-regions", children = [
 river_basins = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "River Basin"].values]
 countries = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "Country"].values]
 states = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "State"].values]
+only_states_json = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json", "r"))["contains"]
+conversion_dict = RiskAssessment().abbreviation_dict
+only_states = [{"value": i, "label": conversion_dict[i]} for i in only_states_json if i != "AK" and i != "HI" and i != "PR" and i != "GU" and i != "AS" and i != "MP"]
+only_states.sort(key = lambda x: x["label"])
 
 card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                             dbc.Row(children = [
@@ -58,7 +60,7 @@ card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                                     dbc.Row(children = [
                                         html.Div(id = "built-in-regions-div", children = [
                                             html.P(id = "built-in-regions-label", children = "Available Regions"),
-                                            dmc.Select(id = "built-in-regions", 
+                                            dmc.Select(id = "built-in-regions",
                                                        data = [
                                                                    {
                                                                         "group": "River Basins",
@@ -76,6 +78,26 @@ card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                                                        searchable = True,
                                                        clearable = True,
                                                        w = 675),
+                                        ]),
+                                    ]),
+                                ]
+                                )
+                            ]
+                        )
+                    ]
+                    )
+
+card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
+                            dbc.Row(children = [
+                                dbc.Col(
+                                    children = [
+                                    dbc.Row(children = [
+                                        html.Div(id = "built-in-regions-div", children = [
+                                            html.P(id = "built-in-regions-label", children = "Available Regions"),
+                                            dcc.Dropdown(id = "built-in-regions",
+                                                         options = only_states,
+                                                         value = "MA",
+                                                         style = {"width": "69.33%"}),
                                         ]),
                                     ]),
                                 ]
@@ -153,64 +175,87 @@ overview_tab = html.Div(
 
 app.layout = dmc.MantineProvider(html.Div(
     children = [
-        html.H4("Daily Max Temperature Forecasting", className = "bg-primary text-white p-2 mb-2 text-center"),
+        html.H4("Daily Max/Mean/Min Temperature Forecasting", className = "bg-primary text-white p-2 mb-2 text-center"),
         html.Br(),
         dbc.Tabs(
             children = [
                 dbc.Tab(label = "Overview", children = [overview_tab], style = {"fontSize": "1.2em", "margin": "20px"}),
-                dbc.Tab(label = "Existing Region", 
+                dbc.Tab(label = "Visualize State Trends", 
                         children = [
-                            html.Div(
-                            children = [
-                                dbc.Card(style = {"marginLeft": "20px", "marginRight": "20px"},
-                                    children = [
-                                        dbc.CardBody(style = {"marginLeft": "20px", "marginRight": "20px"},
-                                            children = [
-                                                dbc.Row(
-                                                    children = [
-                                                        dbc.Col(
-                                                            children = [
-                                                                dbc.Row(
-                                                                    children = [
-                                                                        html.P("Scenario Selection", className = "primary"),
-                                                                        dcc.Dropdown(id = "scenarios-dropdown-built-in", options = [{"label": "Accelerated Actions", "value": "aa"}, {"label": "Current Trends", "value": "ct"}, {"label": "Difference From CT", "value": "diff"}], value = "ct",
-                                                                            style = {"width": "60%"}),
-                                                                        html.Br(),
+                            html.Div(style = {"margin": "20px"},
+                                children = [
+                                    dbc.Row(
+                                        children = [
+                                            dbc.Col(
+                                                children = [
+                                                    dbc.Card(style = {"marginLeft": "20px"},
+                                                        children = [
+                                                            dbc.CardBody(style = {"marginLeft": "20px", "marginRight": "20px"},
+                                                                children = [
+                                                                    dbc.Row(
+                                                                        children = [
+                                                                            dbc.Col(
+                                                                                children = [
+                                                                                    dbc.Row(
+                                                                                        children = [
+                                                                                            dbc.Col(
+                                                                                                children = [
+                                                                                                    html.P("Scenario Selection", className = "primary"),
+                                                                                                    dcc.Dropdown(id = "scenarios-dropdown-built-in", options = [{"label": "Accelerated Actions", "value": "aa"}, {"label": "Current Trends", "value": "ct"}, {"label": "Difference From CT", "value": "diff"}], value = "ct",
+                                                                                                        style = {"width": "100%"}),
+                                                                                            ]
+                                                                                        ),
+                                                                                        dbc.Col(
+                                                                                            children = [
+                                                                                                html.P("Variable Selection", className = "primary"),
+                                                                                                dcc.Dropdown(id = "variable-dropdown-built-in", options = [{"label": "Daily Max", "value": "T2MMAX"}, {"label": "Daily Mean", "value": "T2MMEAN"}, {"label": "Daily Min", "value": "T2MMIN"}], value = "T2MMAX",
+                                                                                                    style = {"width": "100%"}),
+                                                                                            ]
+                                                                                        )
+                                                                                        ]
+                                                                                    ),
+                                                                                    html.Br(),
+                                                                                    html.Div(id = "built-in-region-menus", children = [card_built_in_regions]),
+                                                                                    html.Br(),
+                                                                                    dbc.Row(
+                                                                                        children = [
+                                                                                            dbc.Col(
+                                                                                                children = [
+                                                                                                    dcc.Store(id = "region-name-store", storage_type = "session", data = 0)
+                                                                                            ]
+                                                                                        )
+                                                                                    ]
+                                                                                )
+                                                                            ]
+                                                                        )
                                                                     ]
-                                                                ),
-                                                                html.Br(),
-                                                                html.Div(id = "built-in-region-menus", children = [card_built_in_regions]),
-                                                                html.Br(),
-                                                                dbc.Row(
-                                                                    children = [
-                                                                        dbc.Col(
-                                                                            children = [
-                                                                                dbc.Button(id = "run-analysis-button-built-in", children = ["Run Analysis"], color = "primary", n_clicks = 0),
-                                                                        ]
-                                                                    )
-                                                                ]
-                                                            )
-                                                        ]
-                                                    ),
+                                                                )
+                                                            ]
+                                                        )
+                                                    ]
+                                                )
+                                            ]
+                                        ),
+                                        dbc.Col(id = "risk-assessment-area",
+                                            children = [
+                                                ]
+                                            )
+                                        ]
+                                    ),
+                                    dbc.Row(
+                                        children = [
+                                            dbc.Col(
+                                                children = [
                                                     dbc.Row(
                                                         children = [
                                                             dbc.Col(
                                                                 children = [
-                                                                    dbc.Row(
-                                                                        children = [
-                                                                            html.H3(id = "region-name-built-in", style = {"marginTop": "20px"}),
-                                                                            dbc.Col(
-                                                                                children = [
-                                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-temp-div-built-in", children = [dcc.Graph(id = "analysis-graph-temp-built-in")], hidden = True)], size = "sm")
-                                                                                ]
-                                                                            ),
-                                                                            dbc.Col(
-                                                                                children = [
-                                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-year-div-built-in", children = [dcc.Graph(id = "analysis-graph-year-built-in")], hidden = True)], size = "sm")
-                                                                                ]
-                                                                            )
-                                                                        ]
-                                                                    )
+                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-temp-div-built-in", children = [dcc.Graph(id = "analysis-graph-temp-built-in")], hidden = True)], size = "sm")
+                                                                ]
+                                                            ),
+                                                            dbc.Col(
+                                                                children = [
+                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-year-div-built-in", children = [dcc.Graph(id = "analysis-graph-year-built-in")], hidden = True)], size = "sm")
                                                                 ]
                                                             )
                                                         ]
@@ -222,13 +267,12 @@ app.layout = dmc.MantineProvider(html.Div(
                                 ]
                             )
                         ]
-                    )
+                    ),
+                dbc.Tab(label = "Visualize State Data", children = [state_tab])
                 ]
             )
         ]
-        )
-    ]
-)
+    )
 )
 
 # callback for built-in regions
@@ -236,16 +280,22 @@ app.layout = dmc.MantineProvider(html.Div(
               Output("analysis-graph-year-built-in", "figure"),
               Output("analysis-graph-temp-div-built-in", "hidden"),
               Output("analysis-graph-year-div-built-in", "hidden"),
-              Output("region-name-built-in", "children"),
-              Input("run-analysis-button-built-in", "n_clicks"),
-              State("built-in-regions", "value"),
-              State("scenarios-dropdown-built-in", "value"),
-              prevent_initial_call = True)
-def update_analysis_graph(n_clicks, region_name, scenario):
-    path_to_data = r"MERRA2/JSON Files/Regional Aggregates/{}_average_t2mmax.json".format(region_name)
-    by_temp, by_year = RegressionModel(path_to_data, scenario = scenario, show_year_graph = True).main()
+              Input("variable-dropdown-built-in", "value"),
+              Input("built-in-regions", "value"),
+              Input("scenarios-dropdown-built-in", "value"))
+def update_analysis_graph(var, region_name, scenario):
+    by_temp, by_year = AppFunctions(var = var).make_plots(region_name, scenario)
 
-    return by_temp, by_year, False, False, "Region: " + naming_df[naming_df["Stem"] == region_name]["Region Name"]
+    return by_temp, by_year, False, False
+
+# callback for risk assessment
+@app.callback(Output("risk-assessment-area", "children"),
+              Output("region-name-store", "data"),
+              Input("built-in-regions", "value"),
+              State("region-name-store", "data"))
+def update_risk_assessment(region_name, region_name_store):
+    region_name_store += 1
+    return RiskAssessment(dataset = "MERRA2", var = "T2MMAX", state = region_name.upper()).risk_assessment_div_element(region_name_store), region_name_store
 
 if __name__ == "__main__":
-    app.run_server(debug = False)
+    app.run_server(debug = True)

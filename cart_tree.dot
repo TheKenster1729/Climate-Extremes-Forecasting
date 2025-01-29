@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label="remainder__num_points <= 47.5\nsquared_error = 0.019\nsamples = 576\nvalue = -0.043"] ;
+1 [label="cat__season_Fall <= 0.5\nsquared_error = 0.02\nsamples = 300\nvalue = -0.004"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="cat__season_Winter <= 0.5\nsquared_error = 0.01\nsamples = 225\nvalue = -0.061"] ;
+1 -> 2 ;
+3 [label="squared_error = 0.009\nsamples = 150\nvalue = -0.089"] ;
+2 -> 3 ;
+4 [label="squared_error = 0.006\nsamples = 75\nvalue = -0.007"] ;
+2 -> 4 ;
+5 [label="remainder__avg_qv2m <= 0.005\nsquared_error = 0.011\nsamples = 75\nvalue = 0.169"] ;
+1 -> 5 ;
+6 [label="squared_error = 0.001\nsamples = 8\nvalue = 0.052"] ;
+5 -> 6 ;
+7 [label="squared_error = 0.01\nsamples = 67\nvalue = 0.183"] ;
+5 -> 7 ;
+8 [label="cat__season_Spring <= 0.5\nsquared_error = 0.015\nsamples = 276\nvalue = -0.086"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="remainder__lat_centroid <= 37.807\nsquared_error = 0.015\nsamples = 207\nvalue = -0.107"] ;
+8 -> 9 ;
+10 [label="squared_error = 0.014\nsamples = 45\nvalue = -0.047"] ;
+9 -> 10 ;
+11 [label="squared_error = 0.014\nsamples = 162\nvalue = -0.123"] ;
+9 -> 11 ;
+12 [label="remainder__lon_centroid <= -100.35\nsquared_error = 0.01\nsamples = 69\nvalue = -0.022"] ;
+8 -> 12 ;
+13 [label="squared_error = 0.006\nsamples = 36\nvalue = 0.038"] ;
+12 -> 13 ;
+14 [label="squared_error = 0.006\nsamples = 33\nvalue = -0.088"] ;
+12 -> 14 ;
+}

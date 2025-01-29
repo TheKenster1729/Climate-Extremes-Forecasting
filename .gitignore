@@ -2,8 +2,13 @@
 /Memo 1.docx
 /MERRA2/Temperature Data
 /MERRA2/2019
+/MERRA2/Height at 500hPa
+/MERRA2/Specific Humidity
 /test_csvs
 /Write-up.docx
+/updates
+/ERA5/Temperature Data/Alaska Raw Max Temp
+/ERA5/Temperature Data/Max Temp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

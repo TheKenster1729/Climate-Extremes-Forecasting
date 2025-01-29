@@ -1,0 +1,33 @@
+digraph Tree {
+node [shape=box, fontname="helvetica"] ;
+edge [fontname="helvetica"] ;
+0 [label="remainder__avg_potential_height <= 5735.433\ngini = 0.42\nsamples = 576\nvalue = [403, 173]"] ;
+1 [label="season__season_Fall <= 0.5\ngini = 0.286\nsamples = 335\nvalue = [277.0, 58.0]"] ;
+0 -> 1 [labeldistance=2.5, labelangle=45, headlabel="True"] ;
+2 [label="remainder__avg_qv2m <= 0.01\ngini = 0.207\nsamples = 265\nvalue = [234, 31]"] ;
+1 -> 2 ;
+3 [label="gini = 0.196\nsamples = 263\nvalue = [234.0, 29.0]"] ;
+2 -> 3 ;
+4 [label="gini = 0.0\nsamples = 2\nvalue = [0, 2]"] ;
+2 -> 4 ;
+5 [label="remainder__avg_qv2m <= 0.004\ngini = 0.474\nsamples = 70\nvalue = [43, 27]"] ;
+1 -> 5 ;
+6 [label="gini = 0.0\nsamples = 12\nvalue = [0, 12]"] ;
+5 -> 6 ;
+7 [label="gini = 0.383\nsamples = 58\nvalue = [43.0, 15.0]"] ;
+5 -> 7 ;
+8 [label="remainder__avg_qv2m <= 0.013\ngini = 0.499\nsamples = 241\nvalue = [126.0, 115.0]"] ;
+0 -> 8 [labeldistance=2.5, labelangle=-45, headlabel="False"] ;
+9 [label="season__season_Spring <= 0.5\ngini = 0.485\nsamples = 186\nvalue = [77, 109]"] ;
+8 -> 9 ;
+10 [label="gini = 0.451\nsamples = 163\nvalue = [56, 107]"] ;
+9 -> 10 ;
+11 [label="gini = 0.159\nsamples = 23\nvalue = [21, 2]"] ;
+9 -> 11 ;
+12 [label="remainder__lat_centroid <= 29.843\ngini = 0.194\nsamples = 55\nvalue = [49, 6]"] ;
+8 -> 12 ;
+13 [label="gini = 0.444\nsamples = 6\nvalue = [2, 4]"] ;
+12 -> 13 ;
+14 [label="gini = 0.078\nsamples = 49\nvalue = [47.0, 2.0]"] ;
+12 -> 14 ;
+}
