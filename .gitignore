@@ -7,8 +7,10 @@
 /test_csvs
 /Write-up.docx
 /updates
-/ERA5/Temperature Data/Alaska Raw Max Temp
+/ERA5/Temperature Data/Alaska Raw
+/ERA5/Temperature Data/Hawaii Raw
 /ERA5/Temperature Data/Max Temp
+/ERA5/Temperature Data/Raw
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

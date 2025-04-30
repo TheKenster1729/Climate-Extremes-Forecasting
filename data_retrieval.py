@@ -838,11 +838,11 @@ class ERA5Data:
             "daily_statistic": "daily_maximum",
             "time_zone": "utc+00:00",
             "frequency": "6_hourly",
-            "area": [71.4, 179.9, 51.2, -129.9]
+            "area": [71.4, -180, 51.2, -129.9]
         }
 
         client = cdsapi.Client()
-        client.retrieve(dataset, request, target = r"ERA5/Temperature Data/Alaska Raw Max Temp/{}.nc".format(year))
+        client.retrieve(dataset, request, target = r"ERA5/Temperature Data/Alaska Raw/{}.nc".format(year))
 
     def read_data(self):
         ds_max_1946 = nc.Dataset(r"ERA5/Temperature Data/Monthly/monthly_max_1940.nc")
@@ -1083,34 +1083,34 @@ if __name__ == "__main__":
     # for region in ["southatlanticgulfregion", "tennesseeregion", "texasgulfregion", "uppercoloradoregion", "uppermississippiregion"]:
     #     CollectRegionalData(polygon_data = r"Regional Geojsons/{}.geojson".format(region)).aggregate_inside_points_temp_data()
     # result = json.loads(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json", "r").read())
-    result = {"contains": [], "data": {}, "coverage": "us-states-regions", "variable": "T2MMIN", "years": [i for i in range(1980, 2023)]}
-    directory = os.listdir(r"/Users/kcox1729/Downloads/scdoshi us-geojson master geojson-state")
-    for i, state in enumerate(directory):
-        full_name = state.split(".")[0]
-        file_name = full_name.lower().strip().replace(" ", "")
+    # result = {"contains": [], "data": {}, "coverage": "us-states-regions", "variable": "T2MMIN", "years": [i for i in range(1980, 2023)]}
+    # directory = os.listdir(r"/Users/kcox1729/Downloads/scdoshi us-geojson master geojson-state")
+    # for i, state in enumerate(directory):
+    #     full_name = state.split(".")[0]
+    #     file_name = full_name.lower().strip().replace(" ", "")
 
-        # first create regional geojson and place it in folder
-        geo_data = json.loads(open(r"/Users/kcox1729/Downloads/scdoshi us-geojson master geojson-state/{}".format(state), "r").read())["geometry"]
+    #     # first create regional geojson and place it in folder
+    #     geo_data = json.loads(open(r"/Users/kcox1729/Downloads/scdoshi us-geojson master geojson-state/{}".format(state), "r").read())["geometry"]
 
-        # compute centroid of geo_data
-        centroid = shape(geo_data).centroid
+    #     # compute centroid of geo_data
+    #     centroid = shape(geo_data).centroid
 
-        # then run analysis
-        lat_points = Dataset(r"MERRA2/Temperature Data/Min Temp/1980/1980-01-01.nc")["lat"][:]
-        lon_points = Dataset(r"MERRA2/Temperature Data/Min Temp/1980/1980-01-01.nc")["lon"][:]
-        results_dict, num_points = CollectRegionalData(polygon_data = geo_data, data_directory = r"MERRA2/Temperature Data/Min Temp", var = "T2MMIN", from_app = True, name = file_name, write_json = False).aggregate_inside_points_temp_data(lat_points, lon_points)
-        if results_dict is None:
-            continue
-        else:
-            result["contains"].append(full_name)
-            result["data"][full_name] = {}
-            result["data"][full_name]["results"] = results_dict
-            result["data"][full_name]["num_points"] = num_points
-            result["data"][full_name]["centroid"] = [centroid.x, centroid.y]
+    #     # then run analysis
+    #     lat_points = Dataset(r"MERRA2/Temperature Data/Min Temp/1980/1980-01-01.nc")["lat"][:]
+    #     lon_points = Dataset(r"MERRA2/Temperature Data/Min Temp/1980/1980-01-01.nc")["lon"][:]
+    #     results_dict, num_points = CollectRegionalData(polygon_data = geo_data, data_directory = r"MERRA2/Temperature Data/Min Temp", var = "T2MMIN", from_app = True, name = file_name, write_json = False).aggregate_inside_points_temp_data(lat_points, lon_points)
+    #     if results_dict is None:
+    #         continue
+    #     else:
+    #         result["contains"].append(full_name)
+    #         result["data"][full_name] = {}
+    #         result["data"][full_name]["results"] = results_dict
+    #         result["data"][full_name]["num_points"] = num_points
+    #         result["data"][full_name]["centroid"] = [centroid.x, centroid.y]
 
-        print(full_name, "finshed", i)
+    #     print(full_name, "finshed", i)
 
-    json.dump(result, open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-min.json", "w"))
+    # json.dump(result, open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-min.json", "w"))
 
     # # fig = CountyLevelData().make_comparison_plot("MA", "1980")
     # # fig.show()
@@ -1122,10 +1122,9 @@ if __name__ == "__main__":
 
     # RetrieveSingleVariable(password = "9x&HA$+pM%C)M2N", data_location = "daily/M2T1NXSLV.5.12.4/", output_path = "./MERRA2/Specific Humidity/", var = "QV2M").download_data()
 
-    # era5_data = ERA5Data()
-    # era5_data.process_state_data("Alaska")
-    # for year in range(1940, 2024):
-    #     era5_data.download_data(year)
+    era5_data = ERA5Data()
+    for year in range(1988, 1989):
+        era5_data.download_data(year)
     # era5_data.read_data()
     # era5_data.download_all_data()
     # era5_data = ERA5Data()

@@ -767,17 +767,21 @@ class AppFunctions:
         self.dataset_name = dataset_name
         self.var = var
         self.end_year = end_year
-        self.path_to_regression_results = f"Regression Results/{self.dataset_name}/regression_results-{self.dataset_name}-{self.var}.csv"
+        if self.dataset_name == "combined":
+            self.path_to_regression_results = f"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv"
+        else:
+            self.path_to_regression_results = f"Regression Results/{self.dataset_name}/regression_results-{self.dataset_name}-{self.var}.csv"
         self.timeframe = timeframe
         self.years = [str(i) for i in range(1980, 2023)] if self.timeframe == "merra2" else [str(i) for i in range(1940, 2024)]
         self.full_years = [str(i) for i in range(1980, self.end_year + 1)] if self.timeframe == "merra2" else [str(i) for i in range(1940, self.end_year + 1)]
         self.projections_years = [str(i) for i in range(2023, self.end_year + 1)]
+
         if self.timeframe == "merra2" and self.dataset_name == "ERA5":
             self.path_to_regression_results = f"Regression Results/ERA5/regression_results-{self.dataset_name}-{self.var}-merra2_timeframe.csv"
         self.regression_results = pd.read_csv(self.path_to_regression_results)
         if self.dataset_name == "ERA5":
             self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))
-        else:
+        elif self.dataset_name == "MERRA2":
             if self.var == "T2MMAX":
                 self.data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
             elif self.var == "T2MMIN":
@@ -786,7 +790,10 @@ class AppFunctions:
                 self.data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-mean.json"))
             else:
                 raise ValueError
-
+        elif self.dataset_name == "combined":
+            self.data = json.load(open(r"combined_slopes-T2MMAX-merra2_timeframe.json"))
+        else:
+            raise ValueError
         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
         self.standardize_historical_global_temp()
@@ -2176,8 +2183,19 @@ class RegressionAnalysisComplete:
                 self.data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-min.json"))
             else:
                 raise ValueError
-        if self.dataset == "ERA5" and self.var == "T2MMAX":
-            self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))
+        if self.dataset == "ERA5":
+            if self.var == "T2MMAX":
+                self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))
+            elif self.var == "T2MMEAN":
+                self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-mean.json"))
+            elif self.var == "T2MMIN":
+                self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-min.json"))
+            else:
+                raise ValueError
+        if self.dataset == "ERA5-rescaled":
+            self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-rescaled.json"))
+        if self.dataset == "combined":
+            self.data = None
         self.merra_2_timeframe = merra_2_timeframe
         self.years = self.data["years"] if not self.merra_2_timeframe else [i for i in range(1980, 2023)]
 
@@ -2213,7 +2231,7 @@ class RegressionAnalysisComplete:
         if self.dataset == "MERRA2":
             global_average_temp_by_year_df = pd.read_csv(r"global_average_temp_by_year.csv")
             X = global_average_temp_by_year_df["Average"].values
-        elif self.dataset == "ERA5":
+        elif self.dataset == "ERA5" or self.dataset == "ERA5-rescaled":
             X = []
             json_data = json.load(open(r"ERA5/Temperature Data/JSON Files/world-average.json"))
             for i in json_data:
@@ -2266,6 +2284,11 @@ class RegressionAnalysisComplete:
                 df.to_csv(f"Regression Results/ERA5/regression_results-ERA5-{self.var}-merra2_timeframe.csv", index = False)
             else:
                 df.to_csv(f"Regression Results/ERA5/regression_results-ERA5-{self.var}.csv", index = False)
+        elif self.dataset == "ERA5-rescaled":
+            if self.merra_2_timeframe:
+                df.to_csv(f"Regression Results/ERA5/regression_results-ERA5-rescaled-{self.var}-merra2_timeframe.csv", index = False)
+            else:
+                df.to_csv(f"Regression Results/ERA5/regression_results-ERA5-rescaled-{self.var}.csv", index = False)
 
     def read_regression_csv(self):
         if self.dataset == "MERRA2":
@@ -2275,8 +2298,15 @@ class RegressionAnalysisComplete:
                 return pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX-merra2_timeframe.csv")
             else:
                 return pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX.csv")
+        elif self.dataset == "ERA5-rescaled":
+            if self.merra_2_timeframe:
+                return pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-rescaled-T2MMAX-merra2_timeframe.csv")
+            else:
+                return pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-rescaled-T2MMAX.csv")
+        elif self.dataset == "combined":
+            return pd.read_csv(r"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv")
 
-    def make_slope_heatmap(self, export_picture = False, export_svg = False, target = "Slope"):
+    def make_slope_heatmap(self, target, export_picture = False, export_svg = False):
         slope_df = self.read_regression_csv()
 
         # create a choropleth map of the trends
@@ -2305,6 +2335,8 @@ class RegressionAnalysisComplete:
                 fig.write_image(f"MERRA2/Figures/slope_magnitude_heatmap-merra2-{target}.svg")
             elif self.dataset == "ERA5":
                 fig.write_image(f"ERA5/Figures/slope_magnitude_heatmap-era5-{target}.svg")
+            elif self.dataset == "combined":
+                fig.write_image(f"combined_slopes-T2MMAX-merra2_timeframe.svg")
         return fig
     
     def yearly_average_regression(self):
@@ -2313,7 +2345,7 @@ class RegressionAnalysisComplete:
         all_data = []
         for region in self.data["contains"]:
             # construct y (local temperatures)
-            years = self.data["years"] if not self.merra_2_timeframe else self.merra_2_timeframe_years
+            years = self.data["years"]
             state_yearly_averages = []
             for year in years:
                 yearly_data = []
@@ -2511,6 +2543,13 @@ class CompareRegressionResults:
 
         return merra2_df, era5_df
 
+    def get_regions_in_common(self):
+        era5_data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-rescaled.json"))
+        merra2_data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
+        regions_in_common = list(set(era5_data["contains"]) & set(merra2_data["data"]))
+
+        return regions_in_common
+    
     def process_slope_df(self):
         merra2_df, era5_df = self.read_csvs()
 
@@ -2577,6 +2616,336 @@ class CompareRegressionResults:
         )
         
         return fig
+    
+    def slope_p_value(self, slope: float, standard_error: float, df: int = None) -> float:
+        import scipy.stats as stats
+        
+        """
+        Computes the two-sided p-value for testing whether the slope is significantly different from zero.
+
+        Parameters:
+        - slope (float): The estimated slope coefficient.
+        - standard_error (float): The standard error of the slope estimate.
+        - df (int, optional): Degrees of freedom for a t-distribution. If None, assumes a normal distribution.
+
+        Returns:
+        - float: The p-value for the hypothesis test.
+        """
+        # Compute t-statistic
+        t_stat = slope / standard_error
+        
+        # Compute two-sided p-value
+        if df is not None:
+            p_value = 2 * stats.t.sf(abs(t_stat), df)
+        else:
+            p_value = 2 * stats.norm.sf(abs(t_stat))
+        
+        return p_value
+    
+    def complete_df(self, region):
+        era5_data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-rescaled.json"))
+        merra2_data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
+        # regions_in_common = list(set(era5_data["contains"]) & set(merra2_data["data"]))
+
+        all_data = []
+        month_identifier = {"Jan": 1, "Feb": 2, "Mar": 3, "Apr": 4, "May": 5, "Jun": 6, "Jul": 7, "Aug": 8, "Sep": 9, "Oct": 10, "Nov": 11, "Dec": 12}
+        era5_results = era5_data["data"][region]["results"]
+        merra2_results = merra2_data["data"][region]["results"]
+        for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]:
+            for year in range(1980, 2023):
+                year_month_average_era5 = sum(era5_results[str(year)][month])/len(era5_results[str(year)][month])
+                year_month_average_merra2 = sum(merra2_results[str(year)][month])/len(merra2_results[str(year)][month])
+                all_data.append([year, month, year_month_average_era5, "era5"])
+                all_data.append([year, month, year_month_average_merra2, "merra2"])
+
+        df = pd.DataFrame(all_data, columns = ["Year", "Month", "Average_Temperature", "Dataset"])
+
+        era5_global_temps = json.load(open(r"ERA5/Temperature Data/JSON Files/world-average.json"))
+        era5_global_temps_dict = {}
+        for entry in era5_global_temps:
+            year = entry["name"]
+            if 1980 <= int(year) <= 2022:
+                temps_list = [i for i in entry["data"] if i]
+                era5_global_temps_dict[int(year)] = sum(temps_list)/len(temps_list)
+        
+        merra2_global_temps = pd.read_csv(r"global_average_temp_by_year.csv")
+        merra2_global_temps_dict = {}
+        for index, row in merra2_global_temps.iterrows():
+            year = row["Year"]
+            if 1980 <= int(year) <= 2022:
+                merra2_global_temps_dict[int(year)] = row["Average"]
+        
+        full_dict = {"era5": era5_global_temps_dict, "merra2": merra2_global_temps_dict}
+
+        df["Global_Temp"] = df.apply(lambda row: full_dict[row["Dataset"]][row["Year"]], axis = 1)
+
+        return df
+    
+    def find_covariance(self, region):
+        import statsmodels.formula.api as smf
+        from scipy.stats import linregress
+        from sklearn.linear_model import LinearRegression
+
+        df = self.complete_df(region)
+
+        region_data = []
+        for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]:
+            era5_df = df[(df["Dataset"] == "era5") & (df["Month"] == month)].reset_index(drop = True)
+            merra2_df = df[(df["Dataset"] == "merra2") & (df["Month"] == month)].reset_index(drop = True)
+
+            n_boot = 1000
+            slopes_ERA5 = []
+            slopes_MERRA2 = []
+            for i in range(n_boot):
+                # Create bootstrap samples that preserve (year, month) pairing.
+                sample_idx = np.random.choice(era5_df.index, size=len(era5_df), replace=True)
+                sample_era5 = era5_df.loc[sample_idx]
+                sample_merra2 = merra2_df.loc[sample_idx]
+                
+                # Fit the linear model for each dataset:
+                model_era5 = LinearRegression().fit(sample_era5[['Global_Temp']], sample_era5['Average_Temperature'])
+                model_merra2 = LinearRegression().fit(sample_merra2[['Global_Temp']], sample_merra2['Average_Temperature'])
+                
+                slopes_ERA5.append(model_era5.coef_[0])
+                slopes_MERRA2.append(model_merra2.coef_[0])
+
+            # Compute the covariance between the bootstrapped slopes
+            covariance = np.cov(slopes_ERA5, slopes_MERRA2)[0, 1]
+
+            true_era5_slope_se = linregress(era5_df['Global_Temp'], era5_df['Average_Temperature']).stderr
+            true_merra2_slope_se = linregress(merra2_df['Global_Temp'], merra2_df['Average_Temperature']).stderr
+
+            estimated_combined_slope_se = (true_era5_slope_se**2 + true_merra2_slope_se**2 + 2*covariance)**0.5/2
+            combined_slope = (linregress(era5_df['Global_Temp'], era5_df['Average_Temperature']).slope + linregress(merra2_df['Global_Temp'], merra2_df['Average_Temperature']).slope)/2
+            combined_intercept = (linregress(era5_df['Global_Temp'], era5_df['Average_Temperature']).intercept + linregress(merra2_df['Global_Temp'], merra2_df['Average_Temperature']).intercept)/2
+            p_value = self.slope_p_value(combined_slope, estimated_combined_slope_se)
+            region_data.append([region, month, combined_slope, estimated_combined_slope_se, p_value, combined_intercept])
+
+        return region_data
+        # for month in [i for i in range(1, 13)]:
+        #     df_month = df[df["Month"] == month]
+        #     model = smf.ols("Average_Temperature ~ Global_Temp * Dataset", data = df_month).fit()
+
+        #     cov_matrix = model.cov_params()
+        #     var_beta1 = cov_matrix.loc['Global_Temp', 'Global_Temp']
+        #     var_beta3 = cov_matrix.loc['Global_Temp:Dataset[T.merra2]', 'Global_Temp:Dataset[T.merra2]']
+        #     cov_beta1_beta3 = cov_matrix.loc['Global_Temp', 'Global_Temp:Dataset[T.merra2]']
+
+        #     # Compute SE for the average slope: β₁ + 0.5*β₃
+        #     se_avg = np.sqrt(var_beta1 + 0.25 * var_beta3 + cov_beta1_beta3)
+        #     print("Standard error for average slope:", se_avg)
+
+        #     # Compute the correlation between β₁ and β₃
+        #     r = cov_beta1_beta3 / (np.sqrt(var_beta1) * np.sqrt(var_beta3))
+        #     print("Correlation between β₁ and β₃:", r)
+
+    def combine_slopes(self):
+        era5_regions = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))["contains"]
+        merra2_regions = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))["contains"]
+        regions_in_common = list(set(era5_regions) & set(merra2_regions))
+
+        all_data = []
+        for region in regions_in_common:
+            region_data = self.find_covariance(region)
+            all_data.extend(region_data)
+
+        df = pd.DataFrame(all_data, columns = ["Region", "Month", "Combined Slope", "Estimated Combined Slope SE", "P-Value", "Combined Intercept"])
+        df.to_csv(r"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv", index = False)
+        # fig = px.choropleth(
+        #     df,
+        #     locations = "Region",
+        #     color = "Combined Slope",
+        #     scope = "usa",
+        #     title = "Combined Slope by Region",
+        #     locationmode = "USA-states",
+        #     facet_col = "Month",
+        #     facet_col_wrap = 4,
+        #     facet_col_spacing = 0
+        # )
+        # fig.show()
+
+        # # Compute the average of the target column from each dataframe
+        # merged_df[target] = (merged_df[target + '_df1'] + merged_df[target + '_df2']) / 2
+
+        # # Drop the original target columns from each dataframe
+        # slope_df = merged_df.drop(columns=[target + '_df1', target + '_df2'])
+        # # print(slope_df[slope_df["Region"] == "MT"][["Month_df1", target]])
+
+        # # create a choropleth map of the trends
+        # zero_point = abs(min(slope_df[target]))/(max(slope_df[target]) - min(slope_df[target]))
+        # color_scale = [(0, "#053061"), (zero_point, "white"), (1, "maroon")]
+        # fig = px.choropleth(
+        #     slope_df,
+        #     locations = "Region",
+        #     locationmode = "USA-states",
+        #     color = target,
+        #     title = f"Trends by Month - {target} Averaged",
+        #     scope = "usa",
+        #     facet_col = "Month",
+        #     facet_col_wrap = 4,
+        #     facet_col_spacing = 0,
+        #     color_continuous_scale = color_scale
+        # )
+        # fig.update_layout(width = 1500, height = 1000)
+        # # if export_picture:
+        # #     if self.dataset == "MERRA2":
+        # #         fig.write_image(f"MERRA2/Figures/slope_magnitude_heatmap-merra2-{target}.png", scale = 2)
+        # #     elif self.dataset == "ERA5":
+        # #         fig.write_image(f"ERA5/Figures/slope_magnitude_heatmap-era5-{target}.png", scale = 2)
+        # # if export_svg:
+        # #     if self.dataset == "MERRA2":
+        # #         fig.write_image(f"MERRA2/Figures/slope_magnitude_heatmap-merra2-{target}.svg")
+        # #     elif self.dataset == "ERA5":
+        # #         fig.write_image(f"ERA5/Figures/slope_magnitude_heatmap-era5-{target}.svg")
+        # return fig
+
+    def combined_mann_kendall(self):
+        import pymannkendall as mk
+
+        era5_data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-rescaled.json"))
+        merra2_data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
+        regions_in_common = list(set(era5_data["contains"]) & set(merra2_data["data"]))
+
+        all_data = []
+        for region in regions_in_common:
+            era5_results = era5_data["data"][region]["results"]
+            merra2_results = merra2_data["data"][region]["results"]
+            for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]:
+                region_month_data = []
+                for year in range(1980, 2023):
+                    year_month_average_era5 = sum(era5_results[str(year)][month])/len(era5_results[str(year)][month])
+                    year_month_average_merra2 = sum(merra2_results[str(year)][month])/len(merra2_results[str(year)][month])
+                    combined_slope = (year_month_average_era5 + year_month_average_merra2)/2
+                    region_month_data.append(combined_slope)
+                mk_results = mk.original_test(region_month_data)
+                all_data.append([region, month, mk_results.trend, mk_results.h, mk_results.p, mk_results.slope])
+
+        df = pd.DataFrame(all_data, columns = ["Region", "Month", "Trend", "H", "P", "Slope"])
+
+        zero_point = abs(min(df["Slope"]))/(max(df["Slope"]) - min(df["Slope"]))
+        color_scale = [(0, "#053061"), (zero_point, "white"), (1, "maroon")]
+        fig = px.choropleth(
+            df,
+            locations = "Region",
+            locationmode = "USA-states",
+            facet_col = "Month",
+            facet_col_wrap = 4,
+            facet_col_spacing = 0,
+            color = "Slope",
+            scope = "usa",
+            color_continuous_scale = color_scale
+        )
+        fig.update_layout(
+            width = 1500, 
+            height = 1000,
+            title = "Mann-Kendall Trends with Theil-Sen Estimator"
+        )
+        
+        return df
+
+    def export_full_dataset(self):
+        regions_in_common = self.get_regions_in_common()
+        full_df = pd.DataFrame()
+        for region in regions_in_common:
+            df = self.complete_df(region)
+            df["Region"] = region
+            full_df = pd.concat([full_df, df])
+
+        full_df.to_csv(r"full_processed_data.csv", index = False)
+
+    def make_region_scatterplot(self, region):
+        from plotly.subplots import make_subplots
+
+        df = pd.read_csv(r"full_processed_data.csv")
+        region_df = df[df["Region"] == region]
+        regression_df = pd.read_csv(r"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv")
+
+        region_df_avg = region_df.groupby(["Year", "Month", "Region"], as_index = False).agg(
+            {"Average_Temperature": "mean",
+             "Global_Temp": "mean"})
+
+        fig = make_subplots(rows = 3, cols = 4, subplot_titles = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+                            vertical_spacing = 0.1)
+        for i, month in enumerate(["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]):
+            plotting_df = region_df_avg[region_df_avg["Month"] == month]
+            regression_slope = regression_df[regression_df["Region"] == region][regression_df["Month"] == month]["Combined Slope"].values[0]
+            regression_intercept = regression_df[regression_df["Region"] == region][regression_df["Month"] == month]["Combined Intercept"].values[0]
+            regression_line = regression_slope*plotting_df["Global_Temp"] + regression_intercept
+
+            fig.add_trace(go.Scatter(x = plotting_df["Global_Temp"], 
+                                     y = plotting_df["Average_Temperature"], 
+                                     name = "Average Temperature",
+                                     mode = "markers",
+                                     marker = dict(color = "blue"),
+                                     showlegend = False),
+                                     row = i//4 + 1,
+                                     col = i%4 + 1)
+            fig.add_trace(go.Scatter(x = plotting_df["Global_Temp"], 
+                                     y = regression_line, 
+                                     name = "Regression Line",
+                                     mode = "lines",
+                                     line = dict(color = "rgba(255, 162, 128, 1)"),
+                                     showlegend = False),
+                                     row = i//4 + 1,
+                                     col = i%4 + 1)
+        fig.update_layout(
+            title=f'{region} Regression Results',
+            height = 700,
+            width = 1000,
+            margin = dict(l = 75, r = 0, t = 75, b = 75)
+        )
+
+        fig.update_yaxes(title = "Regional Monthly-Averaged Daily Max Temperature (°C)", row = 2, col = 1)
+        fig.add_annotation(text = "Global Yearly Mean Temperature (°C)", xref = "paper", yref = "paper", x = 0.5, y = -0.075, showarrow = False, font = dict(size = 14))
+
+        return fig
+
+    def combined_validation(self, cutoff = 2001):
+        from sklearn.linear_model import LinearRegression
+        from scipy.stats import pearsonr
+
+        regression_results = pd.read_csv(r"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv")
+        df = pd.read_csv(r"full_processed_data.csv")
+
+        df_avg = df.groupby(["Year", "Month", "Region"], as_index = False).agg(
+            {"Average_Temperature": "mean",
+             "Global_Temp": "mean"})
+
+        all_data = []
+        for region in regression_results["Region"].unique():
+            for month in ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]:
+                data_df = df_avg[(df_avg["Region"] == region) & (df_avg["Month"] == month)]
+                X_train = data_df[data_df["Year"] <= cutoff]["Global_Temp"]
+                y_train = data_df[data_df["Year"] <= cutoff]["Average_Temperature"]
+                X_test = data_df[data_df["Year"] > cutoff]["Global_Temp"]
+                y_test = data_df[data_df["Year"] > cutoff]["Average_Temperature"]
+
+                model = LinearRegression()
+                model.fit(X_train.values.reshape(-1, 1), y_train.values.reshape(-1, 1))
+                y_pred = model.predict(X_test.values.reshape(-1, 1))
+                r_squared = pearsonr(y_pred.reshape(-1), y_test.values.reshape(-1))[0]**2
+                all_data.append([region, month, r_squared])
+
+        df = pd.DataFrame(all_data, columns = ["Region", "Month", "R-Squared"])
+        
+        fig = px.choropleth(
+            df,
+            locations = "Region",
+            locationmode = "USA-states",
+            color = "R-Squared",
+            scope = "usa",
+            facet_col = "Month",
+            facet_col_wrap = 4,
+            facet_col_spacing = 0
+        )
+
+        fig.update_layout(
+            title = "R-Squared by Region and Month",
+            height = 1000,
+            width = 1500
+        )
+
+        return fig
 
 class Misc:
     def __init__(self):
@@ -2628,7 +2997,7 @@ class ERA5:
     def read_raw_max_temp(self, file_name):
         year_data = nc.Dataset(os.path.join(self.raw_max_temp_path, file_name))
         return year_data
-    
+
     def read_raw_average_temp(self, file_name):
         year_data = nc.Dataset(os.path.join(self.raw_average_temp_path, file_name))
         return year_data
@@ -2817,6 +3186,147 @@ class ERA5:
         )
         return fig
 
+    def rescale_file(self, file_path):
+        import xarray as xr
+        from math import floor
+
+        era5_data = xr.open_dataset(file_path)
+
+        lat_min_era5 = era5_data['latitude'].min().values
+        lat_max_era5 = era5_data['latitude'].max().values
+        lon_min_era5 = era5_data['longitude'].min().values
+        lon_max_era5 = era5_data['longitude'].max().values
+
+        closest_era5_min_lat_index = floor(2*(lat_min_era5 + 90))
+        actual_min_lat = -90+0.5*closest_era5_min_lat_index
+        closest_era5_min_lon_index = floor((lon_min_era5 + 180)/0.625)
+        actual_min_lon = -180+0.625*closest_era5_min_lon_index
+
+        closest_era5_max_lat_index = floor(2*(lat_max_era5 + 90))
+        actual_max_lat = -90+0.5*closest_era5_max_lat_index
+        closest_era5_max_lon_index = floor((lon_max_era5 + 180)/0.625)
+        actual_max_lon = -180+0.625*closest_era5_max_lon_index
+
+        # Generate new latitudes and longitudes
+        new_lats = np.arange(actual_max_lat, actual_min_lat, -0.5)
+        new_lons = np.arange(actual_min_lon, actual_max_lon, 0.625) # need to switch the order of the longitudes because they are negative
+
+        # Clip the new latitude and longitude arrays
+        new_lats_clipped = np.clip(new_lats, lat_min_era5, lat_max_era5)
+        new_lons_clipped = np.clip(new_lons, lon_min_era5, lon_max_era5)
+
+        era5_resampled = era5_data.interp(latitude=new_lats_clipped, longitude=new_lons_clipped, method='linear')
+        
+        return era5_resampled
+
+    def make_json_from_single_folder(self):
+        import xarray as xr
+        import geopandas as gpd
+        import numpy as np
+        import json
+        import calendar
+        import os
+        from shapely.geometry import Point
+
+        # --- Load combined state boundaries ---
+        states_gdf = gpd.read_file("US_states_combined.geojson")
+
+        # --- Prepare the ERA5 grid using one example file ---
+        example_ds = self.rescale_file(r"ERA5/Temperature Data/Alaska Raw/1941.nc")
+        latitudes = example_ds["latitude"].values
+        longitudes = example_ds["longitude"].values
+
+        # Create 2D grids of longitude and latitude values.
+        lon_grid, lat_grid = np.meshgrid(longitudes, latitudes)
+        points_array = np.column_stack([lon_grid.flatten(), lat_grid.flatten()])
+
+        # --- Initialize final output dictionary ---
+        # Structure:
+        # {
+        #   "State_Name": {
+        #       "results": {
+        #           "1940": {"Jan": [...], "Feb": [...], ... "Dec": [...]},
+        #           "1941": {...},
+        #           ...
+        #       },
+        #       "num_points": <number_of_grid_points>,
+        #       "centroid": (x_centroid, y_centroid)
+        #   },
+        #   ... for each state
+        # }
+        output = {"coverage": "us-states", "contains": [], "variable": "T2MMAX", "years": [i for i in range(1941, 2024)], "data": {}}
+
+        # Iterate through each state in the GeoDataFrame.
+        for idx, state in states_gdf.iterrows():
+            # Extract state name and polygon. Adjust field names as necessary.
+            state_name = state["STUSPS"]
+            state_poly = state["geometry"]
+
+            # Create a boolean mask: for each grid point, check if it lies within the state polygon.
+            mask = np.array([state_poly.contains(Point(lon, lat)) for lon, lat in points_array])
+            mask_grid = mask.reshape(lat_grid.shape)
+            num_points = int(mask.sum())
+            if sum(mask) == 0:
+                print(f"No points found for {state_name}")
+                continue
+
+            # Compute the state's centroid (as a tuple: (x, y)).
+            centroid_point = state_poly.centroid
+            centroid = (centroid_point.x, centroid_point.y)
+
+            # Initialize the dictionary for this state.
+            state_dict = {"results": {}, "num_points": num_points, "centroid": centroid}
+            output["contains"].append(state_name)
+            output["data"][state_name] = state_dict
+
+            # Process each ERA5 file (year by year).
+            for year in range(1941, 2024):
+                filename = f"ERA5/Temperature Data/Alaska Raw/{year}.nc"
+                if not os.path.exists(filename):
+                    print(f"File not found for year {year} for {state_name}, skipping.")
+                    continue
+
+                ds = self.rescale_file(filename)
+                t2m = ds["t2m"] - 273.15
+                n_days = t2m.sizes["valid_time"]
+
+                # Determine leap year and set days per month.
+                is_leap = calendar.isleap(year)
+                days_in_month = [31, 29 if is_leap else 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+                month_boundaries = np.cumsum([0] + days_in_month)
+
+                # Compute daily state-averaged maximum temperatures.
+                daily_avgs = []
+                for day in range(n_days):
+                    day_t2m = t2m.isel(valid_time=day).values
+                    state_vals = day_t2m[mask_grid]
+                    daily_avg = float(np.nanmean(state_vals))
+                    daily_avgs.append(daily_avg)
+
+                # Group daily values by month.
+                year_data = {}
+                month_names = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                            "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+                for i, month in enumerate(month_names):
+                    start_idx = month_boundaries[i]
+                    end_idx = month_boundaries[i + 1]
+                    year_data[month] = daily_avgs[start_idx:end_idx]
+
+                # Save the year's data under the "results" key using the year as a string.
+                state_dict["results"][str(year)] = year_data
+
+            # Save the state dictionary into the final output.
+            output[state_name] = state_dict
+
+        return output
+    
+    def make_results_dict(self):
+        import json
+
+        json_file = self.make_json_from_single_folder()
+        with open("ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json", "w") as f:
+            json.dump(json_file, f)
+            
 class RiskAssessment:
     def __init__(self, dataset = "MERRA2", var = "T2MMAX", state = "MA"):
         self.dataset = dataset
@@ -2906,6 +3416,8 @@ class PatternFinding:
                 df = pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX-merra2_timeframe.csv")
             else:
                 df = pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX.csv")
+        elif self.dataset == "combined":
+            df = pd.read_csv(r"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv")
 
         return df
     
@@ -2916,7 +3428,8 @@ class PatternFinding:
         df = df.sort_values(by = ["Month"], key = lambda x: x.map(lambda y: self.months.index(y)))
 
         # represent each state by monthly trend vector
-        clustering_data = df.pivot(index='Region', columns='Month', values='Slope in Original Units').reindex(columns = self.months)
+        values = "Slope in Original Units" if self.dataset != "combined" else "Combined Slope"
+        clustering_data = df.pivot(index='Region', columns='Month', values=values).reindex(columns = self.months)
         clustering_data_state_names = clustering_data.index.values
 
         return clustering_data.values, clustering_data_state_names
@@ -2949,9 +3462,8 @@ class PatternFinding:
             locationmode = "USA-states",
             color = "Cluster",
             scope = "usa",
-            title = "Clustering Results",
             color_discrete_map = color_map,
-            height = 700,
+            height = 600,
             width = 1000
         )
         fig.update_layout(title = "K-Means Clustering Results")
@@ -2959,9 +3471,9 @@ class PatternFinding:
         return fig
 
     def plot_highest_lowest_states(self):
-        df = self.load_data().groupby("Region")["Slope in Original Units"].mean().reset_index()
-        top_5 = df.nlargest(5, 'Slope in Original Units')
-        bottom_5 = df.nsmallest(5, 'Slope in Original Units')
+        df = self.load_data().groupby("Region")["Combined Slope"].mean().reset_index()
+        top_5 = df.nlargest(5, 'Combined Slope')
+        bottom_5 = df.nsmallest(5, 'Combined Slope')
 
         # Combine them into one DataFrame
         result = pd.concat([top_5, bottom_5])
@@ -2973,7 +3485,7 @@ class PatternFinding:
         fig = px.bar(
             data_frame = result,
             x = "Region",
-            y = "Slope in Original Units",
+            y = "Combined Slope",
             title = "States with Weakest and Strongest Trends",
             color = "color",
             color_discrete_map = color_map
@@ -2981,30 +3493,26 @@ class PatternFinding:
         fig.update_layout(height = 500, width = 750, showlegend = False)
 
         return fig
-    
-    def plot_monthly_distributions(self, n_clusters = 6):
+
+    def plot_monthly_distributions(self):
         from plotly.subplots import make_subplots
         from plotly.colors import n_colors, hex_to_rgb
 
-        results_df = pd.read_csv(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv")
-        results_df["Cluster"] = results_df["Cluster"] + 1
-        merged_df = pd.merge(results_df, self.load_data(), on = "Region")
-        max_slope = merged_df["Slope in Original Units"].max()
-        min_slope = merged_df["Slope in Original Units"].min()
+        df = self.load_data()
+        max_slope = df["Combined Slope"].max()
+        min_slope = df["Combined Slope"].min()
         color_scale = n_colors(hex_to_rgb("#80ddff"), hex_to_rgb("#bb80ff"), 12, colortype = "tuple")
         color_scale = ["rgb" + str(color) for color in color_scale]
 
-        if n_clusters == 6:
-            fig = make_subplots(rows = 4, cols = 3, 
-                                subplot_titles = [f"{month}" for month in self.months])
+        fig = make_subplots(rows = 4, cols = 3, 
+                            subplot_titles = [f"{month}" for month in self.months])
         for i, month in enumerate(self.months):
-            cluster_distribution = merged_df[merged_df["Month"] == month]
-            # cluster_avg = cluster_distribution.groupby(['Month'])['Slope in Original Units'].mean().reset_index()
-            fig.add_trace(go.Histogram(x = cluster_distribution["Slope in Original Units"], name = f"{month}", marker_color = color_scale[i]),  row = i // 3 + 1, col = i % 3 + 1)
+            distribution = df[df["Month"] == month]
+            fig.add_trace(go.Histogram(x = distribution["Combined Slope"], name = f"{month}", marker_color = color_scale[i]),  row = i // 3 + 1, col = i % 3 + 1)
             fig.update_xaxes(range = [min_slope, max_slope], row = i // 3 + 1, col = i % 3 + 1)
             fig.update_yaxes(range = [0, 20], row = i // 3 + 1, col = i % 3 + 1)
-            fig.add_vline(x = cluster_distribution["Slope in Original Units"].median(), row = i // 3 + 1, col = i % 3 + 1, line = dict(color = "orange"))
-            fig.add_annotation(x = cluster_distribution["Slope in Original Units"].median() + 0.75, y = 18, text = f"{cluster_distribution['Slope in Original Units'].median():.2f}", 
+            fig.add_vline(x = distribution["Combined Slope"].median(), row = i // 3 + 1, col = i % 3 + 1, line = dict(color = "orange"))
+            fig.add_annotation(x = distribution["Combined Slope"].median() + 0.75, y = 18, text = f"{distribution['Combined Slope'].median():.2f}", 
                                showarrow = False, font = dict(color = "orange"), row = i // 3 + 1, col = i % 3 + 1)
         fig.update_layout(title = f"Slope Distribution by Month", height = 750, width = 850, showlegend = False)
 
@@ -3081,5 +3589,5 @@ class Comparison:
         return fig
 
 if __name__ == "__main__":
-    fig = AppFunctions().make_year_plot("MA", "aa")
+    fig = CompareRegressionResults("Regression Results/MERRA2/regression_results-MERRA2-T2MMAX.csv", "Regression Results/ERA5/regression_results-ERA5-rescaled-T2MMAX-merra2_timeframe.csv").combined_validation()
     fig.show()

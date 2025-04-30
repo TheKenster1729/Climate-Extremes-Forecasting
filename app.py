@@ -268,7 +268,7 @@ app.layout = dmc.MantineProvider(html.Div(
                             )
                         ]
                     ),
-                dbc.Tab(label = "Visualize State Data", children = [state_tab])
+                #dbc.Tab(label = "Visualize State Data", children = [state_tab])
                 ]
             )
         ]
