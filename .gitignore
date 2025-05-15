@@ -13,6 +13,33 @@
 /ERA5/Temperature Data/Raw
 /.DS_Store
 **/.DS_Store
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+/tl_2024_us_state
+/ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json
+/ERA5/Temperature Data/JSON Files/us-states-era5-t2m-rescaled.json
+/ERA5/Temperature Data/JSON Files/us-states-era5-t2m copy.json
+/Regional Geojsons/greatlakesregion.geojson
+/MERRA2/JSON Files/Regional Aggregates/us-states-qv2m.json
+/Daily Maximum Temperature Responses to Climate Change in the United States.docx
+/MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-min.json
+/MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-mean.json
+/MERRA2/JSON Files/Regional Aggregates/us-states-regions.json
+
+# Make sure all data files are ignored
+*.nc
+*.nc4
+*.grib
+*.grib2
+*.h5
+*.hdf
+*.csv
+*.xlsx
+*.parquet
+=======
+>>>>>>> be14593b33a08ae29df60822b7dcc702a6d70f62
+>>>>>>> 2e2e3d2b (WIP)
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

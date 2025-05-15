@@ -1,0 +1,9 @@
+us-states-era5-t2m.json
+us-states-era5-t2m-rescaled.json
+us-states-era5-t2m copy.json
+greatlakesregion.geojson
+us-states-qv2m.json
+Daily Maximum Temperature Responses to Climate Change in the United States.docx
+us-states-regions-t2m-min.json
+us-states-regions-t2m-mean.json
+us-states-regions.json
