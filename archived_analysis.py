@@ -2704,3 +2704,158 @@ class Vulcanalyzation:
         )
 
         fig.show()
+
+class PatternFinding:
+    def __init__(self, dataset = "MERRA2", var = "T2MMAX", merra_2_timeframe = False):
+        self.dataset = dataset
+        self.var = var
+        self.merra_2_timeframe = merra_2_timeframe
+        self.data = self.load_data()
+        self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+    def load_data(self):
+        if self.dataset == "MERRA2":
+            df = pd.read_csv(r"Regression Results/MERRA2/regression_results-MERRA2-T2MMAX.csv")
+        elif self.dataset == "ERA5":
+            if self.merra_2_timeframe:
+                df = pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX-merra2_timeframe.csv")
+            else:
+                df = pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX.csv")
+        elif self.dataset == "combined":
+            df = pd.read_csv(r"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv")
+
+        return df
+    
+    def preprocess_data_for_clustering(self):
+        df = self.load_data()
+
+        # order by month
+        df = df.sort_values(by = ["Month"], key = lambda x: x.map(lambda y: self.months.index(y)))
+
+        # represent each state by monthly trend vector
+        values = "Slope in Original Units" if self.dataset != "combined" else "Combined Slope"
+        clustering_data = df.pivot(index='Region', columns='Month', values=values).reindex(columns = self.months)
+        clustering_data_state_names = clustering_data.index.values
+
+        return clustering_data.values, clustering_data_state_names
+    
+    def k_means_clustering(self, n_clusters = 6):
+        from sklearn.cluster import KMeans
+
+        clustering_data, clustering_data_state_names = self.preprocess_data_for_clustering()
+
+        kmeans = KMeans(n_clusters = n_clusters, n_init = 10)
+        kmeans.fit(clustering_data)
+        results_df = pd.DataFrame({"Region": clustering_data_state_names, "Cluster": kmeans.labels_})
+        results_df.to_csv(f"clustering_results_{self.dataset}_{self.var}_{kmeans.n_clusters}.csv", index = False)
+    
+    def plot_clustering_results(self, n_clusters = 6):
+        if os.path.exists(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv"):
+            results_df = pd.read_csv(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv")
+        else:
+            self.k_means_clustering(n_clusters = n_clusters)
+            results_df = pd.read_csv(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv")
+        
+        results_df.sort_values(by = ["Cluster"], inplace = True)
+        results_df["Cluster"] = results_df["Cluster"] + 1
+        results_df["Cluster"] = results_df["Cluster"].astype(str)
+
+        color_map = {"1": "#80ddff", "2": "#bb80ff", "3": "#ffee80", "4": "#4d8599", "5": "#ddff80", "6": "#ffa280"}
+        fig = px.choropleth(
+            data_frame = results_df,
+            locations = "Region",
+            locationmode = "USA-states",
+            color = "Cluster",
+            scope = "usa",
+            color_discrete_map = color_map,
+            height = 600,
+            width = 1000
+        )
+        fig.update_layout(title = "K-Means Clustering Results")
+
+        return fig
+
+    def plot_highest_lowest_states(self):
+        df = self.load_data().groupby("Region")["Combined Slope"].mean().reset_index()
+        top_5 = df.nlargest(5, 'Combined Slope')
+        bottom_5 = df.nsmallest(5, 'Combined Slope')
+
+        # Combine them into one DataFrame
+        result = pd.concat([top_5, bottom_5])
+        result["color"] = ["highest" for i in range(len(result))]
+        result["color"][5:] = ["lowest" for i in range(5)]
+        color_map = {"highest": "maroon", "lowest": "#053061"}
+        print(result)
+
+        fig = px.bar(
+            data_frame = result,
+            x = "Region",
+            y = "Combined Slope",
+            title = "States with Weakest and Strongest Trends",
+            color = "color",
+            color_discrete_map = color_map
+        )
+        fig.update_layout(height = 500, width = 750, showlegend = False)
+
+        return fig
+
+    def plot_monthly_distributions(self):
+        from plotly.subplots import make_subplots
+        from plotly.colors import n_colors, hex_to_rgb
+
+        df = self.load_data()
+        max_slope = df["Combined Slope"].max()
+        min_slope = df["Combined Slope"].min()
+        color_scale = n_colors(hex_to_rgb("#80ddff"), hex_to_rgb("#bb80ff"), 12, colortype = "tuple")
+        color_scale = ["rgb" + str(color) for color in color_scale]
+
+        fig = make_subplots(rows = 4, cols = 3, 
+                            subplot_titles = [f"{month}" for month in self.months])
+        for i, month in enumerate(self.months):
+            distribution = df[df["Month"] == month]
+            fig.add_trace(go.Histogram(x = distribution["Combined Slope"], name = f"{month}", marker_color = color_scale[i]),  row = i // 3 + 1, col = i % 3 + 1)
+            fig.update_xaxes(range = [min_slope, max_slope], row = i // 3 + 1, col = i % 3 + 1)
+            fig.update_yaxes(range = [0, 20], row = i // 3 + 1, col = i % 3 + 1)
+            fig.add_vline(x = distribution["Combined Slope"].median(), row = i // 3 + 1, col = i % 3 + 1, line = dict(color = "orange"))
+            fig.add_annotation(x = distribution["Combined Slope"].median() + 0.75, y = 18, text = f"{distribution['Combined Slope'].median():.2f}", 
+                               showarrow = False, font = dict(color = "orange"), row = i // 3 + 1, col = i % 3 + 1)
+        fig.update_layout(title = f"Slope Distribution by Month", height = 750, width = 850, showlegend = False)
+
+        return fig
+
+    def plot_cluster_members_average_slope(self, n_clusters = 6):
+        results_df = pd.read_csv(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv")
+        results_df["Cluster"] = results_df["Cluster"] + 1
+
+        merged_df = pd.merge(results_df, self.load_data(), on = "Region")
+        fig = go.Figure()
+        for cluster in sorted(merged_df["Cluster"].unique()):
+            cluster_distribution = merged_df[merged_df["Cluster"] == cluster]
+            print(cluster_distribution)
+            cluster_avg = cluster_distribution.groupby(['Month'])['Slope in Original Units'].mean().reset_index()
+            fig.add_trace(go.Histogram(x = cluster_distribution["Slope in Original Units"], name = f"Cluster {cluster}"))
+        cluster_avg = merged_df.groupby(['Cluster'])['Slope in Original Units'].mean().reset_index()
+        print(cluster_avg)
+
+        # sort by month
+        cluster_avg = cluster_avg.sort_values(by = ["Month"], key = lambda x: x.map(lambda y: self.months.index(y)))
+
+        fig = px.line(cluster_avg, x = 'Month', y = 'Slope in Original Units', color = 'Cluster', title = 'Average Slope by Cluster and Month')
+        fig.update_layout(title = "Average Slope by Cluster and Month")
+
+        return fig
+    
+    def dtw_with_clustering(self):
+        from dtw import dtw
+
+        clustering_data, clustering_data_state_names = self.preprocess_data_for_clustering()
+        
+        for i, state in enumerate(clustering_data_state_names):
+            for j, state2 in enumerate(clustering_data_state_names):
+                if i != j:
+                    d = dtw(clustering_data[i, :], clustering_data[j, :])
+                    print(d.index1, d.index2)
+
+if __name__ == "__main__":
+    fig = PatternFinding(dataset = "combined").plot_highest_lowest_states()
+    fig.show()

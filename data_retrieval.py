@@ -835,14 +835,14 @@ class ERA5Data:
                 "28", "29", "30",
                 "31"
             ],
-            "daily_statistic": "daily_maximum",
+            "daily_statistic": "daily_mean",
             "time_zone": "utc+00:00",
             "frequency": "6_hourly",
-            "area": [71.4, -180, 51.2, -129.9]
+            "area": [71.4, -179.2, 18.9, -66.9]
         }
 
         client = cdsapi.Client()
-        client.retrieve(dataset, request, target = r"ERA5/Temperature Data/Alaska Raw/{}.nc".format(year))
+        client.retrieve(dataset, request, target = r"ERA5/Temperature Data/Mean Temp{}.nc".format(year))
 
     def read_data(self):
         ds_max_1946 = nc.Dataset(r"ERA5/Temperature Data/Monthly/monthly_max_1940.nc")
@@ -1075,7 +1075,6 @@ class ERA5Data:
 # problem dates: 04-29-08, 05-31-15
 
 if __name__ == "__main__":
-    # RetrieveSingleVariable(password = "9x&HA$+pM%C)M2N", data_location = "daily/M2SDNXSLV.5.12.4", output_path = "MERRA2/Temperature Data/Min Temp", var = "T2MMIN").download_data()
     # data = GlobalAverageByDay().make_global_average_dict()
     # print(data)
     # polygon_data = json.load(open(r"Regional Geojsons/newengland.geojson", "r"))
@@ -1120,11 +1119,11 @@ if __name__ == "__main__":
     # # eppa_data = EPPARegionAggregation()
     # # eppa_data.aggregate_inside_points_temp_data()
 
-    # RetrieveSingleVariable(password = "9x&HA$+pM%C)M2N", data_location = "daily/M2T1NXSLV.5.12.4/", output_path = "./MERRA2/Specific Humidity/", var = "QV2M").download_data()
 
     era5_data = ERA5Data()
-    for year in range(1988, 1989):
-        era5_data.download_data(year)
+    era5_data.download_data(1980)
+    # for year in range(1988, 1989):
+    #     era5_data.download_data(year)
     # era5_data.read_data()
     # era5_data.download_all_data()
     # era5_data = ERA5Data()

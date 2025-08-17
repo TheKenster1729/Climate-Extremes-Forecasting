@@ -5,87 +5,42 @@ from dash.dependencies import Input, Output, State
 from flask import Flask, request
 import pandas as pd
 import plotly.graph_objects as go
-from analysis import RegressionModel, RiskAssessment, AppFunctions
+from analysis import RiskAssessment, AppFunctionsforPooledData
 from styling import Naming
 import dash_mantine_components as dmc
 import json
+import os
+from pathlib import Path
 _dash_renderer._set_react_version("18.2.0")
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server = server, external_stylesheets = [dbc.themes.MINTY])
 drawn_shapes = []
 naming_df = pd.read_csv(r"region_names.csv")
+states = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")["Region"].unique()
+states_dict = {i: i for i in states}
 
-card_custom_regions = html.Div(id = "card-custom-regions", children = [
-                            dbc.Row(children = [
-                                dbc.Col(width = 6,
-                                    children = [
-                                    dbc.Row(children = [
-                                       html.Iframe(id = "map", srcDoc = open("map.html", "r").read(), height = 600)
-                                    ]),
-                                    html.Br(),
-                                    html.Div(id = "region-name-div", children = [
-                                        dbc.Row(children = [
-                                            dbc.Col(width = 6,
-                                                children = [
-                                                    dbc.Input(id = "region-name-input", placeholder = "Enter Region Name", type = "text", style = {"width": "100%"}),
-                                                ]
-                                            ),
-                                        dbc.Col(width = 4,
-                                            children = [
-                                                dbc.Button(id = "region-name-button", children = "Name Region", color = "primary", n_clicks = 0),
-                                            ])
-                                        ])
-                                    ])
-                                ]
-                            )
-                        ]
-                    )
-                        ]
-                    )
+# Utility function to check static plot availability
+def check_static_plots_availability():
+    """Check which static plots are available"""
+    base_dir = Path("webapp_plots")
+    if not base_dir.exists():
+        return {"available": False, "message": "No static plots directory found. Run generate_static_plots.py first."}
+    
+    metadata_file = base_dir / "metadata.json"
+    if metadata_file.exists():
+        with open(metadata_file, 'r') as f:
+            metadata = json.load(f)
+        return {
+            "available": True, 
+            "message": f"Static plots available: {metadata['total_plots']} plots generated at {metadata['generated_at']}"
+        }
+    else:
+        return {"available": False, "message": "Static plots directory exists but no metadata found."}
 
-# menu items for river basins
-river_basins = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "River Basin"].values]
-countries = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "Country"].values]
-states = [{"value": i[1], "label": i[2]} for i in naming_df[naming_df["Type"] == "State"].values]
-only_states_json = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json", "r"))["contains"]
-conversion_dict = RiskAssessment().abbreviation_dict
-only_states = [{"value": i, "label": conversion_dict[i]} for i in only_states_json if i != "AK" and i != "HI" and i != "PR" and i != "GU" and i != "AS" and i != "MP"]
-only_states.sort(key = lambda x: x["label"])
-
-card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
-                            dbc.Row(children = [
-                                dbc.Col(
-                                    children = [
-                                    dbc.Row(children = [
-                                        html.Div(id = "built-in-regions-div", children = [
-                                            html.P(id = "built-in-regions-label", children = "Available Regions"),
-                                            dmc.Select(id = "built-in-regions",
-                                                       data = [
-                                                                   {
-                                                                        "group": "River Basins",
-                                                                        "items": river_basins,
-                                                                    },
-                                                                    {
-                                                                        "group": "Countries",
-                                                                        "items": countries,
-                                                                    },
-                                                                    {
-                                                                        "group": "States",
-                                                                        "items": states,
-                                                                    }
-                                                       ],
-                                                       searchable = True,
-                                                       clearable = True,
-                                                       w = 675),
-                                        ]),
-                                    ]),
-                                ]
-                                )
-                            ]
-                        )
-                    ]
-                    )
+# Print static plot status on startup
+static_status = check_static_plots_availability()
+print(f"📊 Static Plot Status: {static_status['message']}")
 
 card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                             dbc.Row(children = [
@@ -95,7 +50,7 @@ card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                                         html.Div(id = "built-in-regions-div", children = [
                                             html.P(id = "built-in-regions-label", children = "Available Regions"),
                                             dcc.Dropdown(id = "built-in-regions",
-                                                         options = only_states,
+                                                         options = [{"label": states_dict[i], "value": i} for i in states],
                                                          value = "MA",
                                                          style = {"width": "69.33%"}),
                                         ]),
@@ -250,12 +205,12 @@ app.layout = dmc.MantineProvider(html.Div(
                                                         children = [
                                                             dbc.Col(
                                                                 children = [
-                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-temp-div-built-in", children = [dcc.Graph(id = "analysis-graph-temp-built-in")], hidden = True)], size = "sm")
+                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-temp-div-built-in", children = [html.Iframe(id = "analysis-graph-temp-built-in", width = "100%", height = "600")], hidden = True)], size = "sm")
                                                                 ]
                                                             ),
                                                             dbc.Col(
                                                                 children = [
-                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-year-div-built-in", children = [dcc.Graph(id = "analysis-graph-year-built-in")], hidden = True)], size = "sm")
+                                                                    dbc.Spinner(children = [html.Div(id = "analysis-graph-year-div-built-in", children = [html.Iframe(id = "analysis-graph-year-built-in", width = "100%", height = "600")], hidden = True)], size = "sm")
                                                                 ]
                                                             )
                                                         ]
@@ -275,18 +230,58 @@ app.layout = dmc.MantineProvider(html.Div(
     )
 )
 
-# callback for built-in regions
-@app.callback(Output("analysis-graph-temp-built-in", "figure"),
-              Output("analysis-graph-year-built-in", "figure"),
+# callback for built-in regions - now serves pre-generated static HTML
+@app.callback(Output("analysis-graph-temp-built-in", "srcDoc"),
+              Output("analysis-graph-year-built-in", "srcDoc"),
               Output("analysis-graph-temp-div-built-in", "hidden"),
               Output("analysis-graph-year-div-built-in", "hidden"),
               Input("variable-dropdown-built-in", "value"),
               Input("built-in-regions", "value"),
               Input("scenarios-dropdown-built-in", "value"))
 def update_analysis_graph(var, region_name, scenario):
-    by_temp, by_year = AppFunctions(var = var).make_plots(region_name, scenario)
-
-    return by_temp, by_year, False, False
+    # For now, only supporting T2MMAX variable since that's what we pre-generated
+    if var != "T2MMAX" or not region_name or not scenario:
+        return "", "", True, True
+    
+    # Get paths to pre-generated HTML files
+    base_dir = "webapp_plots"
+    temp_file_path = Path(base_dir) / scenario / f"{region_name}_temp.html"
+    year_file_path = Path(base_dir) / scenario / f"{region_name}_year.html"
+    
+    # Read the HTML files
+    temp_html = ""
+    year_html = ""
+    
+    try:
+        if temp_file_path.exists():
+            with open(temp_file_path, 'r', encoding='utf-8') as f:
+                temp_html = f.read()
+        else:
+            print(f"⚠️  Static file not found: {temp_file_path}")
+        
+        if year_file_path.exists():
+            with open(year_file_path, 'r', encoding='utf-8') as f:
+                year_html = f.read()
+        else:
+            print(f"⚠️  Static file not found: {year_file_path}")
+                
+        # If we have at least one plot, show the component
+        if temp_html or year_html:
+            return temp_html, year_html, False, False
+        else:
+            print(f"⚠️  No static plots found for {region_name}/{scenario}, falling back to dynamic generation")
+            
+    except Exception as e:
+        print(f"❌ Error loading static plots for {region_name}/{scenario}: {e}")
+    
+    # Fallback to dynamic generation if static files don't exist
+    try:
+        print(f"🔄 Generating plots dynamically for {region_name}/{scenario}")
+        by_temp, by_year = AppFunctionsforPooledData(var = var, scenario = scenario).make_plots(region_name)
+        return by_temp.to_html(include_plotlyjs='cdn'), by_year.to_html(include_plotlyjs='cdn'), False, False
+    except Exception as e:
+        print(f"❌ Dynamic generation failed: {e}")
+        return "", "", True, True
 
 # callback for risk assessment
 @app.callback(Output("risk-assessment-area", "children"),

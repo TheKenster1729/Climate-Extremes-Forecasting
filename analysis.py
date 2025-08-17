@@ -1,17 +1,20 @@
 import pandas as pd
 import numpy as np
-import os
 import plotly.graph_objects as go
-import netCDF4 as nc
 import json
 import plotly.express as px
 from scipy.stats import norm
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
+from scipy.stats import t
 import plotly.graph_objects as go
-from pathlib import Path
 from plotly.subplots import make_subplots
+from typing import Optional, Tuple, Dict
+from plotly.colors import n_colors, hex_to_rgb
+import pymannkendall as mk
+import os
+from pathlib import Path
+from datetime import datetime
 
 class AppFunctionsforPooledData:
     def __init__(self, scenario, var = "T2MMAX", end_year = 2050):
@@ -25,6 +28,7 @@ class AppFunctionsforPooledData:
         self.merra2_global_mean_temp = self.data[(self.data["Year"].isin(self.regression_years)) & (self.data["Dataset"] == "merra2") & (self.data["Month"] == "Jan")]["Global_Temp"].mean()
 
         self.regression_results = pd.read_csv(r"Regression Results/pooled_bootstrap_results.csv")
+        # Use the old format uncertainty intervals file for now
         self.uncertainty_intervals = pd.read_csv(r"Regression Results/uncertainty_intervals.csv")
 
     def get_merra2_historical_data(self, region):
@@ -34,150 +38,405 @@ class AppFunctionsforPooledData:
     def get_era5_historical_data(self, region):
         e5_data = self.data[(self.data["Dataset"] == "era5") & (self.data["Region"] == region)]
         return e5_data
-    
+
+    def _load_scenario_temps(self, scenario: str) -> pd.DataFrame:
+        """Load global temperature projections for a scenario (aa or ct)."""
+        try:
+            filename = f"{scenario}_t2m.csv"
+            df = pd.read_csv(filename)
+            # Assume first column is Year, rest are runs
+            df = df[(df.iloc[:, 0] >= 2023) & (df.iloc[:, 0] <= 2050)]
+            return df
+        except Exception:
+            return pd.DataFrame()
+
+    def _get_bootstrap_coeffs(self, region: str, month: str) -> Tuple[np.ndarray, np.ndarray, float]:
+        """Get bootstrap coefficients and residual std for region/month."""
+        try:
+            boot = pd.read_csv(r"Regression Results/uncertainty_intervals_with_prediction_bands.csv")
+            sub = boot[(boot["state"] == region) & (boot["month"] == month)]
+            if not sub.empty:
+                return sub["intercept"].values, sub["slope"].values, sub["resid_std"].iloc[0]
+        except Exception:
+            pass
+
+        # Fallback to percentile approximation
+        qi = self.uncertainty_intervals[(self.uncertainty_intervals["Region"] == region) & 
+                                       (self.uncertainty_intervals["Month"] == month)]
+        if not qi.empty:
+            b0_med, b1_med = qi["Intercept_50th"].iloc[0], qi["Slope_50th"].iloc[0]
+            b0_lo, b0_hi = qi["Intercept_5th"].iloc[0], qi["Intercept_95th"].iloc[0]
+            b1_lo, b1_hi = qi["Slope_5th"].iloc[0], qi["Slope_95th"].iloc[0]
+            
+            # Approximate standard deviations from 90% intervals
+            z = 1.645  # 90% interval
+            b0_sd = max((b0_hi - b0_lo) / (2 * z), 1e-6)
+            b1_sd = max((b1_hi - b1_lo) / (2 * z), 1e-6)
+            
+            # Generate approximate bootstrap samples
+            rng = np.random.default_rng(42)
+            ints = rng.normal(b0_med, b0_sd, 1000)
+            slps = rng.normal(b1_med, b1_sd, 1000)
+            
+            # Estimate residual std from historical data
+            hist = self.data[(self.data["Region"] == region) & (self.data["Month"] == month)]
+            if not hist.empty:
+                mu = hist["Global_Temp"].mean()
+                y_hat = b0_med + b1_med * (hist["Global_Temp"] - mu)
+                res = hist["Average_Temperature"] - y_hat
+                sigma = max(np.std(res, ddof=1), 1e-6)
+            else:
+                sigma = 1.0
+                
+            return ints, slps, sigma
+        
+        return np.array([0.0]), np.array([0.0]), 1.0
+
+    def _add_projection_bands(self, fig, region: str, month: str, scenario: str, 
+                             color: str, name: str, row: int, col: int):
+        """Add 95% prediction interval bands for future projections."""
+        # Load scenario temperature projections
+        temp_df = self._load_scenario_temps(scenario)
+        if temp_df.empty:
+            return
+            
+        # Get bootstrap coefficients
+        ints, slps, sigma = self._get_bootstrap_coeffs(region, month)
+        
+        # Calculate centering mean from historical data
+        hist_data = self.data[(self.data["Region"] == region) & (self.data["Month"] == month)]
+        center_mean = hist_data["Global_Temp"].mean() if not hist_data.empty else 0.0
+        
+        # For each year, calculate median global temp and 95% CI
+        years = temp_df.iloc[:, 0].values
+        x_medians = []
+        y_lowers = []
+        y_uppers = []
+        
+        for year in years:
+            year_temps = temp_df[temp_df.iloc[:, 0] == year].iloc[:, 1:].values.flatten()
+            year_temps = year_temps[~np.isnan(year_temps)]
+            
+            if len(year_temps) > 0:
+                x_median = np.median(year_temps)
+                x_medians.append(x_median)
+                
+                # Monte Carlo for prediction interval
+                n_samples = 1000
+                rng = np.random.default_rng(123)
+                
+                # Sample from bootstrap coefficients
+                boot_idx = rng.integers(0, len(ints), n_samples)
+                sampled_ints = ints[boot_idx]
+                sampled_slps = slps[boot_idx]
+                
+                # Sample from predictor uncertainty
+                temp_samples = rng.choice(year_temps, n_samples)
+                
+                # Calculate predictions with all uncertainties
+                y_pred = sampled_ints + sampled_slps * (temp_samples - center_mean)
+                y_pred += rng.normal(0, sigma, n_samples)  # Add residual noise
+
+                # Calculate 95% prediction interval
+                y_lower, y_upper = np.percentile(y_pred, [2.5, 97.5])
+                y_lowers.append(y_lower)
+                y_uppers.append(y_upper)
+
+        if x_medians:
+            # Add prediction band
+            fig.add_trace(go.Scatter(
+                x=np.concatenate([x_medians, x_medians[::-1]]),
+                y=np.concatenate([y_uppers, y_lowers[::-1]]),
+                fill='toself', fillcolor=color, opacity=0.3,
+                line=dict(color='rgba(255,255,255,0)'),
+                hoverinfo='skip', showlegend=(row == 1 and col == 1), 
+                name=f"{name} 95% PI",
+                legendgroup=f"{scenario}_projection"
+            ), row=row, col=col)
+            
+            # Add median projection line
+            y_medians = [(ints.mean() + slps.mean() * (x - center_mean)) for x in x_medians]
+            fig.add_trace(go.Scatter(
+                x=x_medians, y=y_medians, mode='lines',
+                line=dict(color=color.replace('rgba', 'rgb').replace(', 0.3', ''), width=2),
+                name=f"{name} Median", showlegend=(row == 1 and col == 1),
+                legendgroup=f"{scenario}_projection"
+            ), row=row, col=col)
+
     def make_by_temp_plot(self, region):
-        # historical data
-        historical_df = self.data[self.data["Region"] == region]
-        historical_df["Dataset"] = historical_df["Dataset"].apply(str.upper)
-
-        # Sort historical data by month in calendar order
+        # Use PlotlySlopeMap for historical data and regression
+        try:
+            coeff_df = pd.read_csv(r"Regression Results/uncertainty_intervals_with_prediction_bands.csv")
+            slope_map = PlotlySlopeMap(coeff_df=coeff_df, hist_df=self.data)
+            fig = slope_map.create_prediction_grid(state=region)
+        except Exception:
+            # Fallback to manual plotting if PlotlySlopeMap fails
+            months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+            fig = make_subplots(rows=3, cols=4, subplot_titles=months, vertical_spacing=0.05)
+            
+            historical_df = self.data[self.data["Region"] == region].copy()
+            for i, month in enumerate(months):
+                month_data = historical_df[historical_df["Month"] == month]
+                row, col = i // 4 + 1, i % 4 + 1
+                
+                for dataset, color in [("era5", "#5D1D95"), ("merra2", "#5DA9E9")]:
+                    data = month_data[month_data["Dataset"] == dataset]
+                    if not data.empty:
+                        fig.add_trace(go.Scatter(
+                            x=data["Global_Temp"], y=data["Average_Temperature"],
+                            mode="markers", marker=dict(color=color, size=4),
+                            name=f"{dataset.upper()} Historical",
+                            legendgroup=f"{dataset.upper()}_historical",
+                            showlegend=(i == 0)
+                        ), row=row, col=col)
+        
+        # Add future projections for the specified scenario only
         months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
-        historical_df['Month'] = pd.Categorical(historical_df['Month'], categories=months, ordered=True)
-        historical_df = historical_df.sort_values('Month').reset_index(drop=True)
-
-        # Load pooled bootstrap results
-        region_uncertainty_intervals = self.uncertainty_intervals[self.uncertainty_intervals["Region"] == region]
-
-        # plot historical data
-        fig = make_subplots(rows=3, cols=4, subplot_titles=months)
-        # Add regression lines and uncertainty intervals for each month  
-        for i, month in enumerate(months):
-            month_data = historical_df[historical_df["Month"] == month]
-            
-            # Get uncertainty intervals for this month
-            month_intervals = region_uncertainty_intervals[region_uncertainty_intervals["Month"] == month]
-            
-            if not month_intervals.empty:
-                # Get x range for smooth regression lines
-                x_min = month_data["Global_Temp"].min()
-                x_max = month_data["Global_Temp"].max()
-                x_range = np.linspace(x_min, x_max, 100)
+        scenario_colors = {
+            "aa": "rgba(36, 161, 72, 0.3)",  # Green for Accelerated Actions
+            "ct": "rgba(255, 131, 137, 0.3)"  # Red for Current Trends
+        }
+        scenario_names = {
+            "aa": "Accelerated Actions",
+            "ct": "Current Trends"
+        }
+        
+        if self.scenario in scenario_colors:
+            for i, month in enumerate(months):
+                row, col = i // 4 + 1, i % 4 + 1
                 
-                # ERA5 regression lines
-                era5_x_centered = x_range - self.era5_global_mean_temp
-                era5_y_median = month_intervals["Intercept_50th"].iloc[0] + month_intervals["Slope_50th"].iloc[0] * era5_x_centered
-                era5_y_upper = month_intervals["Intercept_95th"].iloc[0] + month_intervals["Slope_95th"].iloc[0] * era5_x_centered
-                era5_y_lower = month_intervals["Intercept_5th"].iloc[0] + month_intervals["Slope_5th"].iloc[0] * era5_x_centered
-                
-                # MERRA2 regression lines  
-                merra2_x_centered = x_range - self.merra2_global_mean_temp
-                merra2_y_median = month_intervals["Intercept_50th"].iloc[0] + month_intervals["Slope_50th"].iloc[0] * merra2_x_centered
-                merra2_y_upper = month_intervals["Intercept_95th"].iloc[0] + month_intervals["Slope_95th"].iloc[0] * merra2_x_centered
-                merra2_y_lower = month_intervals["Intercept_5th"].iloc[0] + month_intervals["Slope_5th"].iloc[0] * merra2_x_centered
-                
-                # Calculate subplot position (now matches plotly's forced order)
-                row = i // 4 + 1
-                col = i % 4 + 1
-
-                # ERA5 historical data
-                fig.add_trace(
-                    go.Scatter(
-                        x=month_data[month_data["Dataset"] == "ERA5"]["Global_Temp"],
-                        y=month_data[month_data["Dataset"] == "ERA5"]["Average_Temperature"],
-                        mode="markers",
-                        marker=dict(color="#5D1D95"),
-                        name="ERA5 Historical Data",
-                        showlegend=False
-                    ),
-                    row=row, col=col
-                )
-
-                # MERRA2 historical data
-                fig.add_trace(
-                    go.Scatter(
-                        x=month_data[month_data["Dataset"] == "MERRA2"]["Global_Temp"],
-                        y=month_data[month_data["Dataset"] == "MERRA2"]["Average_Temperature"],
-                        mode="markers",
-                        marker=dict(color="#5DA9E9"),
-                        name="MERRA2 Historical Data",
-                        showlegend=False
-                    ),
-                    row=row, col=col
-                )
-
-                # Add ERA5 uncertainty band
-                fig.add_trace(
-                    go.Scatter(
-                        x=np.concatenate([x_range, x_range[::-1]]),
-                        y=np.concatenate([era5_y_upper, era5_y_lower[::-1]]),
-                        fill='toself',
-                        fillcolor='rgba(93, 29, 149, 0.2)',  # Light purple for ERA5
-                        line=dict(color='rgba(255,255,255,0)'),
-                        hoverinfo="skip",
-                        showlegend=False,
-                        name="ERA5 Uncertainty"
-                    ),
-                    row=row, col=col
-                )
-                
-                # Add MERRA2 uncertainty band
-                fig.add_trace(
-                    go.Scatter(
-                        x=np.concatenate([x_range, x_range[::-1]]),
-                        y=np.concatenate([merra2_y_upper, merra2_y_lower[::-1]]),
-                        fill='toself',
-                        fillcolor='rgba(93, 169, 233, 0.2)',  # Light blue for MERRA2
-                        line=dict(color='rgba(255,255,255,0)'),
-                        hoverinfo="skip",
-                        showlegend=False,
-                        name="MERRA2 Uncertainty"
-                    ),
-                    row=row, col=col
-                )
-                
-                # Add ERA5 median regression line
-                fig.add_trace(
-                    go.Scatter(
-                        x=x_range,
-                        y=era5_y_median,
-                        mode='lines',
-                        line=dict(color='#5D1D95', width=2),  # ERA5 color
-                        showlegend=False,
-                        name="ERA5 Regression"
-                    ),
-                    row=row, col=col
-                )
-                
-                # Add MERRA2 median regression line
-                fig.add_trace(
-                    go.Scatter(
-                        x=x_range,
-                        y=merra2_y_median,
-                        mode='lines',
-                        line=dict(color='#5DA9E9', width=2),  # MERRA2 color
-                        showlegend=False,
-                        name="MERRA2 Regression"
-                    ),
-                    row=row, col=col
-                )
+                self._add_projection_bands(fig, region, month, self.scenario, 
+                                         scenario_colors[self.scenario], 
+                                         scenario_names[self.scenario], row, col)
         
         fig.update_layout(
-            height=800, width=1200,
-            margin=dict(t=100, l=40, r=40, b=40),
+            title=f"Historical Data and Future Projections: {region}",
+            height=800, width=1200
         )
-        fig.update_xaxes(matches=None)
-        fig.update_yaxes(matches=None)
-        fig.for_each_xaxis(lambda x: x.update(title_text=""))
-        fig.for_each_yaxis(lambda y: y.update(title_text=""))
-
-
+        
         return fig
 
     def make_by_year_plot(self, region):
-        pass
+        """
+        Plot historical temperature data and future projections by year.
+        X-axis: Year, Y-axis: Local Temperature
+        Shows scatter plots (no regression lines) plus projection bands.
+        """
+        months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+        fig = make_subplots(rows=3, cols=4, subplot_titles=months, vertical_spacing=0.05, shared_xaxes=True)
         
-    def make_plots(self):
-        pass
+        # Plot historical data as scatter plots
+        historical_df = self.data[self.data["Region"] == region].copy()
+        for i, month in enumerate(months):
+            month_data = historical_df[historical_df["Month"] == month]
+            row, col = i // 4 + 1, i % 4 + 1
+            
+            # Add historical scatter for both datasets
+            for dataset, color in [("era5", "#5D1D95"), ("merra2", "#5DA9E9")]:
+                data = month_data[month_data["Dataset"] == dataset]
+                if not data.empty:
+                    fig.add_trace(go.Scatter(
+                        x=data["Year"], y=data["Average_Temperature"],
+                        mode="markers", marker=dict(color=color, size=4),
+                        name=f"{dataset.upper()} Historical",
+                        legendgroup=f"{dataset.upper()}_historical",
+                        showlegend=(i == 0)
+                    ), row=row, col=col)
+        
+        # Add future projections for the specified scenario
+        scenario_colors = {
+            "aa": "rgba(36, 161, 72, 0.3)",  # Green for Accelerated Actions
+            "ct": "rgba(255, 131, 137, 0.3)"  # Red for Current Trends
+        }
+        scenario_names = {
+            "aa": "Accelerated Actions",
+            "ct": "Current Trends"
+        }
+        
+        if self.scenario in scenario_colors:
+            for i, month in enumerate(months):
+                row, col = i // 4 + 1, i % 4 + 1
+                self._add_year_projection_bands(fig, region, month, self.scenario,
+                                              scenario_colors[self.scenario],
+                                              scenario_names[self.scenario], row, col)
+        
+        fig.update_layout(
+            title=f"Historical Data and Future Projections by Year: {region}",
+            height=800, width=1200
+        )
+        
+        return fig
+
+    def _add_year_projection_bands(self, fig, region: str, month: str, scenario: str,
+                                  color: str, name: str, row: int, col: int):
+        """Add 95% prediction interval bands for future projections with year on x-axis."""
+        # Load scenario temperature projections
+        temp_df = self._load_scenario_temps(scenario)
+        if temp_df.empty:
+            return
+            
+        # Get bootstrap coefficients
+        ints, slps, sigma = self._get_bootstrap_coeffs(region, month)
+        
+        # Calculate centering mean from historical data
+        hist_data = self.data[(self.data["Region"] == region) & (self.data["Month"] == month)]
+        center_mean = hist_data["Global_Temp"].mean() if not hist_data.empty else 0.0
+        
+        # For each year, calculate prediction intervals
+        years = temp_df.iloc[:, 0].values
+        y_lowers = []
+        y_uppers = []
+        y_medians = []
+        
+        for year in years:
+            year_temps = temp_df[temp_df.iloc[:, 0] == year].iloc[:, 1:].values.flatten()
+            year_temps = year_temps[~np.isnan(year_temps)]
+            
+            if len(year_temps) > 0:
+                # Monte Carlo for prediction interval
+                n_samples = 1000
+                rng = np.random.default_rng(123)
+                
+                # Sample from bootstrap coefficients
+                boot_idx = rng.integers(0, len(ints), n_samples)
+                sampled_ints = ints[boot_idx]
+                sampled_slps = slps[boot_idx]
+                
+                # Sample from predictor uncertainty
+                temp_samples = rng.choice(year_temps, n_samples)
+                
+                # Calculate predictions with all uncertainties
+                y_pred = sampled_ints + sampled_slps * (temp_samples - center_mean)
+                y_pred += rng.normal(0, sigma, n_samples)  # Add residual noise
+                
+                # Calculate prediction intervals and median
+                y_lower, y_upper = np.percentile(y_pred, [2.5, 97.5])
+                y_median = np.median(y_pred)
+                
+                y_lowers.append(y_lower)
+                y_uppers.append(y_upper)
+                y_medians.append(y_median)
+        
+        if years.size > 0:
+            # Add prediction band
+            fig.add_trace(go.Scatter(
+                x=np.concatenate([years, years[::-1]]),
+                y=np.concatenate([y_uppers, y_lowers[::-1]]),
+                fill='toself', fillcolor=color, opacity=0.3,
+                line=dict(color='rgba(255,255,255,0)'),
+                hoverinfo='skip', showlegend=(row == 1 and col == 1),
+                name=f"{name} 95% PI",
+                legendgroup=f"{scenario}_projection"
+            ), row=row, col=col)
+            
+            # Add median projection line
+            fig.add_trace(go.Scatter(
+                x=years, y=y_medians, mode='lines+markers',
+                line=dict(color=color.replace('rgba', 'rgb').replace(', 0.3', ''), width=2),
+                marker=dict(size=3),
+                name=f"{name} Median", showlegend=(row == 1 and col == 1),
+                legendgroup=f"{scenario}_projection"
+            ), row=row, col=col)
+        
+    def make_plots(self, region):
+        temp_fig = self.make_by_temp_plot(region = region)
+        year_fig = self.make_by_year_plot(region = region)
+        return temp_fig, year_fig
+
+    def pregenerate_all_plots(self, output_dir="static_plots"):
+        """
+        Pre-generate all state/scenario combinations as static HTML files for webapp.
+        This minimizes compute time and enables ~1s loading.
+        """
+        import os
+        from pathlib import Path
+        import json
+        from datetime import datetime
+        
+        # Create output directory structure
+        base_path = Path(output_dir)
+        base_path.mkdir(exist_ok=True)
+        
+        # Get all states from the data
+        states = self.data["Region"].unique()
+        scenarios = ["aa", "ct"]
+        
+        # Track generation metadata
+        metadata = {
+            "generated_at": datetime.now().isoformat(),
+            "total_plots": len(states) * len(scenarios) * 2,  # 2 plot types per state/scenario
+            "states": states.tolist(),
+            "scenarios": scenarios,
+            "plot_types": ["temp", "year"]
+        }
+        
+        print(f"Pre-generating {metadata['total_plots']} plots for {len(states)} states...")
+        
+        # Generate plots for each combination
+        for i, state in enumerate(states):
+            print(f"Processing state {i+1}/{len(states)}: {state}")
+            
+            for scenario in scenarios:
+                # Create scenario-specific directory
+                scenario_dir = base_path / scenario
+                scenario_dir.mkdir(exist_ok=True)
+                
+                try:
+                    # Create instance for this scenario
+                    app_instance = AppFunctionsforPooledData(scenario=scenario)
+                    
+                    # Generate temperature plot
+                    temp_fig = app_instance.make_by_temp_plot(region=state)
+                    temp_file = scenario_dir / f"{state}_temp.html"
+                    temp_fig.write_html(
+                        str(temp_file),
+                        include_plotlyjs='cdn',  # Use CDN for smaller files
+                        config={'displayModeBar': False}  # Hide toolbar for cleaner look
+                    )
+                    
+                    # Generate year plot
+                    year_fig = app_instance.make_by_year_plot(region=state)
+                    year_file = scenario_dir / f"{state}_year.html"
+                    year_fig.write_html(
+                        str(year_file),
+                        include_plotlyjs='cdn',
+                        config={'displayModeBar': False}
+                    )
+                    
+                except Exception as e:
+                    print(f"Error generating plots for {state}/{scenario}: {e}")
+                    continue
+        
+        # Save metadata
+        with open(base_path / "metadata.json", "w") as f:
+            json.dump(metadata, f, indent=2)
+        
+        print(f"✅ Pre-generation complete! Files saved in '{output_dir}/'")
+        print(f"📁 Directory structure:")
+        print(f"   {output_dir}/")
+        print(f"   ├── aa/")
+        print(f"   │   ├── MA_temp.html")
+        print(f"   │   ├── MA_year.html")
+        print(f"   │   └── ...")
+        print(f"   ├── ct/")
+        print(f"   │   ├── MA_temp.html") 
+        print(f"   │   └── ...")
+        print(f"   └── metadata.json")
+        
+        return metadata
+
+    @staticmethod
+    def get_plot_path(state, scenario, plot_type, base_dir="static_plots"):
+        """
+        Get the file path for a specific plot combination.
+        
+        Args:
+            state: State code (e.g., 'MA')
+            scenario: 'aa' or 'ct'
+            plot_type: 'temp' or 'year'
+            base_dir: Base directory for static plots
+        """
+        return f"{base_dir}/{scenario}/{state}_{plot_type}.html"
 
 class PooledEstimator:
     """
@@ -305,7 +564,6 @@ class PooledEstimator:
     # step 2 – pooled bootstrap
     # ------------------------------------------------------------------
     def _pooled_bootstrap(self):
-        years = self.df["Year"].unique()
         regions = self.df["Region"].unique()
 
         pooled_rows = []
@@ -321,10 +579,10 @@ class PooledEstimator:
                     continue
 
                 era5 = era5.set_index("Year").loc[yrs]
-                mer  = mer .set_index("Year").loc[yrs]
+                mer  = mer.set_index("Year").loc[yrs]
                 x = era5["Global_Temp_c"].values      # aligned predictor
                 y_e = era5["Average_Temperature"].values
-                y_m = mer ["Average_Temperature"].values
+                y_m = mer["Average_Temperature"].values
                 L = len(x)
 
                 ints = np.empty(self.n_boot)
@@ -369,6 +627,48 @@ class PooledEstimator:
         return (pd.DataFrame(pooled_rows)
                 .sort_values(["Region", "Month"])
                 .reset_index(drop=True))
+
+    def _pooled_residual_std(self, x: np.ndarray, y: np.ndarray, beta0: float, beta1: float) -> float:
+        """Return pooled residual standard deviation s given one line."""
+        y_hat = beta0 + beta1 * x
+        resid = y - y_hat
+        n = len(x)
+        return np.sqrt(np.sum(resid ** 2) / (n - 2))
+
+    def _analytic_bands(self, x: np.ndarray, y: np.ndarray, beta0: float, beta1: float, alpha=0.05):
+        """Return x_grid, mean line, 100*(1-alpha)% CI & PI bands using textbook formulas."""
+        n = len(x)
+        x_bar = x.mean()
+        ssx = np.sum((x - x_bar) ** 2)
+        s = self._pooled_residual_std(x, y, beta0, beta1)
+
+        # Grid for smooth plotting
+        x_grid = np.linspace(x.min(), x.max(), 400)
+        y_hat = beta0 + beta1 * x_grid
+
+        se_mean = s * np.sqrt(1 / n + (x_grid - x_bar) ** 2 / ssx)  # CI half‑widths
+        se_pred = s * np.sqrt(1 + 1 / n + (x_grid - x_bar) ** 2 / ssx)  # PI half‑widths
+
+        tcrit = t.ppf(1 - alpha / 2, df=n - 2)
+
+        half_ci = tcrit * se_mean
+        half_pi = tcrit * se_pred
+        return x_grid, y_hat, half_ci, half_pi
+
+    def _bootstrap_bands(self, x_grid: np.ndarray, ints: np.ndarray, slps: np.ndarray, resid_std: float | None = None, alpha=0.05, rng=np.random.default_rng()):
+        """Return 100*(1-alpha)% bootstrap percentile bands.
+
+        If resid_std is supplied, create a **prediction** band by adding Gaussian noise with that
+        std to each bootstrap line before taking percentiles.  If resid_std is None, a **confidence**
+        band for the mean response is returned.
+        """
+        lines = slps[:, None] * x_grid + ints[:, None]  # shape (B, G)
+        if resid_std is not None:
+            noise = rng.normal(0, resid_std, size=lines.shape)
+            lines = lines + noise  # prediction band
+
+        lo, hi = np.percentile(lines, [100 * alpha / 2, 100 * (1 - alpha / 2)], axis=0)
+        return lo, hi
 
     def _produce_uncertainty_intervals(self):
         """
@@ -425,29 +725,14 @@ class PooledEstimator:
                 slps = slps[~np.isnan(slps)]
                 if len(ints) == 0:
                     continue
-                
-                # Calculate percentiles
-                int_5th = np.percentile(ints, 5)
-                int_50th = np.percentile(ints, 50)
-                int_95th = np.percentile(ints, 95)
-                
-                slp_5th = np.percentile(slps, 5)
-                slp_50th = np.percentile(slps, 50)
-                slp_95th = np.percentile(slps, 95)
-                
-                uncertainty_rows.append(dict(
-                    Region=reg,
-                    Month=mon,
-                    Slope_5th=slp_5th,
-                    Slope_50th=slp_50th,
-                    Slope_95th=slp_95th,
-                    Intercept_5th=int_5th,
-                    Intercept_50th=int_50th,
-                    Intercept_95th=int_95th
-                ))
-        
-        return (pd.DataFrame(uncertainty_rows)
-                .sort_values(["Region", "Month"])
+
+                sigma = self._pooled_residual_std(x, y_e, np.median(ints), np.median(slps))
+                cols = ["state", "month", "member", "intercept", "slope", "resid_std"]
+                for k, (b0, b1) in enumerate(zip(ints, slps)):
+                    uncertainty_rows.append((reg, mon, k, b0, b1, sigma))
+                                
+        return (pd.DataFrame(uncertainty_rows, columns=cols)
+                .sort_values(["state", "month", "member"])
                 .reset_index(drop=True))
 
     def get_uncertainty_intervals_for_region_month(self, region: str, month: str) -> dict:
@@ -456,19 +741,23 @@ class PooledEstimator:
         Returns a dict with slope and intercept percentiles.
         """
         uncertainty_df = self._produce_uncertainty_intervals()
-        row = uncertainty_df[(uncertainty_df['Region'] == region) & 
-                           (uncertainty_df['Month'] == month)]
+        subset = uncertainty_df[(uncertainty_df['state'] == region) & 
+                               (uncertainty_df['month'] == month)]
         
-        if row.empty:
+        if subset.empty:
             return None
-            
+        
+        # Calculate percentiles from bootstrap samples
+        slopes = subset['slope'].values
+        intercepts = subset['intercept'].values
+        
         return {
-            'slope_5th': row['Slope_5th'].iloc[0],
-            'slope_50th': row['Slope_50th'].iloc[0], 
-            'slope_95th': row['Slope_95th'].iloc[0],
-            'intercept_5th': row['Intercept_5th'].iloc[0],
-            'intercept_50th': row['Intercept_50th'].iloc[0],
-            'intercept_95th': row['Intercept_95th'].iloc[0]
+            'slope_5th': np.percentile(slopes, 5),
+            'slope_50th': np.percentile(slopes, 50), 
+            'slope_95th': np.percentile(slopes, 95),
+            'intercept_5th': np.percentile(intercepts, 5),
+            'intercept_50th': np.percentile(intercepts, 50),
+            'intercept_95th': np.percentile(intercepts, 95)
         }
 
 class UncertaintyIntervalLoader:
@@ -488,7 +777,7 @@ class UncertaintyIntervalLoader:
         """
         self.df = pd.read_csv(csv_path)
         # Create a multi-index for fast lookups
-        self.df = self.df.set_index(['Region', 'Month'])
+        self.df = self.df.set_index(['state', 'month'])
     
     def get_intervals(self, region: str, month: str) -> dict:
         """
@@ -507,25 +796,29 @@ class UncertaintyIntervalLoader:
             Dictionary with slope and intercept percentiles, or None if not found
         """
         try:
-            row = self.df.loc[(region, month)]
+            subset = self.df.loc[(region, month)]
+            # Calculate percentiles from bootstrap samples
+            slopes = subset['slope'].values
+            intercepts = subset['intercept'].values
+            
             return {
-                'slope_5th': row['Slope_5th'],
-                'slope_50th': row['Slope_50th'], 
-                'slope_95th': row['Slope_95th'],
-                'intercept_5th': row['Intercept_5th'],
-                'intercept_50th': row['Intercept_50th'],
-                'intercept_95th': row['Intercept_95th']
+                'slope_5th': np.percentile(slopes, 5),
+                'slope_50th': np.percentile(slopes, 50), 
+                'slope_95th': np.percentile(slopes, 95),
+                'intercept_5th': np.percentile(intercepts, 5),
+                'intercept_50th': np.percentile(intercepts, 50),
+                'intercept_95th': np.percentile(intercepts, 95)
             }
         except KeyError:
             return None
     
     def get_all_regions(self) -> list:
         """Get list of all available regions."""
-        return self.df.index.get_level_values('Region').unique().tolist()
+        return self.df.index.get_level_values('state').unique().tolist()
     
     def get_all_months(self) -> list:
         """Get list of all available months."""
-        return self.df.index.get_level_values('Month').unique().tolist()
+        return self.df.index.get_level_values('month').unique().tolist()
     
     def get_slopes_for_region(self, region: str) -> pd.DataFrame:
         """
@@ -543,88 +836,631 @@ class UncertaintyIntervalLoader:
         """
         try:
             region_data = self.df.loc[region]
-            return region_data[['Slope_5th', 'Slope_50th', 'Slope_95th']]
+            # Calculate percentiles for each month
+            results = []
+            for month in region_data.index.get_level_values('month').unique():
+                month_data = region_data.loc[month]
+                slopes = month_data['slope'].values
+                results.append({
+                    'month': month,
+                    'slope_5th': np.percentile(slopes, 5),
+                    'slope_50th': np.percentile(slopes, 50),
+                    'slope_95th': np.percentile(slopes, 95)
+                })
+            return pd.DataFrame(results)
         except KeyError:
             return pd.DataFrame()
 
 class PlotlySlopeMap:
-    """
-    Interactive USA‑states choropleth of pooled slopes
-    (ERA5 + MERRA‑2, 1980‑2022) with a month slider and
-    '×' overlay on non‑significant states.
+    """Visualise bootstrap regression bands for US state–month pairs.
+
+    The class now supports **two modes** automatically:
+
+    1. **Per‑dataset** mode – when the coefficient dataframe *has* a
+       `dataset` column (e.g., ERA5 vs MERRA2).  The figure overlays one band
+       per dataset.
+    2. **Pooled** mode – when `dataset` is *absent*.  The coefficients are
+       treated as coming from a single, already‑pooled model and only one band
+       is drawn.
 
     Parameters
     ----------
-    csv_path   : str | Path
-        Output of PooledEstimator.save_pooled_bootstrap().
-    sig_level  : float, default 0.05
-        P‑value threshold used to flag non‑significant slopes.
+    coeff_df : pandas.DataFrame
+        Long‑format bootstrap coefficient table with columns
+        `state, month, member, intercept, slope, resid_std` and *optionally*
+        `dataset`.
+    hist_df : pandas.DataFrame
+        Historical observations table (kept for possible scatter overlays).
+    alpha : float, default 0.05
+        Tail probability → 1‑alpha is the nominal coverage (0.05 → 95 %).
+    x_range : (float, float) | None, default None
+        Range of the global‑temperature x‑axis.  Defaults to the min/max of
+        `hist_df['Global_Temp']`.
     """
 
-    # approximate geographic centroids (lat, lon) for 50 states + DC
-    _centroids = {
-        "AL": (32.7,  -86.7),  "AK": (64.5, -152.3), "AZ": (34.3, -111.7),
-        "AR": (34.8,  -92.2),  "CA": (37.2, -119.5), "CO": (39.0, -105.7),
-        "CT": (41.6,  -72.7),  "DE": (39.1,  -75.5), "FL": (28.6,  -82.4),
-        "GA": (32.7,  -83.3),  "HI": (20.8, -156.3), "ID": (44.1, -114.7),
-        "IL": (40.0,  -89.2),  "IN": (40.1,  -86.1), "IA": (42.1,  -93.5),
-        "KS": (38.5,  -98.0),  "KY": (37.5,  -85.3), "LA": (31.2,  -92.3),
-        "ME": (45.3,  -69.2),  "MD": (39.0,  -76.8), "MA": (42.4,  -71.4),
-        "MI": (44.7,  -85.6),  "MN": (46.3,  -94.3), "MS": (32.7,  -89.7),
-        "MO": (38.4,  -92.4),  "MT": (46.9, -110.4), "NE": (41.5,  -99.7),
-        "NV": (39.0, -117.0),  "NH": (44.0,  -71.6), "NJ": (40.1,  -74.7),
-        "NM": (34.4, -106.1),  "NY": (42.9,  -75.6), "NC": (35.6,  -79.9),
-        "ND": (47.5, -100.4),  "OH": (40.3,  -82.8), "OK": (35.6,  -97.5),
-        "OR": (43.9, -120.6),  "PA": (41.2,  -77.2), "RI": (41.6,  -71.6),
-        "SC": (33.8,  -80.9),  "SD": (44.3, -100.2), "TN": (35.8,  -86.4),
-        "TX": (31.5,  -99.4),  "UT": (39.4, -111.7), "VT": (44.1,  -72.7),
-        "VA": (37.5,  -78.7),  "WA": (47.5, -120.5), "WV": (38.6,  -80.6),
-        "WI": (44.7,  -89.7),  "WY": (43.0, -107.6), "DC": (38.9,  -77.0)
-    }
+    _MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-    _month_order = ["Jan","Feb","Mar","Apr","May","Jun",
-                    "Jul","Aug","Sep","Oct","Nov","Dec"]
+    _DEFAULT_COLORS = ["royalblue", "orangered", "seagreen", "mediumpurple"]
 
-    def __init__(self, csv_path, sig_level: float = 0.05):
-        self.csv_path  = Path(csv_path)
-        self.sig_level = sig_level
-        self.data      = pd.read_csv(self.csv_path)
-        # Convert 'Month' column to categorical with proper order
-        self.data['Month'] = pd.Categorical(self.data['Month'], categories=self._month_order, ordered=True)
+    # ------------------------------------------------------------------
+    # Constructor
+    # ------------------------------------------------------------------
+    def __init__(self, *, coeff_df: pd.DataFrame, hist_df: pd.DataFrame,
+                 alpha: float = 0.05, x_range: Optional[Tuple[float, float]] = None):
+        self.alpha = alpha
+        self.coeff_df = coeff_df.copy()
+        self.hist_df = hist_df.copy()
 
-        # Sort by 'Month'
-        self.data = self.data.sort_values('Month').reset_index(drop=True)
+        # -----   Validate required columns   -----
+        base_cols = {"state", "month", "member", "intercept", "slope", "resid_std"}
+        if base_cols - set(self.coeff_df.columns):
+            raise ValueError(f"coeff_df missing columns: {base_cols - set(self.coeff_df.columns)}")
 
-        # symmetric colour range
-        self._cmax = self.data["Pooled_Slope"].abs().max()
+        # detect whether we have per‑dataset coefficients or a pooled model
+        self.per_dataset = "dataset" in self.coeff_df.columns
+        if self.per_dataset:
+            self.datasets = sorted(self.coeff_df["dataset"].unique().tolist())
+        else:
+            # Always use pooled model for regression bands
+            self.datasets = ["Pooled"]
+            self.coeff_df["dataset"] = "Pooled"  # makes queries uniform
 
-    # -----------------------------------------------------------------
-    # public renderer
-    # -----------------------------------------------------------------
-    def make_figure(self):
+        # Calculate dataset-specific global temperature means for centering
+        self.dataset_means = {}
+        for dataset in self.datasets:
+            if dataset == "Pooled":
+                # For pooled model, use the overall mean
+                self.dataset_means[dataset] = self.hist_df["Global_Temp"].mean()
+            else:
+                # For per-dataset model, use dataset-specific mean
+                dataset_data = self.hist_df[self.hist_df["Dataset"].str.lower() == dataset.lower()]
+                if not dataset_data.empty:
+                    self.dataset_means[dataset] = dataset_data["Global_Temp"].mean()
+                else:
+                    # Fallback to overall mean if dataset not found
+                    self.dataset_means[dataset] = self.hist_df["Global_Temp"].mean()
+
+        # colour maps (cycled if more than 4 datasets)
+        self._LINE_COLOUR: Dict[str, str] = {}
+        self._BAND_COLOUR: Dict[str, str] = {}
+        for idx, ds in enumerate(self.datasets):
+            base = self._DEFAULT_COLORS[idx % len(self._DEFAULT_COLORS)]
+            self._LINE_COLOUR[ds] = base
+            # 30 % opacity fill - convert to rgba format
+            if base.startswith("rgb"):
+                self._BAND_COLOUR[ds] = base.replace("rgb", "rgba").replace(")", ",0.30)")
+            else:
+                # Simple color to rgba conversion for common colors
+                color_map = {
+                    "royalblue": "rgba(65, 105, 225, 0.30)",
+                    "orangered": "rgba(255, 69, 0, 0.30)", 
+                    "seagreen": "rgba(46, 139, 87, 0.30)",
+                    "mediumpurple": "rgba(147, 112, 219, 0.30)"
+                }
+                self._BAND_COLOUR[ds] = color_map.get(base, f"rgba(0, 0, 0, 0.30)")
+
+        # Use historical data's Global_Temperature range for x-axis bounds
+        if x_range is None:
+            if {"Global_Temp"}.issubset(self.hist_df.columns):
+                self.x_range = (self.hist_df["Global_Temp"].min(),
+                                self.hist_df["Global_Temp"].max())
+            else:
+                self.x_range = (0, 1)
+        else:
+            self.x_range = x_range
+
+    # ------------------------------------------------------------------
+    # Internal helpers
+    # ------------------------------------------------------------------
+    def _subset_coeff(self, *, state: str, month: str, dataset: str):
+        sub = self.coeff_df.query("state == @state and month == @month and dataset == @dataset")
+        if sub.empty:
+            raise ValueError(f"No coefficients for state={state}, month={month}, dataset={dataset}")
+        return (sub["intercept"].to_numpy(),
+                sub["slope"].to_numpy(),
+                sub["resid_std"].iloc[0])
+
+    @staticmethod
+    def _bootstrap_band(x_grid: np.ndarray, ints: np.ndarray, slps: np.ndarray,
+                        resid_std: Optional[float], alpha: float):
+        lines = slps[:, None] * x_grid + ints[:, None]
+        if resid_std is not None:
+            lines += np.random.default_rng().normal(0, resid_std, size=lines.shape)
+        lo, hi = np.percentile(lines, [100*alpha/2, 100*(1-alpha/2)], axis=0)
+        return lo, hi
+
+    def _x_grid(self, n: int = 400):
+        return np.linspace(*self.x_range, n)
+
+    # ------------------------------------------------------------------
+    # Single‑month figure
+    # ------------------------------------------------------------------
+    def _single_panel(self, *, state: str, month: str, prediction: bool):
+        x_grid = self._x_grid()
+        fig = go.Figure()
+
+        # Add regression bands (always use pooled model)
+        for ds in self.datasets:
+            ints, slps, sigma = self._subset_coeff(state=state, month=month, dataset=ds)
+            
+            # Center the x-grid values for the regression calculation
+            x_centered = x_grid - self.dataset_means[ds]
+            
+            # Calculate regression lines using centered x-values
+            lo, hi = self._bootstrap_band(x_centered, ints, slps,
+                                          resid_std=(sigma if prediction else None),
+                                          alpha=self.alpha)
+            y_hat = np.median(ints) + np.median(slps) * x_centered
+
+            # Plot regression bands
+            band_type = "PI" if prediction else "CI"
+            fig.add_trace(go.Scatter(x=x_grid, y=y_hat, mode="lines",
+                                     name=f"{ds} median", 
+                                     legendgroup=f"{ds}_median",
+                                     line=dict(color=self._LINE_COLOUR[ds])))
+            fig.add_trace(go.Scatter(x=np.concatenate([x_grid, x_grid[::-1]]),
+                                     y=np.concatenate([lo, hi[::-1]]), fill="toself",
+                                     fillcolor=self._BAND_COLOUR[ds], line=dict(color="rgba(255,255,255,0)"),
+                                     hoverinfo="skip", name=f"{ds} {band_type}",
+                                     legendgroup=f"{ds}_{band_type.lower()}"))
+
+        # Always add historical data for both datasets
+        for dataset_name in ["era5", "merra2"]:
+            dataset_data = self.hist_df[(self.hist_df["Dataset"].str.lower() == dataset_name) & 
+                                       (self.hist_df["Region"] == state) & 
+                                       (self.hist_df["Month"] == month)]
+            
+            if not dataset_data.empty:
+                # Use different colors for each dataset
+                colors = {"era5": "#5D1D95", "merra2": "#5DA9E9"}
+                fig.add_trace(go.Scatter(
+                    x=dataset_data["Global_Temp"], 
+                    y=dataset_data["Average_Temperature"],
+                    mode="markers", 
+                    name=f"{dataset_name.upper()} Historical",
+                    legendgroup=f"{dataset_name.upper()}_historical",
+                    marker=dict(color=colors[dataset_name], size=6),
+                    showlegend=True
+                ))
+
+        kind = "prediction" if prediction else "confidence"
+        title = f"{state} – {month}: 95 % {kind} band with historical data"
+        fig.update_layout(template="simple_white",
+                          title=title,
+                          xaxis_title="Global mean temperature (°C)",
+                          yaxis_title="State‑average temperature (°C)")
+        return fig
+
+    # Public API
+    # ------------------------------------------------------------------
+    def create_confidence_plot(self, *, state: str, month: str):
+        return self._single_panel(state=state, month=month, prediction=False)
+
+    def create_prediction_plot(self, *, state: str, month: str):
+        return self._single_panel(state=state, month=month, prediction=True)
+
+    # ------------------------------------------------------------------
+    # Grid of 4×3 months
+    # ------------------------------------------------------------------
+    def _grid(self, *, state: str, prediction: bool):
+        x_grid = self._x_grid()
+        fig = make_subplots(rows=3, cols=4, subplot_titles=self._MONTHS,
+                            shared_xaxes=True, shared_yaxes=False, vertical_spacing = 0.05)
+
+        # Show legend only once per dataset / band type
+        showleg_line = {ds: True for ds in self.datasets}
+        showleg_band = {ds: True for ds in self.datasets}
+        showleg_era5 = True
+        showleg_merra2 = True
+
+        for idx, month in enumerate(self._MONTHS, start=1):
+            r = (idx - 1)//4 + 1
+            c = (idx - 1)%4 + 1
+            
+            # Add regression bands (always use pooled model)
+            for ds in self.datasets:
+                ints, slps, sigma = self._subset_coeff(state=state, month=month, dataset=ds)
+                
+                # Center the x-grid values for the regression calculation
+                x_centered = x_grid - self.dataset_means[ds]
+                
+                # Calculate regression lines using centered x-values
+                lo, hi = self._bootstrap_band(x_centered, ints, slps,
+                                               resid_std=(sigma if prediction else None),
+                                               alpha=self.alpha)
+                y_hat = np.median(ints) + np.median(slps) * x_centered
+
+                # Plot regression bands
+                band_type = "PI" if prediction else "CI"
+                fig.add_trace(go.Scatter(x=x_grid, y=y_hat, mode="lines",
+                                          line=dict(color=self._LINE_COLOUR[ds]),
+                                          name=f"{ds} median" if showleg_line[ds] else None,
+                                          legendgroup=f"{ds}_median",
+                                          showlegend=showleg_line[ds]),
+                               row=r, col=c)
+                fig.add_trace(go.Scatter(x=np.concatenate([x_grid, x_grid[::-1]]),
+                                          y=np.concatenate([lo, hi[::-1]]), fill="toself",
+                                          fillcolor=self._BAND_COLOUR[ds],
+                                          line=dict(color="rgba(255,255,255,0)"), hoverinfo="skip",
+                                          name=f"{ds} {band_type}" if showleg_band[ds] else None,
+                                          legendgroup=f"{ds}_{band_type.lower()}",
+                                          showlegend=showleg_band[ds]),
+                               row=r, col=c)
+                showleg_line[ds] = False
+                showleg_band[ds] = False
+
+            # Always add historical data for both datasets
+            for dataset_name in ["era5", "merra2"]:
+                dataset_data = self.hist_df[(self.hist_df["Dataset"].str.lower() == dataset_name) & 
+                                           (self.hist_df["Region"] == state) & 
+                                           (self.hist_df["Month"] == month)]
+                
+                if not dataset_data.empty:
+                    # Use different colors for each dataset
+                    colors = {"era5": "#5D1D95", "merra2": "#5DA9E9"}
+                    show_legend = showleg_era5 if dataset_name == "era5" else showleg_merra2
+                    fig.add_trace(go.Scatter(
+                        x=dataset_data["Global_Temp"], 
+                        y=dataset_data["Average_Temperature"],
+                        mode="markers", 
+                        name=f"{dataset_name.upper()} Historical" if show_legend else None,
+                        legendgroup=f"{dataset_name.upper()}_historical",
+                        marker=dict(color=colors[dataset_name], size=4),
+                        showlegend=show_legend
+                    ), row=r, col=c)
+                    
+                    if dataset_name == "era5":
+                        showleg_era5 = False
+                    else:
+                        showleg_merra2 = False
+
+        kind = "prediction" if prediction else "confidence"
+        title = f"{state}: 95 % {kind} band with historical data"
+        fig.update_layout(template="simple_white", height=800, width=1100,
+                          title=dict(text=title, x=0.5))
+        # Axis labels on outer edge
+        for r in range(1, 5):
+            fig.update_xaxes(title_text="Global Temp (°C)" if r == 4 else None, row=r, col=1)
+        for c in range(1, 4):
+            fig.update_yaxes(title_text="State Temp (°C)" if c == 1 else None, row=1, col=c)
+        return fig
+
+    def create_confidence_grid(self, *, state: str):
+        return self._grid(state=state, prediction=False)
+
+    def create_prediction_grid(self, *, state: str):
+        return self._grid(state=state, prediction=True)
+
+class Plots:
+    def __init__(self, df):
+        """Figure 1: Base figure generated with plot_slope_map(). Significant trends identified with significant_trends_by_month(), and significance markers
+         filled in using Adobe Illustrator.
+         """
+        self.df = df
+        self.data_df = pd.read_csv(r"full_processed_data.csv")
+        self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        # order df by month
+        self.df = self.df.sort_values(by = ["Month"], key = lambda x: x.map(lambda y: self.months.index(y)))
+        self.era5_global_mean_temp = self.data_df[(self.data_df["Dataset"] == "era5") & (self.data_df["Month"] == "Jan")]["Global_Temp"].mean()
+        self.merra2_global_mean_temp = self.data_df[(self.data_df["Dataset"] == "merra2") & (self.data_df["Month"] == "Jan")]["Global_Temp"].mean()
+
+    def plot_slope_map(self):
         """
-        Returns
-        -------
-        fig : plotly.graph_objects.Figure
-            Interactive choropleth with month slider.
+        Plot a heatmap of the slope values for each region and month.
         """
-        # choropleth trace with animation frames handled by Plotly
-        zero_point = abs(min(self.data["Pooled_Slope"]))/(max(self.data["Pooled_Slope"]) - min(self.data["Pooled_Slope"]))
+        # create a choropleth map of the trends
+        zero_point = abs(min(self.df["Pooled_Slope"]))/(max(self.df["Pooled_Slope"]) - min(self.df["Pooled_Slope"]))
         color_scale = [(0, "#053061"), (zero_point, "white"), (1, "maroon")]
         fig = px.choropleth(
-            self.data,
+            self.df,
             locations = "Region",
             locationmode = "USA-states",
-            scope = "usa",
             color = "Pooled_Slope",
-            color_continuous_scale = color_scale,
+            title = "Trends by Month",
+            scope = "usa",
             facet_col = "Month",
             facet_col_wrap = 4,
-            facet_col_spacing = 0
+            facet_col_spacing = 0,
+            color_continuous_scale = color_scale
+        )
+        fig.update_layout(width = 1500, height = 1000)
+
+        return fig
+    
+    def significant_trends_by_month(self, month):
+        """
+        Plot a heatmap of the slope values for each region and month.
+        """
+        month_df = self.df[self.df["Month"] == month]
+        print(month_df[month_df["Slope_p"] < 0.05])
+
+    def example_regression(self, dataset):
+        example_state = "ND"
+        all_data = pd.read_csv(r"full_processed_data.csv")
+        global_temps = all_data["Global_Temp"].values
+        min_global_temp, max_global_temp = min(global_temps), max(global_temps)
+        x_range = np.linspace(min_global_temp, max_global_temp, 100)
+        region_data = all_data[(all_data["Region"] == example_state) & (all_data["Dataset"] == dataset)]
+        print(region_data)
+
+        # historical data
+        fig = px.scatter(region_data, x = "Global_Temp", y = "Average_Temperature", facet_col = "Month", facet_col_wrap = 4)
+        
+        # Add regression lines for each month
+        months = region_data["Month"].unique()
+        for i, month in enumerate(months):
+            month_data = region_data[region_data["Month"] == month]
+            
+            if len(month_data) > 1:  # Need at least 2 points for regression
+                # Fit linear regression
+                x = month_data["Global_Temp"].values
+                y = month_data["Average_Temperature"].values
+                
+                # Simple linear regression
+                coeffs = np.polyfit(x, y, 1)
+                slope, intercept = coeffs
+                
+                # Create regression line points
+                x_line = np.linspace(x.min(), x.max(), 100)
+                y_line = slope * x_line + intercept
+                
+                # Add regression line to the appropriate subplot
+                # Calculate subplot position
+                row = i // 4 + 1
+                col = i % 4 + 1
+                
+                fig.add_trace(
+                    go.Scatter(
+                        x=x_line,
+                        y=y_line,
+                        mode="lines",
+                        line=dict(color="red", width=2),
+                        name=f"{month} Regression",
+                        showlegend=False
+                    ),
+                    row=row, col=col
+                )
+        
+        fig.update_layout(width = 1500, height = 1000)
+        # Make y-axes independent for each facet
+        fig.update_yaxes(showticklabels=True, matches=None)
+        
+        return fig
+    
+    def example_regression_with_pooled_results(self, dataset):
+        """
+        Alternative version that uses pre-computed regression results from the pooled analysis.
+        """
+        example_state = "ND"
+        global_temp_mean = self.era5_global_mean_temp if dataset == "era5" else self.merra2_global_mean_temp
+        
+        # Load pooled regression results
+        pooled_results = pd.read_csv(r"Regression Results/pooled_bootstrap_results.csv")
+        state_results = pooled_results[pooled_results["Region"] == example_state]
+        
+        region_data = self.data_df[(self.data_df["Region"] == example_state) & (self.data_df["Dataset"] == dataset)]
+        
+        # Make plots
+        fig = make_subplots(rows = 3, cols = 4)
+        months = region_data["Month"].unique()
+        for i, month in enumerate(months):
+
+            month_data = region_data[region_data["Month"] == month]
+            month_results = state_results[state_results["Month"] == month]
+            
+            if not month_results.empty and len(month_data) > 0:
+                # Get regression coefficients from pooled results
+                intercept = month_results["Pooled_Intercept"].iloc[0]
+                slope = month_results["Pooled_Slope"].iloc[0]
+                
+                # Create regression line
+                x_min, x_max = month_data["Global_Temp"].min(), month_data["Global_Temp"].max()
+                x_line = np.linspace(x_min, x_max, 100)
+                y_line = intercept + slope * (x_line - x_line.mean())
+                
+                # Add regression line to subplot
+                row = i // 4 + 1
+                col = i % 4 + 1
+                
+                fig.add_trace(
+                    go.Scatter(
+                        x=x_line,
+                        y=y_line,
+                        mode="lines",
+                        line=dict(color="#56A3A6", width=2),
+                        name=f"{month} Pooled Regression",
+                        showlegend=False
+                    ),
+                    row=row, col=col
+                )
+
+                # historical data
+                fig.add_trace(go.Scatter(x = month_data["Global_Temp"], y = month_data["Average_Temperature"], mode = "markers", name = "Historical Data", showlegend = False, marker = dict(color = "#CBC3E3")), row = row, col = col)
+        
+        fig.update_layout(width=1500, height=1000)
+        fig.update_yaxes(showticklabels=True, matches=None)
+        
+        return fig
+
+    def plot_clustering_results(self, results_file_path = "Clustering Results/clustering_results_pooled_bootstrap_data_6.csv"):
+        cluster_results = pd.read_csv(results_file_path)
+        cluster_results = cluster_results.sort_values(by = "Cluster")
+        cluster_results["Cluster"] = cluster_results["Cluster"].astype(str)
+        cluster_results["Cluster"] = cluster_results["Cluster"].replace({"0": "1", "1": "2", "2": "3", "3": "4", "4": "5", "5": "6"})
+
+        color_map = {"1": "#ff8389", "2": "#ee5396", "3": "#be95ff", "4": "#24a148", "5": "#33b1ff", "6": "#007d79"}
+        fig = px.choropleth(cluster_results, 
+                            locations = "Region", 
+                            locationmode = "USA-states", 
+                            color = "Cluster", 
+                            title = "Clustering Results", 
+                            scope = "usa",
+                            color_discrete_map = color_map)
+        fig.update_layout(width = 1200, height = 700)
+        fig.update_coloraxes(colorbar_title = "Cluster")
+
+        return fig
+
+    def plot_cluster_trends(self):
+        cluster_results = pd.read_csv(r"Clustering Results/clustering_results_pooled_bootstrap_data_6.csv")
+        cluster_results = cluster_results.sort_values(by = "Cluster")
+        cluster_results["Cluster"] = cluster_results["Cluster"].astype(str)
+        cluster_results["Cluster"] = cluster_results["Cluster"].replace({"0": "1", "1": "2", "2": "3", "3": "4", "4": "5", "5": "6"})
+        
+        # Add cluster information to self.df by matching Region columns
+        # Create a new DataFrame in memory with the cluster column added
+        df_with_clusters = self.df.copy()
+        
+        # Merge the cluster information based on Region
+        df_with_clusters = df_with_clusters.merge(
+            cluster_results[['Region', 'Cluster']], 
+            on='Region', 
+            how='left'
+        )
+        
+        # Ensure Cluster is numeric for proper sorting
+        df_with_clusters['Cluster'] = pd.to_numeric(df_with_clusters['Cluster'])
+        
+        # Sort by Cluster first, then by Month in calendar order
+        df_with_clusters = df_with_clusters.sort_values(by=['Cluster', 'Month'], 
+                                                       key=lambda x: x.map(lambda y: self.months.index(y)) if x.name == 'Month' else x)
+
+        # Create categorical ordering for Month to ensure sequential display
+        df_with_clusters['Month'] = pd.Categorical(df_with_clusters['Month'], 
+                                                  categories=self.months, 
+                                                  ordered=True)
+
+        # Create box plot manually to control colors properly
+        fig = make_subplots(rows=3, cols=4, subplot_titles=self.months, vertical_spacing=0.08)
+        
+        # Calculate overall y-axis range for consistent scaling
+        y_min = df_with_clusters['Pooled_Slope'].min()
+        y_max = df_with_clusters['Pooled_Slope'].max()
+        
+        color_map = {"1": "#ff8389", "2": "#ee5396", "3": "#be95ff", "4": "#24a148", "5": "#33b1ff", "6": "#007d79"}
+        
+        # Add box plots for each month and cluster
+        for month_idx, month in enumerate(self.months):
+            row = month_idx // 4 + 1
+            col = month_idx % 4 + 1
+            
+            for cluster in sorted(df_with_clusters['Cluster'].unique()):
+                cluster_data = df_with_clusters[(df_with_clusters['Month'] == month) & 
+                                              (df_with_clusters['Cluster'] == cluster)]
+                
+                if not cluster_data.empty:
+                    fig.add_trace(
+                        go.Box(
+                            x=[cluster] * len(cluster_data),
+                            y=cluster_data['Pooled_Slope'],
+                            name=f"Cluster {cluster}",
+                            marker_color=color_map[str(cluster)],
+                            showlegend=False if month_idx > 0 else True,
+                            legendgroup=f"Cluster {cluster}"
+                        ),
+                        row=row, col=col
+                    )
+
+        # Calculate the number of regions in each cluster
+        cluster_counts = df_with_clusters.groupby('Cluster')['Region'].nunique()
+        
+        # Update the legend to include cluster member counts
+        for trace in fig.data:
+            if 'Cluster' in trace.name:
+                cluster_num = trace.name.split()[-1]  # Extract cluster number
+                count = cluster_counts.get(int(cluster_num), 0)
+                trace.name = f"Cluster {cluster_num} ({count})"
+        
+        # Update layout
+        fig.update_layout(
+            height=800,
+            width=1200,
+            title="Trends by Cluster"
+        )
+        
+        # Update x-axes to show all cluster numbers and add labels
+        for i in range(1, 13):  # 12 subplots
+            row = (i - 1) // 4 + 1
+            col = (i - 1) % 4 + 1
+            
+            # Show all cluster numbers on x-axis
+            fig.update_xaxes(
+                tickmode='array',
+                tickvals=[1, 2, 3, 4, 5, 6],
+                ticktext=['1', '2', '3', '4', '5', '6'],
+                row=row, col=col
+            )
+            
+            # Add y-axis label only for leftmost column, 2nd row
+            if col == 1 and row == 2:  # Leftmost column, 2nd row only
+                fig.update_yaxes(title_text="Pooled Slope", row=row, col=col, range=[y_min, y_max])
+            else:
+                fig.update_yaxes(title_text="", row=row, col=col, range=[y_min, y_max])
+        
+        fig.add_annotation(
+            x = 0.5,
+            y = -0.075,
+            text = "Cluster",
+            showarrow = False,
+            xref = "paper",
+            yref = "paper",
+            font = dict(size = 14)
         )
         
         return fig
-     
+
+    def plot_highest_lowest_trends(self):
+        df = self.df
+        df = df.groupby("Region")["Pooled_Slope"].mean().reset_index()
+        top_5 = df.nlargest(5, "Pooled_Slope")
+        bottom_5 = df.nsmallest(5, "Pooled_Slope")
+
+        df = pd.concat([top_5, bottom_5])
+        df["color"] = ["highest" for i in range(len(df))]
+        df["color"][5:] = ["lowest" for i in range(5)]
+        color_map = {"highest": "maroon", "lowest": "#053061"}
+        fig = px.bar(df, 
+                     x = "Region", 
+                     y = "Pooled_Slope", 
+                     color = "color", 
+                     color_discrete_map = color_map,
+                     title = "States with Weakest and Strongest Trends")
+        fig.update_layout(height = 500, width = 750, showlegend = False)
+
+        return fig
+    
+    def plot_monthly_distributions(self):
+        df = self.df
+        max_slope = df["Pooled_Slope"].max()
+        min_slope = df["Pooled_Slope"].min()
+        color_scale = n_colors(hex_to_rgb("#80ddff"), hex_to_rgb("#bb80ff"), 12, colortype = "tuple")
+        color_scale = ["rgb" + str(color) for color in color_scale]
+
+        fig = make_subplots(rows = 4, cols = 3, 
+                            subplot_titles = [f"{month}" for month in self.months])
+        for i, month in enumerate(self.months):
+            distribution = df[df["Month"] == month]
+            fig.add_trace(go.Histogram(x = distribution["Pooled_Slope"], name = f"{month}", marker_color = color_scale[i]),  row = i // 3 + 1, col = i % 3 + 1)
+            fig.update_xaxes(range = [min_slope, max_slope], row = i // 3 + 1, col = i % 3 + 1)
+            fig.update_yaxes(range = [0, 20], row = i // 3 + 1, col = i % 3 + 1)
+            fig.add_vline(x = distribution["Pooled_Slope"].median(), row = i // 3 + 1, col = i % 3 + 1, line = dict(color = "orange"))
+            fig.add_annotation(x = distribution["Pooled_Slope"].median() + 0.75, y = 18, text = f"{distribution['Pooled_Slope'].median():.2f}", 
+                               showarrow = False, font = dict(color = "orange"), row = i // 3 + 1, col = i % 3 + 1)
+        
+        fig.update_layout(title = f"Slope Distribution by Month", height = 750, width = 850, showlegend = False)
+        fig.update_xaxes(title_text = "Pooled_Slope", row = 4, col = 2)
+        fig.add_annotation(x = -0.075, 
+                           y = 0.5, 
+                           text = "Frequency", 
+                           showarrow = False, 
+                           xref = "paper", 
+                           yref = "paper", 
+                           font = dict(size = 14),
+                           textangle = -90)
+
+        return fig
+    
 class RiskAssessment:
     def __init__(self, dataset = "MERRA2", var = "T2MMAX", state = "MA"):
         self.dataset = dataset
@@ -698,164 +1534,210 @@ class RiskAssessment:
         # )
         return div_element
 
-class PatternFinding:
-    def __init__(self, dataset = "MERRA2", var = "T2MMAX", merra_2_timeframe = False):
-        self.dataset = dataset
-        self.var = var
-        self.merra_2_timeframe = merra_2_timeframe
-        self.data = self.load_data()
+class KMeansClustering:
+    def __init__(self):
+        self.df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
-    def load_data(self):
-        if self.dataset == "MERRA2":
-            df = pd.read_csv(r"Regression Results/MERRA2/regression_results-MERRA2-T2MMAX.csv")
-        elif self.dataset == "ERA5":
-            if self.merra_2_timeframe:
-                df = pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX-merra2_timeframe.csv")
-            else:
-                df = pd.read_csv(r"Regression Results/ERA5/regression_results-ERA5-T2MMAX.csv")
-        elif self.dataset == "combined":
-            df = pd.read_csv(r"Regression Results/combined_slopes-T2MMAX-merra2_timeframe.csv")
-
-        return df
-    
-    def preprocess_data_for_clustering(self):
-        df = self.load_data()
-
-        # order by month
-        df = df.sort_values(by = ["Month"], key = lambda x: x.map(lambda y: self.months.index(y)))
-
-        # represent each state by monthly trend vector
-        values = "Slope in Original Units" if self.dataset != "combined" else "Combined Slope"
-        clustering_data = df.pivot(index='Region', columns='Month', values=values).reindex(columns = self.months)
-        clustering_data_state_names = clustering_data.index.values
-
-        return clustering_data.values, clustering_data_state_names
-    
-    def k_means_clustering(self, n_clusters = 6):
+    def generate_clusters(self, csv_export_basename, n_clusters = 6):
         from sklearn.cluster import KMeans
 
-        clustering_data, clustering_data_state_names = self.preprocess_data_for_clustering()
+        # Prepare data
+        df = self.df.sort_values(by = ["Month"], key = lambda x: x.map(lambda y: self.months.index(y)))
+        values = "Pooled_Slope"
+        clustering_data = df.pivot(index = "Region", columns = "Month", values = values).reindex(columns = self.months)
+        clustering_data_state_names = clustering_data.index.values
 
+        # K-means clustering
         kmeans = KMeans(n_clusters = n_clusters, n_init = 10)
         kmeans.fit(clustering_data)
         results_df = pd.DataFrame({"Region": clustering_data_state_names, "Cluster": kmeans.labels_})
-        results_df.to_csv(f"clustering_results_{self.dataset}_{self.var}_{kmeans.n_clusters}.csv", index = False)
-    
-    def plot_clustering_results(self, n_clusters = 6):
-        if os.path.exists(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv"):
-            results_df = pd.read_csv(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv")
-        else:
-            self.k_means_clustering(n_clusters = n_clusters)
-            results_df = pd.read_csv(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv")
-        
-        results_df.sort_values(by = ["Cluster"], inplace = True)
-        results_df["Cluster"] = results_df["Cluster"] + 1
-        results_df["Cluster"] = results_df["Cluster"].astype(str)
+        results_df.to_csv(f"Clustering Results/{csv_export_basename}_{n_clusters}.csv", index = False)
 
-        color_map = {"1": "#80ddff", "2": "#bb80ff", "3": "#ffee80", "4": "#4d8599", "5": "#ddff80", "6": "#ffa280"}
+class MannKendallTrendTest:
+    def __init__(self):
+        self.df = pd.read_csv("full_processed_data.csv")
+        self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+    def average_datasets(self):
+        """
+        For each year, month, and region grouping, average the values of Average_Temperature 
+        between the era5 and merra2 datasets.
+        """
+        # Group by Year, Month, Region and average the datasets
+        averaged_data = self.df.groupby(['Year', 'Month', 'Region'])['Average_Temperature'].mean().reset_index()
+        
+        # Sort by Month in calendar order
+        averaged_data['Month'] = pd.Categorical(averaged_data['Month'], categories=self.months, ordered=True)
+        averaged_data = averaged_data.sort_values(['Region', 'Month', 'Year'])
+        
+        return averaged_data
+
+    def perform_mann_kendall_analysis(self):
+        """
+        For each month and region pair, conduct a Mann-Kendall analysis using mk.original_test.
+        """
+        averaged_data = self.average_datasets()
+        results = []
+        
+        # Get unique regions
+        regions = averaged_data['Region'].unique()
+        
+        for month in self.months:
+            for region in regions:
+                # Get data for this month and region
+                subset = averaged_data[(averaged_data['Month'] == month) & 
+                                     (averaged_data['Region'] == region)]
+
+                if len(subset) >= 3:  # Need at least 3 points for Mann-Kendall test
+                    # Sort by year to ensure chronological order
+                    subset = subset.sort_values('Year')
+                    
+                    # Perform Mann-Kendall test
+                    try:
+                        mk_result = mk.original_test(subset['Average_Temperature'].values)
+                        
+                        results.append({
+                            'Month': month,
+                            'Region': region,
+                            'trend': mk_result.trend,
+                            'h': mk_result.h,
+                            'p': mk_result.p,
+                            'z': mk_result.z,
+                            'Tau': mk_result.Tau,
+                            's': mk_result.s,
+                            'var_s': mk_result.var_s,
+                            'slope': mk_result.slope,
+                            'intercept': mk_result.intercept
+                        })
+                    except Exception as e:
+                        print(f"Error processing {month}/{region}: {e}")
+                        # Add row with NaN values for failed tests
+                        results.append({
+                            'Month': month,
+                            'Region': region,
+                            'trend': 'no trend',
+                            'h': False,
+                            'p': np.nan,
+                            'z': np.nan,
+                            'Tau': np.nan,
+                            's': np.nan,
+                            'var_s': np.nan,
+                            'slope': np.nan,
+                            'intercept': np.nan
+                        })
+                else:
+                    print(f"Insufficient data for {month}/{region}: {len(subset)} observations")
+                    # Add row with NaN values for insufficient data
+                    results.append({
+                        'Month': month,
+                        'Region': region,
+                        'trend': 'no trend',
+                        'h': False,
+                        'p': np.nan,
+                        'z': np.nan,
+                        'Tau': np.nan,
+                        's': np.nan,
+                        'var_s': np.nan,
+                        'slope': np.nan,
+                        'intercept': np.nan
+                    })
+        
+        return pd.DataFrame(results)
+
+    def plot_mann_kendall_results(self, results_df):
+        """
+        Plot the Mann-Kendall results on a choropleth map, faceted by month.
+        Shows the magnitude of the trend using the Theil-Sen estimator (slope).
+        """
+        # Filter out rows with NaN slopes
+        plot_df = results_df.dropna(subset=['slope'])
+        
+        # Create choropleth map using the slope (Theil-Sen estimator)
+        zero_point = abs(min(plot_df["slope"]))/(max(plot_df["slope"]) - min(plot_df["slope"]))
+        color_scale = [(0, "#053061"), (zero_point, "white"), (1, "maroon")]
         fig = px.choropleth(
-            data_frame = results_df,
-            locations = "Region",
-            locationmode = "USA-states",
-            color = "Cluster",
-            scope = "usa",
-            color_discrete_map = color_map,
-            height = 600,
-            width = 1000
+            plot_df,
+            locations="Region",
+            locationmode="USA-states",
+            color="slope",
+            facet_col="Month",
+            facet_col_wrap=4,
+            scope="usa",
+            title="Mann-Kendall Test Results",
+            color_continuous_scale=color_scale,
+            range_color=[plot_df['slope'].min(), plot_df['slope'].max()]
         )
-        fig.update_layout(title = "K-Means Clustering Results")
-
-        return fig
-
-    def plot_highest_lowest_states(self):
-        df = self.load_data().groupby("Region")["Combined Slope"].mean().reset_index()
-        top_5 = df.nlargest(5, 'Combined Slope')
-        bottom_5 = df.nsmallest(5, 'Combined Slope')
-
-        # Combine them into one DataFrame
-        result = pd.concat([top_5, bottom_5])
-        result["color"] = ["highest" for i in range(len(result))]
-        result["color"][5:] = ["lowest" for i in range(5)]
-        color_map = {"highest": "maroon", "lowest": "#053061"}
-        print(result)
-
-        fig = px.bar(
-            data_frame = result,
-            x = "Region",
-            y = "Combined Slope",
-            title = "States with Weakest and Strongest Trends",
-            color = "color",
-            color_discrete_map = color_map
-        )
-        fig.update_layout(height = 500, width = 750, showlegend = False)
-
-        return fig
-
-    def plot_monthly_distributions(self):
-        from plotly.subplots import make_subplots
-        from plotly.colors import n_colors, hex_to_rgb
-
-        df = self.load_data()
-        max_slope = df["Combined Slope"].max()
-        min_slope = df["Combined Slope"].min()
-        color_scale = n_colors(hex_to_rgb("#80ddff"), hex_to_rgb("#bb80ff"), 12, colortype = "tuple")
-        color_scale = ["rgb" + str(color) for color in color_scale]
-
-        fig = make_subplots(rows = 4, cols = 3, 
-                            subplot_titles = [f"{month}" for month in self.months])
-        for i, month in enumerate(self.months):
-            distribution = df[df["Month"] == month]
-            fig.add_trace(go.Histogram(x = distribution["Combined Slope"], name = f"{month}", marker_color = color_scale[i]),  row = i // 3 + 1, col = i % 3 + 1)
-            fig.update_xaxes(range = [min_slope, max_slope], row = i // 3 + 1, col = i % 3 + 1)
-            fig.update_yaxes(range = [0, 20], row = i // 3 + 1, col = i % 3 + 1)
-            fig.add_vline(x = distribution["Combined Slope"].median(), row = i // 3 + 1, col = i % 3 + 1, line = dict(color = "orange"))
-            fig.add_annotation(x = distribution["Combined Slope"].median() + 0.75, y = 18, text = f"{distribution['Combined Slope'].median():.2f}", 
-                               showarrow = False, font = dict(color = "orange"), row = i // 3 + 1, col = i % 3 + 1)
-        fig.update_layout(title = f"Slope Distribution by Month", height = 750, width = 850, showlegend = False)
-
-        return fig
-
-    def plot_cluster_members_average_slope(self, n_clusters = 6):
-        results_df = pd.read_csv(f"clustering_results_{self.dataset}_{self.var}_{n_clusters}.csv")
-        results_df["Cluster"] = results_df["Cluster"] + 1
-
-        merged_df = pd.merge(results_df, self.load_data(), on = "Region")
-        fig = go.Figure()
-        for cluster in sorted(merged_df["Cluster"].unique()):
-            cluster_distribution = merged_df[merged_df["Cluster"] == cluster]
-            print(cluster_distribution)
-            cluster_avg = cluster_distribution.groupby(['Month'])['Slope in Original Units'].mean().reset_index()
-            fig.add_trace(go.Histogram(x = cluster_distribution["Slope in Original Units"], name = f"Cluster {cluster}"))
-        cluster_avg = merged_df.groupby(['Cluster'])['Slope in Original Units'].mean().reset_index()
-        print(cluster_avg)
-
-        # sort by month
-        cluster_avg = cluster_avg.sort_values(by = ["Month"], key = lambda x: x.map(lambda y: self.months.index(y)))
-
-        fig = px.line(cluster_avg, x = 'Month', y = 'Slope in Original Units', color = 'Cluster', title = 'Average Slope by Cluster and Month')
-        fig.update_layout(title = "Average Slope by Cluster and Month")
-
-        return fig
-    
-    def dtw_with_clustering(self):
-        from dtw import dtw
-
-        clustering_data, clustering_data_state_names = self.preprocess_data_for_clustering()
         
-        for i, state in enumerate(clustering_data_state_names):
-            for j, state2 in enumerate(clustering_data_state_names):
-                if i != j:
-                    d = dtw(clustering_data[i, :], clustering_data[j, :])
-                    print(d.index1, d.index2)
+        fig.update_layout(
+            width=1500,
+            height=1000
+        )
+        
+        # Update colorbar title
+        fig.update_coloraxes(colorbar_title="Temperature Trend (°C/year)")
+        
+        return fig
+
+    def run_complete_analysis(self):
+        """
+        Run the complete Mann-Kendall analysis and return both results and plot.
+        """
+        results = self.perform_mann_kendall_analysis()
+        fig = self.plot_mann_kendall_results(results)
+        
+        return fig
 
 if __name__ == "__main__":
-    # fig = CompareRegressionResults("Regression Results/MERRA2/regression_results-MERRA2-T2MMAX.csv", "Regression Results/ERA5/regression_results-ERA5-rescaled-T2MMAX-merra2_timeframe.csv").combined_validation()
-    # fig.show()
-    # df = pd.read_csv("full_processed_data.csv")
-    # PooledEstimator(df).save_pooled_bootstrap("Regression Results/pooled_bootstrap_results.csv")
-    # fig = PlotlySlopeMap("Regression Results/pooled_bootstrap_results.csv").make_figure()
+    # Temperature-temperature plot
+    # fig = PlotlySlopeMap(coeff_df = pd.read_csv("Regression Results/uncertainty_intervals_with_prediction_bands.csv"), 
+    #                     hist_df = pd.read_csv("full_processed_data.csv")).create_confidence_grid(state = "MA")
     # fig.show()
 
-    fig = AppFunctionsforPooledData("CT").make_by_temp_plot("MA")
+    # individual state regression
+    # df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
+    # fig = Plots(df).example_regression_with_pooled_results("merra2")
+    # fig.show()
+
+    # chloropleth slope
+    # df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
+    # fig = Plots(df).plot_slope_map()
+    # fig.show()
+
+    # clustering analysis
+    # KMeansClustering().generate_clusters("clustering_results_pooled_bootstrap_data", n_clusters = 4)
+
+    # clustering results
+    # df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
+    # fig = Plots(df).plot_clustering_results(results_file_path = "Clustering Results/clustering_results_pooled_bootstrap_data_5.csv")
+    # fig.show()
+
+    # cluster trends
+    # df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
+    # fig = Plots(df).plot_cluster_trends()
+    # fig.write_image("Clustering Results/cluster_trends_6.svg")
+
+    # highest and lowest trends
+    # df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
+    # fig = Plots(df).plot_highes_lowest_trends()
+    # fig.write_image("Publication Plots/highest_lowest_trends.svg")
+
+    # monthly distributions
+    # df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
+    # fig = Plots(df).plot_monthly_distributions()
+    # fig.show()
+
+    # Mann-Kendall trend analysis
+    # mk_analyzer = MannKendallTrendTest()
+    # fig = mk_analyzer.run_complete_analysis()
+    # fig.write_image("Publication Plots/mann_kendall_trend_analysis.svg")
+
+    # ==== APP FUNCTIONS ====
+    fig = AppFunctionsforPooledData(scenario = "aa").make_by_year_plot(region = "MA")
     fig.show()
+    
+    # PRE-GENERATE ALL PLOTS FOR WEBAPP (run once)
+    # Uncomment to generate all static HTML files:
+    # app = AppFunctionsforPooledData(scenario="aa")  # scenario doesn't matter for pre-generation
+    # metadata = app.pregenerate_all_plots(output_dir="webapp_plots")
+    # print(f"Generated {metadata['total_plots']} plots in {metadata['generated_at']}")
