@@ -1,6 +1,6 @@
 {
-  "generated_at": "2025-08-17T17:27:59.359759",
-  "total_plots": 200,
+  "generated_at": "2025-09-06T21:11:32.037772",
+  "total_plots": 600,
   "states": [
     "DE",
     "KY",
@@ -56,6 +56,11 @@
   "scenarios": [
     "aa",
     "ct"
+  ],
+  "variables": [
+    "T2MMAX",
+    "T2MMEAN",
+    "T2MMIN"
   ],
   "plot_types": [
     "temp",

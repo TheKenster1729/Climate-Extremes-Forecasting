@@ -1264,9 +1264,10 @@ class RegressionAnalysisComplete:
         return fig
 
 class CompareRegressionResults:
-    def __init__(self, merra2_path, era5_path):
+    def __init__(self, merra2_path, era5_path, var = "T2MMAX"):
         self.merra2_path = merra2_path
         self.era5_path = era5_path
+        self.var = var
         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     def read_csvs(self):
@@ -1276,8 +1277,8 @@ class CompareRegressionResults:
         return merra2_df, era5_df
 
     def get_regions_in_common(self):
-        era5_data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-rescaled.json"))
-        merra2_data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
+        era5_data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2mmin-rescaled.json"))
+        merra2_data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-min.json"))
         regions_in_common = list(set(era5_data["contains"]) & set(merra2_data["data"]))
 
         return regions_in_common
@@ -1375,8 +1376,8 @@ class CompareRegressionResults:
         return p_value
 
     def complete_df(self, region):
-        era5_data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m-rescaled.json"))
-        merra2_data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
+        era5_data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2mmin-rescaled.json"))
+        merra2_data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-min.json"))
         # regions_in_common = list(set(era5_data["contains"]) & set(merra2_data["data"]))
 
         all_data = []
@@ -1572,7 +1573,7 @@ class CompareRegressionResults:
             df["Region"] = region
             full_df = pd.concat([full_df, df])
 
-        full_df.to_csv(r"full_processed_data.csv", index = False)
+        full_df.to_csv(f"full_processed_data_{self.var.lower()}.csv", index = False)
 
     def make_region_scatterplot(self, region):
         from plotly.subplots import make_subplots
@@ -1648,7 +1649,7 @@ class CompareRegressionResults:
                 all_data.append([region, month, r_squared])
 
         df = pd.DataFrame(all_data, columns = ["Region", "Month", "R-Squared"])
-        
+
         fig = px.choropleth(
             df,
             locations = "Region",
@@ -1712,7 +1713,7 @@ class ERA5:
         self.raw_max_temp_path = raw_max_temp_path
         self.raw_average_temp_path = raw_average_temp_path
         self.years = [i for i in range(1940, 1956)]
-        self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))
+        # self.data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))
         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     def read_raw_max_temp(self, file_name):
@@ -1940,7 +1941,7 @@ class ERA5:
         
         return era5_resampled
 
-    def make_json_from_single_folder(self):
+    def make_json_from_single_folder(self, folder):
         import xarray as xr
         import geopandas as gpd
         import numpy as np
@@ -1953,7 +1954,7 @@ class ERA5:
         states_gdf = gpd.read_file("US_states_combined.geojson")
 
         # --- Prepare the ERA5 grid using one example file ---
-        example_ds = self.rescale_file(r"ERA5/Temperature Data/Alaska Raw/1941.nc")
+        example_ds = self.rescale_file(os.path.join(folder, "1980.nc"))
         latitudes = example_ds["latitude"].values
         longitudes = example_ds["longitude"].values
 
@@ -1975,14 +1976,17 @@ class ERA5:
         #   },
         #   ... for each state
         # }
-        output = {"coverage": "us-states", "contains": [], "variable": "T2MMAX", "years": [i for i in range(1941, 2024)], "data": {}}
+        output = {"coverage": "us-states", "contains": [], "variable": "T2MMIN", "years": [i for i in range(1980, 2023)], "data": {}}
 
         # Iterate through each state in the GeoDataFrame.
         for idx, state in states_gdf.iterrows():
             # Extract state name and polygon. Adjust field names as necessary.
             state_name = state["STUSPS"]
             state_poly = state["geometry"]
+            if state_name == "PR" or state_name == "VI" or state_name == "DC" or state_name == "GU" or state_name == "MP" or state_name == "AS":
+                continue
 
+            print(state_name)
             # Create a boolean mask: for each grid point, check if it lies within the state polygon.
             mask = np.array([state_poly.contains(Point(lon, lat)) for lon, lat in points_array])
             mask_grid = mask.reshape(lat_grid.shape)
@@ -2001,8 +2005,8 @@ class ERA5:
             output["data"][state_name] = state_dict
 
             # Process each ERA5 file (year by year).
-            for year in range(1941, 2024):
-                filename = f"ERA5/Temperature Data/Alaska Raw/{year}.nc"
+            for year in range(1980, 2023):
+                filename = os.path.join(folder, f"{year}.nc")
                 if not os.path.exists(filename):
                     print(f"File not found for year {year} for {state_name}, skipping.")
                     continue
@@ -2038,14 +2042,15 @@ class ERA5:
 
             # Save the state dictionary into the final output.
             output[state_name] = state_dict
+            print(f"Processed {state_name}")
 
         return output
     
-    def make_results_dict(self):
+    def make_results_dict(self, folder):
         import json
 
-        json_file = self.make_json_from_single_folder()
-        with open("ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json", "w") as f:
+        json_file = self.make_json_from_single_folder(folder)
+        with open("ERA5/Temperature Data/JSON Files/us-states-era5-t2mmin-rescaled.json", "w") as f:
             json.dump(json_file, f)
 
 class Comparison:
@@ -2857,5 +2862,5 @@ class PatternFinding:
                     print(d.index1, d.index2)
 
 if __name__ == "__main__":
-    fig = PatternFinding(dataset = "combined").plot_highest_lowest_states()
-    fig.show()
+    # ERA5().make_results_dict(r"ERA5/Temperature Data/Min Temp")
+    CompareRegressionResults(merra2_path = r"MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-min.json", era5_path = r"ERA5/Temperature Data/JSON Files/us-states-era5-t2mmin-rescaled.json", var = "T2MMIN").export_full_dataset()

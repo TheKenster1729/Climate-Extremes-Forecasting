@@ -29,7 +29,7 @@ def download_data(password):
     # SCPCLient takes a paramiko transport as an argument
     scp = SCPClient(ssh.get_transport())
 
-    for year in range(1980, 2021):
+    for year in range(1980, 2023):
         scp.get('/net/fs01/data/MERRA2/daily/M2SDNXSLV.5.12.4/' + str(year), recursive=True, local_path="./MERRA2/Temperature Data/Max Temp")
 
     scp.close()
@@ -835,14 +835,14 @@ class ERA5Data:
                 "28", "29", "30",
                 "31"
             ],
-            "daily_statistic": "daily_mean",
+            "daily_statistic": "daily_minimum",
             "time_zone": "utc+00:00",
             "frequency": "6_hourly",
             "area": [71.4, -179.2, 18.9, -66.9]
         }
 
         client = cdsapi.Client()
-        client.retrieve(dataset, request, target = r"ERA5/Temperature Data/Mean Temp{}.nc".format(year))
+        client.retrieve(dataset, request, target = r"ERA5/Temperature Data/Min Temp/{}.nc".format(year))
 
     def read_data(self):
         ds_max_1946 = nc.Dataset(r"ERA5/Temperature Data/Monthly/monthly_max_1940.nc")
@@ -1119,13 +1119,13 @@ if __name__ == "__main__":
     # # eppa_data = EPPARegionAggregation()
     # # eppa_data.aggregate_inside_points_temp_data()
 
-
     era5_data = ERA5Data()
     era5_data.download_data(1980)
-    # for year in range(1988, 1989):
-    #     era5_data.download_data(year)
+    for year in range(1980, 2023):
+        era5_data.download_data(year)
     # era5_data.read_data()
     # era5_data.download_all_data()
     # era5_data = ERA5Data()
     # era5_data.process_state_data("Alaska")
     # era5_data.create_netcdf_files("Hawaii")
+    # CollectRegionalData(polygon_data = r"US_states_combined.geojson", data_directory = r"MERRA2/Temperature Data/Mean Temp", var = "T2MMEAN", write_location = r"MERRA2/JSON Files/").aggregate_inside_points_temp_data()

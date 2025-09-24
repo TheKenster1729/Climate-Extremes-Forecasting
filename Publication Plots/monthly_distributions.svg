@@ -1,1 +1,897 @@
-<svg class="main-svg" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="850" height="750" style="" viewBox="0 0 850 750"><rect x="0" y="0" width="850" height="750" style="fill: rgb(255, 255, 255); fill-opacity: 1;"/><defs id="defs-0864c8"><g class="clips"><clipPath id="clip0864c8xyplot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x2y2plot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x3y3plot" class="plotclip"><rect width="199.33333333333331" height="89.0625"/></clipPath><clipPath id="clip0864c8x4y4plot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x5y5plot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x6y6plot" class="plotclip"><rect width="199.33333333333331" height="89.0625"/></clipPath><clipPath id="clip0864c8x7y7plot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x8y8plot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x9y9plot" class="plotclip"><rect width="199.33333333333331" height="89.0625"/></clipPath><clipPath id="clip0864c8x10y10plot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x11y11plot" class="plotclip"><rect width="199.33333333333334" height="89.0625"/></clipPath><clipPath id="clip0864c8x12y12plot" class="plotclip"><rect width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x"><rect x="80" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8y"><rect x="0" y="100" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y2"><rect x="0" y="100" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy2"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y3"><rect x="0" y="100" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy3"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y4"><rect x="0" y="260.3125" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy4"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y5"><rect x="0" y="260.3125" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy5"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y6"><rect x="0" y="260.3125" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy6"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y7"><rect x="0" y="420.625" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy7"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y8"><rect x="0" y="420.625" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy8"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y9"><rect x="0" y="420.625" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy9"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y10"><rect x="0" y="580.9375" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy10"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y11"><rect x="0" y="580.9375" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy11"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8y12"><rect x="0" y="580.9375" width="850" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8xy12"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2"><rect x="325.33333333333337" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y2"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y3"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y4"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y5"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y6"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y7"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y8"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y9"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y10"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y11"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x2y12"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3"><rect x="570.6666666666667" y="0" width="199.33333333333331" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y2"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y3"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y4"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y5"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y6"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y7"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y8"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y9"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y10"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y11"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x3y12"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4"><rect x="80" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y2"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y3"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y4"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y5"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y6"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y7"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y8"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y9"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y10"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y11"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x4y12"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5"><rect x="325.33333333333337" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y2"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y3"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y4"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y5"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y6"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y7"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y8"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y9"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y10"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y11"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x5y12"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6"><rect x="570.6666666666667" y="0" width="199.33333333333331" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y2"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y3"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y4"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y5"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y6"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y7"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y8"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y9"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y10"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y11"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x6y12"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7"><rect x="80" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y2"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y3"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y4"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y5"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y6"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y7"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y8"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y9"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y10"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y11"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x7y12"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8"><rect x="325.33333333333337" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y2"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y3"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y4"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y5"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y6"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y7"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y8"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y9"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y10"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y11"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x8y12"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9"><rect x="570.6666666666667" y="0" width="199.33333333333331" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y2"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y3"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y4"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y5"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y6"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y7"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y8"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y9"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y10"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y11"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x9y12"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10"><rect x="80" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y2"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y3"><rect x="80" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y4"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y5"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y6"><rect x="80" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y7"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y8"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y9"><rect x="80" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y10"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y11"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x10y12"><rect x="80" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11"><rect x="325.33333333333337" y="0" width="199.33333333333334" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y2"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y3"><rect x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y4"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y5"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y6"><rect x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y7"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y8"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y9"><rect x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y10"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y11"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x11y12"><rect x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12"><rect x="570.6666666666667" y="0" width="199.33333333333331" height="750"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y2"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y3"><rect x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y4"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y5"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y6"><rect x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y7"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y8"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y9"><rect x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y10"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y11"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath><clipPath class="axesclip" id="clip0864c8x12y12"><rect x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625"/></clipPath></g><g class="gradients"/><g class="patterns"/></defs><g class="bglayer"><rect class="bg" x="80" y="100" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="325.33333333333337" y="100" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="570.6666666666667" y="100" width="199.33333333333331" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="80" y="260.3125" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="325.33333333333337" y="260.3125" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="570.6666666666667" y="260.3125" width="199.33333333333331" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="80" y="420.625" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="325.33333333333337" y="420.625" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="570.6666666666667" y="420.625" width="199.33333333333331" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="80" y="580.9375" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="325.33333333333337" y="580.9375" width="199.33333333333334" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/><rect class="bg" x="570.6666666666667" y="580.9375" width="199.33333333333331" height="89.0625" style="fill: rgb(229, 236, 246); fill-opacity: 1; stroke-width: 0;"/></g><g class="layer-below"><g class="imagelayer"/><g class="shapelayer"/></g><g class="cartesianlayer"><g class="subplot xy"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x"/><g class="y"/></g><g class="gridlayer"><g class="x"/><g class="y"><path class="ygrid crisp" transform="translate(0,166.8)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="ygrid crisp" transform="translate(0,144.53)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="ygrid crisp" transform="translate(0,122.27)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="yzl zl crisp" transform="translate(0,189.06)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(80,100)" clip-path="url(#clip0864c8xyplot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M62.66,89.06V84.61H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(128, 221, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V71.25H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(128, 221, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V17.81H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(128, 221, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V8.91H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(128, 221, 255); fill-opacity: 1;"/></g><g class="point"><path d="M115.99,89.06V44.53H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(128, 221, 255); fill-opacity: 1;"/></g><g class="point"><path d="M129.33,89.06V84.61H142.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(128, 221, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="xtick"><text text-anchor="middle" x="0" y="202.0625" transform="translate(129.32,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="xtick"><text text-anchor="middle" x="0" y="202.0625" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(182.66,0)">2</text></g><g class="xtick"><text text-anchor="middle" x="0" y="202.0625" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(235.99,0)">4</text></g></g><g class="yaxislayer-above"><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" transform="translate(0,189.06)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,166.8)">5</text></g><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,144.53)">10</text></g><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,122.27)">15</text></g><g class="ytick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,100)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x2y2"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x2"/><g class="y2"/></g><g class="gridlayer"><g class="x2"/><g class="y2"><path class="y2grid crisp" transform="translate(0,166.8)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y2grid crisp" transform="translate(0,144.53)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y2grid crisp" transform="translate(0,122.27)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y2zl zl crisp" transform="translate(0,189.06)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(325.33333333333337,100)" clip-path="url(#clip0864c8x2y2plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M-4.01,89.06V80.16H9.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M9.32,89.06V75.7H22.65V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M35.99,89.06V71.25H49.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M49.32,89.06V62.34H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V57.89H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V13.36H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V44.53H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g><g class="point"><path d="M129.33,89.06V84.61H142.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(133, 213, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x2tick"><text text-anchor="middle" x="0" y="202.0625" transform="translate(374.65333333333336,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x2tick"><text text-anchor="middle" x="0" y="202.0625" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(427.99333333333334,0)">2</text></g><g class="x2tick"><text text-anchor="middle" x="0" y="202.0625" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(481.3233333333334,0)">4</text></g></g><g class="yaxislayer-above"><g class="y2tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" transform="translate(0,189.06)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y2tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,166.8)">5</text></g><g class="y2tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,144.53)">10</text></g><g class="y2tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,122.27)">15</text></g><g class="y2tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,100)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x3y3"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x3"/><g class="y3"/></g><g class="gridlayer"><g class="x3"/><g class="y3"><path class="y3grid crisp" transform="translate(0,166.8)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y3grid crisp" transform="translate(0,144.53)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y3grid crisp" transform="translate(0,122.27)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y3zl zl crisp" transform="translate(0,189.06)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(570.6666666666667,100)" clip-path="url(#clip0864c8x3y3plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M49.32,89.06V75.7H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(139, 204, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V66.8H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(139, 204, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V66.8H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(139, 204, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V-17.81H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(139, 204, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V31.17H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(139, 204, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x3tick"><text text-anchor="middle" x="0" y="202.0625" transform="translate(619.9866666666668,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x3tick"><text text-anchor="middle" x="0" y="202.0625" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(673.3266666666667,0)">2</text></g><g class="x3tick"><text text-anchor="middle" x="0" y="202.0625" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(726.6566666666668,0)">4</text></g></g><g class="yaxislayer-above"><g class="y3tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" transform="translate(0,189.06)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y3tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,166.8)">5</text></g><g class="y3tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,144.53)">10</text></g><g class="y3tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,122.27)">15</text></g><g class="y3tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,100)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x4y4"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x4"/><g class="y4"/></g><g class="gridlayer"><g class="x4"/><g class="y4"><path class="y4grid crisp" transform="translate(0,327.1125)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y4grid crisp" transform="translate(0,304.8425)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y4grid crisp" transform="translate(0,282.5825)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y4zl zl crisp" transform="translate(0,349.3725)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(80,260.3125)" clip-path="url(#clip0864c8x4y4plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M-4.01,89.06V84.61H9.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M9.32,89.06V80.16H22.65V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M22.65,89.06V80.16H35.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M35.99,89.06V80.16H49.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M49.32,89.06V71.25H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V22.27H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V40.08H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V40.08H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V84.61H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g><g class="point"><path d="M142.66,89.06V84.61H155.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(144, 196, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x4tick"><text text-anchor="middle" x="0" y="362.375" transform="translate(129.32,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x4tick"><text text-anchor="middle" x="0" y="362.375" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(182.66,0)">2</text></g><g class="x4tick"><text text-anchor="middle" x="0" y="362.375" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(235.99,0)">4</text></g></g><g class="yaxislayer-above"><g class="y4tick"><text text-anchor="end" x="79" y="4.199999999999999" transform="translate(0,349.3725)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y4tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,327.1125)">5</text></g><g class="y4tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,304.8425)">10</text></g><g class="y4tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,282.5825)">15</text></g><g class="y4tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,260.3125)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x5y5"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x5"/><g class="y5"/></g><g class="gridlayer"><g class="x5"/><g class="y5"><path class="y5grid crisp" transform="translate(0,327.1125)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y5grid crisp" transform="translate(0,304.8425)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y5grid crisp" transform="translate(0,282.5825)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y5zl zl crisp" transform="translate(0,349.3725)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(325.33333333333337,260.3125)" clip-path="url(#clip0864c8x5y5plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M-4.01,89.06V80.16H9.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M9.32,89.06V75.7H22.65V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M22.65,89.06V84.61H35.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M35.99,89.06V66.8H49.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M49.32,89.06V66.8H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V4.45H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V35.63H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V80.16H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g><g class="point"><path d="M142.66,89.06V84.61H155.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(149, 187, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x5tick"><text text-anchor="middle" x="0" y="362.375" transform="translate(374.65333333333336,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x5tick"><text text-anchor="middle" x="0" y="362.375" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(427.99333333333334,0)">2</text></g><g class="x5tick"><text text-anchor="middle" x="0" y="362.375" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(481.3233333333334,0)">4</text></g></g><g class="yaxislayer-above"><g class="y5tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" transform="translate(0,349.3725)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y5tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,327.1125)">5</text></g><g class="y5tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,304.8425)">10</text></g><g class="y5tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,282.5825)">15</text></g><g class="y5tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,260.3125)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x6y6"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x6"/><g class="y6"/></g><g class="gridlayer"><g class="x6"/><g class="y6"><path class="y6grid crisp" transform="translate(0,327.1125)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y6grid crisp" transform="translate(0,304.8425)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y6grid crisp" transform="translate(0,282.5825)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y6zl zl crisp" transform="translate(0,349.3725)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(570.6666666666667,260.3125)" clip-path="url(#clip0864c8x6y6plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M62.66,89.06V31.17H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(155, 179, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V26.72H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(155, 179, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V57.89H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(155, 179, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V57.89H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(155, 179, 255); fill-opacity: 1;"/></g><g class="point"><path d="M115.99,89.06V62.34H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(155, 179, 255); fill-opacity: 1;"/></g><g class="point"><path d="M129.33,89.06V75.7H142.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(155, 179, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x6tick"><text text-anchor="middle" x="0" y="362.375" transform="translate(619.9866666666668,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x6tick"><text text-anchor="middle" x="0" y="362.375" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(673.3266666666667,0)">2</text></g><g class="x6tick"><text text-anchor="middle" x="0" y="362.375" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(726.6566666666668,0)">4</text></g></g><g class="yaxislayer-above"><g class="y6tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" transform="translate(0,349.3725)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y6tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,327.1125)">5</text></g><g class="y6tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,304.8425)">10</text></g><g class="y6tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,282.5825)">15</text></g><g class="y6tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,260.3125)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x7y7"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x7"/><g class="y7"/></g><g class="gridlayer"><g class="x7"/><g class="y7"><path class="y7grid crisp" transform="translate(0,487.425)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y7grid crisp" transform="translate(0,465.155)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y7grid crisp" transform="translate(0,442.895)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y7zl zl crisp" transform="translate(0,509.685)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(80,420.625)" clip-path="url(#clip0864c8x7y7plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M49.32,89.06V53.44H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V40.08H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V53.44H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V31.17H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V75.7H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g><g class="point"><path d="M115.99,89.06V84.61H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g><g class="point"><path d="M129.33,89.06V75.7H142.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g><g class="point"><path d="M142.66,89.06V75.7H155.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(160, 170, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x7tick"><text text-anchor="middle" x="0" y="522.6875" transform="translate(129.32,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x7tick"><text text-anchor="middle" x="0" y="522.6875" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(182.66,0)">2</text></g><g class="x7tick"><text text-anchor="middle" x="0" y="522.6875" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(235.99,0)">4</text></g></g><g class="yaxislayer-above"><g class="y7tick"><text text-anchor="end" x="79" y="4.199999999999999" transform="translate(0,509.685)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y7tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,487.425)">5</text></g><g class="y7tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,465.155)">10</text></g><g class="y7tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,442.895)">15</text></g><g class="y7tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,420.625)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x8y8"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x8"/><g class="y8"/></g><g class="gridlayer"><g class="x8"/><g class="y8"><path class="y8grid crisp" transform="translate(0,487.425)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y8grid crisp" transform="translate(0,465.155)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y8grid crisp" transform="translate(0,442.895)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y8zl zl crisp" transform="translate(0,509.685)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(325.33333333333337,420.625)" clip-path="url(#clip0864c8x8y8plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M35.99,89.06V75.7H49.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(166, 162, 255); fill-opacity: 1;"/></g><g class="point"><path d="M49.32,89.06V62.34H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(166, 162, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V44.53H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(166, 162, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V57.89H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(166, 162, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V53.44H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(166, 162, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V35.63H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(166, 162, 255); fill-opacity: 1;"/></g><g class="point"><path d="M115.99,89.06V71.25H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(166, 162, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x8tick"><text text-anchor="middle" x="0" y="522.6875" transform="translate(374.65333333333336,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x8tick"><text text-anchor="middle" x="0" y="522.6875" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(427.99333333333334,0)">2</text></g><g class="x8tick"><text text-anchor="middle" x="0" y="522.6875" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(481.3233333333334,0)">4</text></g></g><g class="yaxislayer-above"><g class="y8tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" transform="translate(0,509.685)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y8tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,487.425)">5</text></g><g class="y8tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,465.155)">10</text></g><g class="y8tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,442.895)">15</text></g><g class="y8tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,420.625)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x9y9"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x9"/><g class="y9"/></g><g class="gridlayer"><g class="x9"/><g class="y9"><path class="y9grid crisp" transform="translate(0,487.425)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y9grid crisp" transform="translate(0,465.155)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y9grid crisp" transform="translate(0,442.895)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y9zl zl crisp" transform="translate(0,509.685)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(570.6666666666667,420.625)" clip-path="url(#clip0864c8x9y9plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M62.66,89.06V84.61H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(171, 153, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V80.16H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(171, 153, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V62.34H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(171, 153, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V35.63H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(171, 153, 255); fill-opacity: 1;"/></g><g class="point"><path d="M115.99,89.06V22.27H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(171, 153, 255); fill-opacity: 1;"/></g><g class="point"><path d="M129.33,89.06V57.89H142.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(171, 153, 255); fill-opacity: 1;"/></g><g class="point"><path d="M142.66,89.06V57.89H155.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(171, 153, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x9tick"><text text-anchor="middle" x="0" y="522.6875" transform="translate(619.9866666666668,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x9tick"><text text-anchor="middle" x="0" y="522.6875" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(673.3266666666667,0)">2</text></g><g class="x9tick"><text text-anchor="middle" x="0" y="522.6875" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(726.6566666666668,0)">4</text></g></g><g class="yaxislayer-above"><g class="y9tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" transform="translate(0,509.685)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y9tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,487.425)">5</text></g><g class="y9tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,465.155)">10</text></g><g class="y9tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,442.895)">15</text></g><g class="y9tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,420.625)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x10y10"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x10"/><g class="y10"/></g><g class="gridlayer"><g class="x10"/><g class="y10"><path class="y10grid crisp" transform="translate(0,647.7375)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y10grid crisp" transform="translate(0,625.4675)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y10grid crisp" transform="translate(0,603.2075)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y10zl zl crisp" transform="translate(0,669.9975)" d="M80,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(80,580.9375)" clip-path="url(#clip0864c8x10y10plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M22.65,89.06V84.61H35.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M35.99,89.06V80.16H49.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M49.32,89.06V71.25H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V57.89H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V53.44H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V13.36H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V48.98H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M115.99,89.06V84.61H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M0,0Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g><g class="point"><path d="M196,89.06V84.61H209.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(176, 145, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x10tick"><text text-anchor="middle" x="0" y="683" transform="translate(129.32,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x10tick"><text text-anchor="middle" x="0" y="683" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(182.66,0)">2</text></g><g class="x10tick"><text text-anchor="middle" x="0" y="683" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(235.99,0)">4</text></g></g><g class="yaxislayer-above"><g class="y10tick"><text text-anchor="end" x="79" y="4.199999999999999" transform="translate(0,669.9975)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y10tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,647.7375)">5</text></g><g class="y10tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,625.4675)">10</text></g><g class="y10tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,603.2075)">15</text></g><g class="y10tick"><text text-anchor="end" x="79" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,580.9375)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x11y11"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x11"/><g class="y11"/></g><g class="gridlayer"><g class="x11"/><g class="y11"><path class="y11grid crisp" transform="translate(0,647.7375)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y11grid crisp" transform="translate(0,625.4675)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y11grid crisp" transform="translate(0,603.2075)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y11zl zl crisp" transform="translate(0,669.9975)" d="M325.33333333333337,0h199.33333333333334" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(325.33333333333337,580.9375)" clip-path="url(#clip0864c8x11y11plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M49.32,89.06V44.53H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(182, 136, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V17.81H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(182, 136, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V53.44H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(182, 136, 255); fill-opacity: 1;"/></g><g class="point"><path d="M129.33,89.06V31.17H155.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(182, 136, 255); fill-opacity: 1;"/></g><g class="point"><path d="M155.99,89.06V75.7H182.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(182, 136, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x11tick"><text text-anchor="middle" x="0" y="683" transform="translate(374.65333333333336,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x11tick"><text text-anchor="middle" x="0" y="683" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(427.99333333333334,0)">2</text></g><g class="x11tick"><text text-anchor="middle" x="0" y="683" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(481.3233333333334,0)">4</text></g></g><g class="yaxislayer-above"><g class="y11tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" transform="translate(0,669.9975)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y11tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,647.7375)">5</text></g><g class="y11tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,625.4675)">10</text></g><g class="y11tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,603.2075)">15</text></g><g class="y11tick"><text text-anchor="end" x="324.33333333333337" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,580.9375)">20</text></g></g><g class="overaxes-above"/></g><g class="subplot x12y12"><g class="layer-subplot"><g class="shapelayer"/><g class="imagelayer"/></g><g class="minor-gridlayer"><g class="x12"/><g class="y12"/></g><g class="gridlayer"><g class="x12"/><g class="y12"><path class="y12grid crisp" transform="translate(0,647.7375)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y12grid crisp" transform="translate(0,625.4675)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/><path class="y12grid crisp" transform="translate(0,603.2075)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 1px;"/></g></g><g class="zerolinelayer"><path class="y12zl zl crisp" transform="translate(0,669.9975)" d="M570.6666666666667,0h199.33333333333331" style="stroke: rgb(255, 255, 255); stroke-opacity: 1; stroke-width: 2px;"/></g><g class="layer-between"><g class="shapelayer"/><g class="imagelayer"/></g><path class="xlines-below"/><path class="ylines-below"/><g class="overlines-below"/><g class="xaxislayer-below"/><g class="yaxislayer-below"/><g class="overaxes-below"/><g class="plot" transform="translate(570.6666666666667,580.9375)" clip-path="url(#clip0864c8x12y12plot)"><g class="barlayer mlayer"><g class="trace bars" shape-rendering="crispEdges" style="opacity: 1;"><g class="points"><g class="point"><path d="M49.32,89.06V84.61H62.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g><g class="point"><path d="M62.66,89.06V71.25H75.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g><g class="point"><path d="M75.99,89.06V62.34H89.32V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g><g class="point"><path d="M89.32,89.06V75.7H102.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g><g class="point"><path d="M102.66,89.06V8.91H115.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g><g class="point"><path d="M115.99,89.06V53.44H129.33V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g><g class="point"><path d="M129.33,89.06V62.34H142.66V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g><g class="point"><path d="M142.66,89.06V71.25H155.99V89.06Z" style="vector-effect: none; opacity: 1; stroke-width: 0px; fill: rgb(187, 128, 255); fill-opacity: 1;"/></g></g></g></g></g><g class="overplot"/><path class="xlines-above crisp" d="M0,0" style="fill: none;"/><path class="ylines-above crisp" d="M0,0" style="fill: none;"/><g class="overlines-above"/><g class="xaxislayer-above"><g class="x12tick"><text text-anchor="middle" x="0" y="683" transform="translate(619.9866666666668,0)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="x12tick"><text text-anchor="middle" x="0" y="683" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(673.3266666666667,0)">2</text></g><g class="x12tick"><text text-anchor="middle" x="0" y="683" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(726.6566666666668,0)">4</text></g></g><g class="yaxislayer-above"><g class="y12tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" transform="translate(0,669.9975)" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;">0</text></g><g class="y12tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,647.7375)">5</text></g><g class="y12tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,625.4675)">10</text></g><g class="y12tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,603.2075)">15</text></g><g class="y12tick"><text text-anchor="end" x="569.6666666666667" y="4.199999999999999" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre; opacity: 1;" transform="translate(0,580.9375)">20</text></g></g><g class="overaxes-above"/></g></g><g class="polarlayer"/><g class="smithlayer"/><g class="ternarylayer"/><g class="geolayer"/><g class="funnelarealayer"/><g class="pielayer"/><g class="iciclelayer"/><g class="treemaplayer"/><g class="sunburstlayer"/><g class="glimages"/><defs id="topdefs-0864c8"><g class="clips"/></defs><g class="layer-above"><g class="imagelayer"/><g class="shapelayer"><g class="shape-group" data-index="0" clip-path="url(#clip0864c8x)"><path data-index="0" fill-rule="evenodd" d="M188.55,189.0625L188.55,100" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="1" clip-path="url(#clip0864c8x2)"><path data-index="1" fill-rule="evenodd" d="M405.03333333333336,189.0625L405.03333333333336,100" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="2" clip-path="url(#clip0864c8x3)"><path data-index="2" fill-rule="evenodd" d="M666.4766666666667,189.0625L666.4766666666667,100" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="3" clip-path="url(#clip0864c8x4)"><path data-index="3" fill-rule="evenodd" d="M155.84,349.375L155.84,260.3125" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="4" clip-path="url(#clip0864c8x5)"><path data-index="4" fill-rule="evenodd" d="M394.5133333333334,349.375L394.5133333333334,260.3125" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="5" clip-path="url(#clip0864c8x6)"><path data-index="5" fill-rule="evenodd" d="M657.1766666666667,349.375L657.1766666666667,260.3125" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="6" clip-path="url(#clip0864c8x7)"><path data-index="6" fill-rule="evenodd" d="M165.17000000000002,509.6875L165.17000000000002,420.625" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="7" clip-path="url(#clip0864c8x8)"><path data-index="7" fill-rule="evenodd" d="M412.1233333333334,509.6875L412.1233333333334,420.625" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="8" clip-path="url(#clip0864c8x9)"><path data-index="8" fill-rule="evenodd" d="M690.1166666666668,509.6875L690.1166666666668,420.625" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="9" clip-path="url(#clip0864c8x10y10 domain)"><path data-index="9" fill-rule="evenodd" d="M174.32,670L174.32,580.9375" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="10" clip-path="url(#clip0864c8x11)"><path data-index="10" fill-rule="evenodd" d="M423.4233333333334,670L423.4233333333334,580.9375" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g><g class="shape-group" data-index="11" clip-path="url(#clip0864c8x12)"><path data-index="11" fill-rule="evenodd" d="M682.8466666666668,670L682.8466666666668,580.9375" style="opacity: 1; stroke: rgb(255, 165, 0); stroke-opacity: 1; fill: rgb(0, 0, 0); fill-opacity: 0; stroke-width: 2px;"/></g></g></g><g class="infolayer"><g class="g-gtitle"><text class="gtitle" x="42.5" y="50" text-anchor="start" dy="0em" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 17px; fill: rgb(42, 63, 95); opacity: 1; white-space: pre;">Slope Distribution by Month</text></g><g class="g-xtitle"/><g class="g-x2title"/><g class="g-x3title"/><g class="g-x4title"/><g class="g-x5title"/><g class="g-x6title"/><g class="g-x7title"/><g class="g-x8title"/><g class="g-x9title"/><g class="g-x10title"/><g class="g-x11title"><text class="x11title" x="425.00000000000006" y="709.8" text-anchor="middle" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 14px; fill: rgb(42, 63, 95); opacity: 1; white-space: pre;">Pooled_Slope</text></g><g class="g-x12title"/><g class="g-ytitle"/><g class="g-y2title"/><g class="g-y3title"/><g class="g-y4title"/><g class="g-y5title"/><g class="g-y6title"/><g class="g-y7title"/><g class="g-y8title"/><g class="g-y9title"/><g class="g-y10title"/><g class="g-y11title"/><g class="g-y12title"/><g class="annotation" data-index="0" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,179.66666666666669,88)"><g class="cursor-pointer" transform="translate(164,76)"><rect class="bg" x="0.5" y="0.5" width="30" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.515625" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Jan</text></g></g></g><g class="annotation" data-index="1" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,425,88)"><g class="cursor-pointer" transform="translate(409,76)"><rect class="bg" x="0.5" y="0.5" width="32" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="16.359375" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Feb</text></g></g></g><g class="annotation" data-index="2" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,670.3333333333334,88)"><g class="cursor-pointer" transform="translate(653,76)"><rect class="bg" x="0.5" y="0.5" width="33" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="16.96875" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Mar</text></g></g></g><g class="annotation" data-index="3" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,179.66666666666669,248.3125)"><g class="cursor-pointer" transform="translate(164,236)"><rect class="bg" x="0.5" y="0.5" width="31" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.875" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Apr</text></g></g></g><g class="annotation" data-index="4" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,425,248.3125)"><g class="cursor-pointer" transform="translate(407,236)"><rect class="bg" x="0.5" y="0.5" width="36" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="18.28125" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">May</text></g></g></g><g class="annotation" data-index="5" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,670.3333333333334,248.3125)"><g class="cursor-pointer" transform="translate(654,236)"><rect class="bg" x="0.5" y="0.5" width="31" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.765625" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Jun</text></g></g></g><g class="annotation" data-index="6" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,179.66666666666669,408.625)"><g class="cursor-pointer" transform="translate(167,397)"><rect class="bg" x="0.5" y="0.5" width="25" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="12.90625" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Jul</text></g></g></g><g class="annotation" data-index="7" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,425,408.625)"><g class="cursor-pointer" transform="translate(408,397)"><rect class="bg" x="0.5" y="0.5" width="34" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="17.515625" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Aug</text></g></g></g><g class="annotation" data-index="8" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,670.3333333333334,408.625)"><g class="cursor-pointer" transform="translate(653,397)"><rect class="bg" x="0.5" y="0.5" width="33" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="17.21875" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Sep</text></g></g></g><g class="annotation" data-index="9" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,179.66666666666669,568.9375)"><g class="cursor-pointer" transform="translate(164,557)"><rect class="bg" x="0.5" y="0.5" width="30" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.625" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Oct</text></g></g></g><g class="annotation" data-index="10" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,425,568.9375)"><g class="cursor-pointer" transform="translate(408,557)"><rect class="bg" x="0.5" y="0.5" width="34" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="17.578125" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Nov</text></g></g></g><g class="annotation" data-index="11" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,670.3333333333334,568.9375)"><g class="cursor-pointer" transform="translate(653,557)"><rect class="bg" x="0.5" y="0.5" width="33" height="23" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="17.109375" y="18" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 16px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Dec</text></g></g></g><g class="annotation" data-index="12" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,208.55,108.91)"><g class="cursor-pointer" transform="translate(193,99)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">2.22</text></g></g></g><g class="annotation" data-index="13" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,425.03333333333336,108.91)"><g class="cursor-pointer" transform="translate(410,99)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">1.14</text></g></g></g><g class="annotation" data-index="14" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,686.4766666666667,108.91)"><g class="cursor-pointer" transform="translate(671,99)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">1.74</text></g></g></g><g class="annotation" data-index="15" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,175.85,269.2225)"><g class="cursor-pointer" transform="translate(160,260)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">0.99</text></g></g></g><g class="annotation" data-index="16" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,414.5133333333334,269.2225)"><g class="cursor-pointer" transform="translate(399,260)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">0.74</text></g></g></g><g class="annotation" data-index="17" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,677.1766666666667,269.2225)"><g class="cursor-pointer" transform="translate(662,260)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">1.39</text></g></g></g><g class="annotation" data-index="18" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,185.17000000000002,429.535)"><g class="cursor-pointer" transform="translate(170,420)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">1.34</text></g></g></g><g class="annotation" data-index="19" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,432.1333333333334,429.535)"><g class="cursor-pointer" transform="translate(417,420)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">1.41</text></g></g></g><g class="annotation" data-index="20" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,710.1166666666668,429.535)"><g class="cursor-pointer" transform="translate(695,420)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">2.63</text></g></g></g><g class="annotation" data-index="21" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,194.32,589.8475)"><g class="cursor-pointer" transform="translate(179,580)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">1.69</text></g></g></g><g class="annotation" data-index="22" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,443.4233333333334,589.8475)"><g class="cursor-pointer" transform="translate(428,580)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">1.83</text></g></g></g><g class="annotation" data-index="23" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(0,702.8466666666668,589.8475)"><g class="cursor-pointer" transform="translate(687,580)"><rect class="bg" x="0.5" y="0.5" width="30" height="18" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="15.640625" y="14" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 12px; fill: rgb(255, 165, 0); fill-opacity: 1; white-space: pre;">2.36</text></g></g></g><g class="annotation" data-index="24" style="opacity: 1;"><g class="annotation-text-g" transform="rotate(-90,38.75,385)"><g class="cursor-pointer" transform="translate(0,375)"><rect class="bg" x="0.5" y="0.5" width="76" height="20" style="stroke-width: 1px; stroke: rgb(0, 0, 0); stroke-opacity: 0; fill: rgb(0, 0, 0); fill-opacity: 0;"/><text class="annotation-text" text-anchor="middle" x="38.375" y="16" style="font-family: 'Open Sans', verdana, arial, sans-serif; font-size: 14px; fill: rgb(42, 63, 95); fill-opacity: 1; white-space: pre;">Frequency</text></g></g></g></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 850 750">
+  <!-- Generator: Adobe Illustrator 29.6.1, SVG Export Plug-In . SVG Version: 2.1.1 Build 9)  -->
+  <defs>
+    <style>
+      .st0 {
+        fill: none;
+      }
+
+      .st1 {
+        fill: #b091ff;
+      }
+
+      .st2 {
+        font-size: 16px;
+      }
+
+      .st2, .st3, .st4, .st5, .st6 {
+        font-family: Verdana, Verdana;
+        isolation: isolate;
+      }
+
+      .st2, .st3, .st4, .st6 {
+        fill: #2a3f5f;
+      }
+
+      .st7 {
+        fill: #a0aaff;
+      }
+
+      .st3 {
+        font-size: 14px;
+      }
+
+      .st8 {
+        fill: #bb80ff;
+      }
+
+      .st9, .st10 {
+        stroke-width: 2px;
+      }
+
+      .st9, .st11 {
+        stroke: #fff;
+      }
+
+      .st4 {
+        font-size: 17px;
+      }
+
+      .st12 {
+        fill: #9bb3ff;
+      }
+
+      .st13 {
+        stroke: #000;
+        stroke-opacity: 0;
+      }
+
+      .st13, .st10 {
+        fill-opacity: 0;
+      }
+
+      .st10 {
+        fill-rule: evenodd;
+        stroke: orange;
+      }
+
+      .st14 {
+        fill: #80ddff;
+      }
+
+      .st15 {
+        fill: #b688ff;
+      }
+
+      .st16 {
+        fill: #8bccff;
+      }
+
+      .st17 {
+        clip-path: url(#clippath-17);
+      }
+
+      .st18 {
+        clip-path: url(#clippath-19);
+      }
+
+      .st19 {
+        clip-path: url(#clippath-11);
+      }
+
+      .st20 {
+        clip-path: url(#clippath-16);
+      }
+
+      .st21 {
+        clip-path: url(#clippath-18);
+      }
+
+      .st22 {
+        clip-path: url(#clippath-10);
+      }
+
+      .st23 {
+        clip-path: url(#clippath-15);
+      }
+
+      .st24 {
+        clip-path: url(#clippath-13);
+      }
+
+      .st25 {
+        clip-path: url(#clippath-14);
+      }
+
+      .st26 {
+        clip-path: url(#clippath-12);
+      }
+
+      .st27 {
+        clip-path: url(#clippath-20);
+      }
+
+      .st28 {
+        clip-path: url(#clippath-21);
+      }
+
+      .st29 {
+        clip-path: url(#clippath-22);
+      }
+
+      .st30 {
+        fill: #95bbff;
+      }
+
+      .st31 {
+        clip-path: url(#clippath-1);
+      }
+
+      .st32 {
+        clip-path: url(#clippath-3);
+      }
+
+      .st33 {
+        clip-path: url(#clippath-4);
+      }
+
+      .st34 {
+        clip-path: url(#clippath-2);
+      }
+
+      .st35 {
+        clip-path: url(#clippath-7);
+      }
+
+      .st36 {
+        clip-path: url(#clippath-6);
+      }
+
+      .st37 {
+        clip-path: url(#clippath-9);
+      }
+
+      .st38 {
+        clip-path: url(#clippath-8);
+      }
+
+      .st39 {
+        clip-path: url(#clippath-5);
+      }
+
+      .st40 {
+        fill: #ab99ff;
+      }
+
+      .st41 {
+        fill: #fff;
+      }
+
+      .st5 {
+        fill: orange;
+      }
+
+      .st5, .st6 {
+        font-size: 12px;
+      }
+
+      .st42 {
+        fill: #a6a2ff;
+      }
+
+      .st43 {
+        fill: #90c4ff;
+      }
+
+      .st44 {
+        fill: #85d5ff;
+      }
+
+      .st45 {
+        fill: #e5ecf6;
+      }
+
+      .st46 {
+        clip-path: url(#clippath);
+      }
+    </style>
+    <clipPath id="clippath">
+      <rect class="st0" x="80" y="100" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-1">
+      <rect class="st0" x="325.33" y="100" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-2">
+      <rect class="st0" x="570.67" y="100" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-3">
+      <rect class="st0" x="80" y="260.31" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-4">
+      <rect class="st0" x="325.33" y="260.31" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-5">
+      <rect class="st0" x="570.67" y="260.31" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-6">
+      <rect class="st0" x="80" y="420.62" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-7">
+      <rect class="st0" x="325.33" y="420.62" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-8">
+      <rect class="st0" x="570.67" y="420.62" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-9">
+      <rect class="st0" x="80" y="580.94" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-10">
+      <rect class="st0" x="325.33" y="580.94" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-11">
+      <rect class="st0" x="570.67" y="580.94" width="199.33" height="89.06"/>
+    </clipPath>
+    <clipPath id="clippath-12">
+      <rect class="st0" x="80" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-13">
+      <rect class="st0" x="325.33" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-14">
+      <rect class="st0" x="570.67" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-15">
+      <rect class="st0" x="80" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-16">
+      <rect class="st0" x="325.33" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-17">
+      <rect class="st0" x="570.67" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-18">
+      <rect class="st0" x="80" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-19">
+      <rect class="st0" x="325.33" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-20">
+      <rect class="st0" x="570.67" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-21">
+      <rect class="st0" x="325.33" width="199.33" height="750"/>
+    </clipPath>
+    <clipPath id="clippath-22">
+      <rect class="st0" x="570.67" width="199.33" height="750"/>
+    </clipPath>
+  </defs>
+  <rect class="st41" width="850" height="750"/>
+  <g>
+    <rect class="st45" x="80" y="100" width="199.33" height="89.06"/>
+    <rect class="st45" x="325.33" y="100" width="199.33" height="89.06"/>
+    <rect class="st45" x="570.67" y="100" width="199.33" height="89.06"/>
+    <rect class="st45" x="80" y="260.31" width="199.33" height="89.06"/>
+    <rect class="st45" x="325.33" y="260.31" width="199.33" height="89.06"/>
+    <rect class="st45" x="570.67" y="260.31" width="199.33" height="89.06"/>
+    <rect class="st45" x="80" y="420.62" width="199.33" height="89.06"/>
+    <rect class="st45" x="325.33" y="420.62" width="199.33" height="89.06"/>
+    <rect class="st45" x="570.67" y="420.62" width="199.33" height="89.06"/>
+    <rect class="st45" x="80" y="580.94" width="199.33" height="89.06"/>
+    <rect class="st45" x="325.33" y="580.94" width="199.33" height="89.06"/>
+    <rect class="st45" x="570.67" y="580.94" width="199.33" height="89.06"/>
+  </g>
+  <g>
+    <g>
+      <g>
+        <path class="st11" d="M80,166.8h199.33"/>
+        <path class="st11" d="M80,144.53h199.33"/>
+        <path class="st11" d="M80,122.27h199.33"/>
+      </g>
+      <path class="st9" d="M80,189.06h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st46">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st14" d="M142.66,189.06v-4.45h13.33v4.45h-13.33Z"/>
+            <path class="st14" d="M155.99,189.06v-17.81h13.33v17.81h-13.33Z"/>
+            <path class="st14" d="M169.32,189.06v-71.25h13.34v71.25h-13.34Z"/>
+            <path class="st14" d="M182.66,189.06v-80.15h13.33v80.15h-13.33Z"/>
+            <path class="st14" d="M195.99,189.06v-44.53h13.34v44.53h-13.34Z"/>
+            <path class="st14" d="M209.33,189.06v-4.45h13.33v4.45h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(125.51 202.06)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(178.85 202.06)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(232.18 202.06)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(71.37 193.26)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(71.37 171)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(63.74 148.73)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(63.74 126.47)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(63.74 104.2)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M325.33,166.8h199.33"/>
+        <path class="st11" d="M325.33,144.53h199.33"/>
+        <path class="st11" d="M325.33,122.27h199.33"/>
+      </g>
+      <path class="st9" d="M325.33,189.06h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st31">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st44" d="M321.32,189.06v-8.9h13.33v8.9h-13.33Z"/>
+            <path class="st44" d="M334.65,189.06v-13.36h13.33v13.36h-13.33Z"/>
+            <path class="st44" d="M325.33,100"/>
+            <path class="st44" d="M361.32,189.06v-17.81h13.33v17.81h-13.33Z"/>
+            <path class="st44" d="M374.65,189.06v-26.72h13.34v26.72h-13.34Z"/>
+            <path class="st44" d="M387.99,189.06v-31.17h13.33v31.17h-13.33Z"/>
+            <path class="st44" d="M401.32,189.06v-75.7h13.33v75.7h-13.33Z"/>
+            <path class="st44" d="M414.65,189.06v-44.53h13.34v44.53h-13.34Z"/>
+            <path class="st44" d="M325.33,100"/>
+            <path class="st44" d="M325.33,100"/>
+            <path class="st44" d="M454.66,189.06v-4.45h13.33v4.45h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(370.84 202.06)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(424.18 202.06)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(477.51 202.06)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(316.7 193.26)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(316.7 171)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(309.08 148.73)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(309.08 126.47)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(309.08 104.2)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M570.67,166.8h199.33"/>
+        <path class="st11" d="M570.67,144.53h199.33"/>
+        <path class="st11" d="M570.67,122.27h199.33"/>
+      </g>
+      <path class="st9" d="M570.67,189.06h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st34">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st16" d="M619.99,189.06v-13.36h13.34v13.36h-13.34Z"/>
+            <path class="st16" d="M633.33,189.06v-22.26h13.33v22.26h-13.33Z"/>
+            <path class="st16" d="M646.66,189.06v-22.26h13.33v22.26h-13.33Z"/>
+            <path class="st16" d="M659.99,189.06v-106.87h13.34v106.87h-13.34Z"/>
+            <path class="st16" d="M673.33,189.06v-57.89h13.33v57.89h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(616.17 202.06)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(669.51 202.06)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(722.84 202.06)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(562.04 193.26)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(562.04 171)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(554.41 148.73)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(554.41 126.47)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(554.41 104.2)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M80,327.11h199.33"/>
+        <path class="st11" d="M80,304.84h199.33"/>
+        <path class="st11" d="M80,282.58h199.33"/>
+      </g>
+      <path class="st9" d="M80,349.37h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st32">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st43" d="M75.99,349.37v-4.45h13.33v4.45h-13.33Z"/>
+            <path class="st43" d="M89.32,349.37v-8.9h13.33v8.9h-13.33Z"/>
+            <path class="st43" d="M102.65,349.37v-8.9h13.34v8.9h-13.34Z"/>
+            <path class="st43" d="M115.99,349.37v-8.9h13.33v8.9h-13.33Z"/>
+            <path class="st43" d="M129.32,349.37v-17.81h13.34v17.81h-13.34Z"/>
+            <path class="st43" d="M142.66,349.37v-66.79h13.33v66.79h-13.33Z"/>
+            <path class="st43" d="M155.99,349.37v-48.98h13.33v48.98h-13.33Z"/>
+            <path class="st43" d="M169.32,349.37v-48.98h13.34v48.98h-13.34Z"/>
+            <path class="st43" d="M182.66,349.37v-4.45h13.33v4.45h-13.33Z"/>
+            <path class="st43" d="M80,260.31"/>
+            <path class="st43" d="M80,260.31"/>
+            <path class="st43" d="M222.66,349.37v-4.45h13.33v4.45h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(125.51 362.38)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(178.85 362.38)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(232.18 362.38)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(71.37 353.57)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(71.37 331.31)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(63.74 309.04)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(63.74 286.78)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(63.74 264.51)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M325.33,327.11h199.33"/>
+        <path class="st11" d="M325.33,304.84h199.33"/>
+        <path class="st11" d="M325.33,282.58h199.33"/>
+      </g>
+      <path class="st9" d="M325.33,349.37h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st33">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st30" d="M321.32,349.37v-8.9h13.33v8.9h-13.33Z"/>
+            <path class="st30" d="M334.65,349.37v-13.36h13.33v13.36h-13.33Z"/>
+            <path class="st30" d="M347.98,349.37v-4.45h13.34v4.45h-13.34Z"/>
+            <path class="st30" d="M361.32,349.37v-22.26h13.33v22.26h-13.33Z"/>
+            <path class="st30" d="M374.65,349.37v-22.26h13.34v22.26h-13.34Z"/>
+            <path class="st30" d="M387.99,349.37v-84.61h13.33v84.61h-13.33Z"/>
+            <path class="st30" d="M401.32,349.37v-53.43h13.33v53.43h-13.33Z"/>
+            <path class="st30" d="M414.65,349.37v-8.9h13.34v8.9h-13.34Z"/>
+            <path class="st30" d="M325.33,260.31"/>
+            <path class="st30" d="M325.33,260.31"/>
+            <path class="st30" d="M325.33,260.31"/>
+            <path class="st30" d="M467.99,349.37v-4.45h13.33v4.45h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(370.84 362.38)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(424.18 362.38)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(477.51 362.38)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(316.7 353.57)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(316.7 331.31)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(309.08 309.04)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(309.08 286.78)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(309.08 264.51)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M570.67,327.11h199.33"/>
+        <path class="st11" d="M570.67,304.84h199.33"/>
+        <path class="st11" d="M570.67,282.58h199.33"/>
+      </g>
+      <path class="st9" d="M570.67,349.37h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st39">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st12" d="M633.33,349.37v-57.89h13.33v57.89h-13.33Z"/>
+            <path class="st12" d="M646.66,349.37v-62.34h13.33v62.34h-13.33Z"/>
+            <path class="st12" d="M659.99,349.37v-31.17h13.34v31.17h-13.34Z"/>
+            <path class="st12" d="M673.33,349.37v-31.17h13.33v31.17h-13.33Z"/>
+            <path class="st12" d="M686.66,349.37v-26.72h13.34v26.72h-13.34Z"/>
+            <path class="st12" d="M700,349.37v-13.36h13.33v13.36h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(616.17 362.38)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(669.51 362.38)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(722.84 362.38)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(562.04 353.57)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(562.04 331.31)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(554.41 309.04)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(554.41 286.78)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(554.41 264.51)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M80,487.42h199.33"/>
+        <path class="st11" d="M80,465.16h199.33"/>
+        <path class="st11" d="M80,442.9h199.33"/>
+      </g>
+      <path class="st9" d="M80,509.68h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st36">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st7" d="M129.32,509.68v-35.62h13.34v35.62h-13.34Z"/>
+            <path class="st7" d="M142.66,509.68v-48.98h13.33v48.98h-13.33Z"/>
+            <path class="st7" d="M155.99,509.68v-35.62h13.33v35.62h-13.33Z"/>
+            <path class="st7" d="M169.32,509.68v-57.89h13.34v57.89h-13.34Z"/>
+            <path class="st7" d="M182.66,509.68v-13.36h13.33v13.36h-13.33Z"/>
+            <path class="st7" d="M195.99,509.68v-4.45h13.34v4.45h-13.34Z"/>
+            <path class="st7" d="M209.33,509.68v-13.36h13.33v13.36h-13.33Z"/>
+            <path class="st7" d="M222.66,509.68v-13.36h13.33v13.36h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(125.51 522.69)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(178.85 522.69)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(232.18 522.69)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(71.37 513.89)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(71.37 491.62)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(63.74 469.36)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(63.74 447.1)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(63.74 424.83)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M325.33,487.42h199.33"/>
+        <path class="st11" d="M325.33,465.16h199.33"/>
+        <path class="st11" d="M325.33,442.9h199.33"/>
+      </g>
+      <path class="st9" d="M325.33,509.68h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st35">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st42" d="M361.32,509.68v-13.36h13.33v13.36h-13.33Z"/>
+            <path class="st42" d="M374.65,509.68v-26.72h13.34v26.72h-13.34Z"/>
+            <path class="st42" d="M387.99,509.68v-44.53h13.33v44.53h-13.33Z"/>
+            <path class="st42" d="M401.32,509.68v-31.17h13.33v31.17h-13.33Z"/>
+            <path class="st42" d="M414.65,509.68v-35.62h13.34v35.62h-13.34Z"/>
+            <path class="st42" d="M427.99,509.68v-53.43h13.33v53.43h-13.33Z"/>
+            <path class="st42" d="M441.32,509.68v-17.81h13.34v17.81h-13.34Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(370.84 522.69)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(424.18 522.69)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(477.51 522.69)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(316.7 513.89)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(316.7 491.62)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(309.08 469.36)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(309.08 447.1)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(309.08 424.83)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M570.67,487.42h199.33"/>
+        <path class="st11" d="M570.67,465.16h199.33"/>
+        <path class="st11" d="M570.67,442.9h199.33"/>
+      </g>
+      <path class="st9" d="M570.67,509.68h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st38">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st40" d="M633.33,509.68v-4.45h13.33v4.45h-13.33Z"/>
+            <path class="st40" d="M646.66,509.68v-8.9h13.33v8.9h-13.33Z"/>
+            <path class="st40" d="M659.99,509.68v-26.72h13.34v26.72h-13.34Z"/>
+            <path class="st40" d="M673.33,509.68v-53.43h13.33v53.43h-13.33Z"/>
+            <path class="st40" d="M686.66,509.68v-66.79h13.34v66.79h-13.34Z"/>
+            <path class="st40" d="M700,509.68v-31.17h13.33v31.17h-13.33Z"/>
+            <path class="st40" d="M713.33,509.68v-31.17h13.33v31.17h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(616.17 522.69)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(669.51 522.69)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(722.84 522.69)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(562.04 513.89)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(562.04 491.62)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(554.41 469.36)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(554.41 447.1)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(554.41 424.83)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M80,647.74h199.33"/>
+        <path class="st11" d="M80,625.47h199.33"/>
+        <path class="st11" d="M80,603.21h199.33"/>
+      </g>
+      <path class="st9" d="M80,670h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st37">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st1" d="M102.65,670v-4.45h13.34v4.45h-13.34Z"/>
+            <path class="st1" d="M115.99,670v-8.9h13.33v8.9h-13.33Z"/>
+            <path class="st1" d="M129.32,670v-17.81h13.34v17.81h-13.34Z"/>
+            <path class="st1" d="M142.66,670v-31.17h13.33v31.17h-13.33Z"/>
+            <path class="st1" d="M155.99,670v-35.62h13.33v35.62h-13.33Z"/>
+            <path class="st1" d="M169.32,670v-75.7h13.34v75.7h-13.34Z"/>
+            <path class="st1" d="M182.66,670v-40.08h13.33v40.08h-13.33Z"/>
+            <path class="st1" d="M195.99,670v-4.45h13.34v4.45h-13.34Z"/>
+            <path class="st1" d="M80,580.94"/>
+            <path class="st1" d="M80,580.94"/>
+            <path class="st1" d="M80,580.94"/>
+            <path class="st1" d="M80,580.94"/>
+            <path class="st1" d="M80,580.94"/>
+            <path class="st1" d="M276,670v-4.45h13.33v4.45h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(125.51 683)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(178.85 683)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(232.18 683)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(71.37 674.2)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(71.37 651.94)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(63.74 629.67)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(63.74 607.41)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(63.74 585.14)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M325.33,647.74h199.33"/>
+        <path class="st11" d="M325.33,625.47h199.33"/>
+        <path class="st11" d="M325.33,603.21h199.33"/>
+      </g>
+      <path class="st9" d="M325.33,670h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st22">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st15" d="M374.65,670v-44.53h26.67v44.53h-26.67Z"/>
+            <path class="st15" d="M401.32,670v-71.25h26.67v71.25h-26.67Z"/>
+            <path class="st15" d="M427.99,670v-35.62h26.67v35.62h-26.67Z"/>
+            <path class="st15" d="M454.66,670v-57.89h26.66v57.89h-26.66Z"/>
+            <path class="st15" d="M481.32,670v-13.36h26.67v13.36h-26.67Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(370.84 683)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(424.18 683)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(477.51 683)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(316.7 674.2)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(316.7 651.94)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(309.08 629.67)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(309.08 607.41)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(309.08 585.14)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+    <g>
+      <g>
+        <path class="st11" d="M570.67,647.74h199.33"/>
+        <path class="st11" d="M570.67,625.47h199.33"/>
+        <path class="st11" d="M570.67,603.21h199.33"/>
+      </g>
+      <path class="st9" d="M570.67,670h199.33"/>
+      <path class="st9" d="M0,0"/>
+      <path class="st9" d="M0,0"/>
+      <g class="st19">
+        <g shape-rendering="crispEdges">
+          <g>
+            <path class="st8" d="M619.99,670v-4.45h13.34v4.45h-13.34Z"/>
+            <path class="st8" d="M633.33,670v-17.81h13.33v17.81h-13.33Z"/>
+            <path class="st8" d="M646.66,670v-26.72h13.33v26.72h-13.33Z"/>
+            <path class="st8" d="M659.99,670v-13.36h13.34v13.36h-13.34Z"/>
+            <path class="st8" d="M673.33,670v-80.15h13.33v80.15h-13.33Z"/>
+            <path class="st8" d="M686.66,670v-35.62h13.34v35.62h-13.34Z"/>
+            <path class="st8" d="M700,670v-26.72h13.33v26.72h-13.33Z"/>
+            <path class="st8" d="M713.33,670v-17.81h13.33v17.81h-13.33Z"/>
+          </g>
+        </g>
+      </g>
+      <path class="st0" d="M0,0"/>
+      <path class="st0" d="M0,0"/>
+      <g>
+        <text class="st6" transform="translate(616.17 683)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(669.51 683)"><tspan x="0" y="0">2</tspan></text>
+        <text class="st6" transform="translate(722.84 683)"><tspan x="0" y="0">4</tspan></text>
+      </g>
+      <g>
+        <text class="st6" transform="translate(562.04 674.2)"><tspan x="0" y="0">0</tspan></text>
+        <text class="st6" transform="translate(562.04 651.94)"><tspan x="0" y="0">5</tspan></text>
+        <text class="st6" transform="translate(554.41 629.67)"><tspan x="0" y="0">10</tspan></text>
+        <text class="st6" transform="translate(554.41 607.41)"><tspan x="0" y="0">15</tspan></text>
+        <text class="st6" transform="translate(554.41 585.14)"><tspan x="0" y="0">20</tspan></text>
+      </g>
+    </g>
+  </g>
+  <g>
+    <g class="st26">
+      <path class="st10" d="M188.55,189.06v-89.06"/>
+    </g>
+    <g class="st24">
+      <path class="st10" d="M405.03,189.06v-89.06"/>
+    </g>
+    <g class="st25">
+      <path class="st10" d="M666.48,189.06v-89.06"/>
+    </g>
+    <g class="st23">
+      <path class="st10" d="M155.84,349.38v-89.06"/>
+    </g>
+    <g class="st20">
+      <path class="st10" d="M394.51,349.38v-89.06"/>
+    </g>
+    <g class="st17">
+      <path class="st10" d="M657.18,349.38v-89.06"/>
+    </g>
+    <g class="st21">
+      <path class="st10" d="M165.17,509.69v-89.06"/>
+    </g>
+    <g class="st18">
+      <path class="st10" d="M412.12,509.69v-89.06"/>
+    </g>
+    <g class="st27">
+      <path class="st10" d="M690.12,509.69v-89.06"/>
+    </g>
+    <path class="st10" d="M174.32,670v-89.06"/>
+    <g class="st28">
+      <path class="st10" d="M423.42,670v-89.06"/>
+    </g>
+    <g class="st29">
+      <path class="st10" d="M682.85,670v-89.06"/>
+    </g>
+  </g>
+  <g>
+    <text class="st4" transform="translate(42.5 50)"><tspan x="0" y="0">Trend Distribution by Month</tspan></text>
+    <text class="st3" transform="translate(378.06 709.8)"><tspan x="0" y="0">Pooled_Slope</tspan></text>
+    <g>
+      <rect class="st13" x="164.5" y="76.5" width="30" height="23"/>
+      <text class="st2" transform="translate(166.01 94)"><tspan x="0" y="0">Jan</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="409.5" y="76.5" width="32" height="23"/>
+      <text class="st2" transform="translate(411.21 94)"><tspan x="0" y="0">Feb</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="653.5" y="76.5" width="33" height="23"/>
+      <text class="st2" transform="translate(655.01 94)"><tspan x="0" y="0">Mar</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="164.5" y="236.5" width="31" height="23"/>
+      <text class="st2" transform="translate(166.01 254)"><tspan x="0" y="0">Apr</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="407.5" y="236.5" width="36" height="23"/>
+      <text class="st2" transform="translate(409.06 254)"><tspan x="0" y="0">May</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="654.5" y="236.5" width="31" height="23"/>
+      <text class="st2" transform="translate(656 254)"><tspan x="0" y="0">Jun</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="167.5" y="397.5" width="25" height="23"/>
+      <text class="st2" transform="translate(169.01 415)"><tspan x="0" y="0">Jul</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="408.5" y="397.5" width="34" height="23"/>
+      <text class="st2" transform="translate(410.04 415)"><tspan x="0" y="0">Aug</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="653.5" y="397.5" width="33" height="23"/>
+      <text class="st2" transform="translate(655 415)"><tspan x="0" y="0">Sep</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="164.5" y="557.5" width="30" height="23"/>
+      <text class="st2" transform="translate(166.01 575)"><tspan x="0" y="0">Oct</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="408.5" y="557.5" width="34" height="23"/>
+      <text class="st2" transform="translate(410.06 575)"><tspan x="0" y="0">Nov</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="653.5" y="557.5" width="33" height="23"/>
+      <text class="st2" transform="translate(655.01 575)"><tspan x="0" y="0">Dec</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="193.5" y="99.5" width="30" height="18"/>
+      <text class="st5" transform="translate(195.01 113)"><tspan x="0" y="0">2.22</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="410.5" y="99.5" width="30" height="18"/>
+      <text class="st5" transform="translate(412.01 113)"><tspan x="0" y="0">1.14</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="671.5" y="99.5" width="30" height="18"/>
+      <text class="st5" transform="translate(673.01 113)"><tspan x="0" y="0">1.74</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="160.5" y="260.5" width="30" height="18"/>
+      <text class="st5" transform="translate(162.01 274)"><tspan x="0" y="0">0.99</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="399.5" y="260.5" width="30" height="18"/>
+      <text class="st5" transform="translate(401.01 274)"><tspan x="0" y="0">0.74</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="662.5" y="260.5" width="30" height="18"/>
+      <text class="st5" transform="translate(664.01 274)"><tspan x="0" y="0">1.39</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="170.5" y="420.5" width="30" height="18"/>
+      <text class="st5" transform="translate(172.01 434)"><tspan x="0" y="0">1.34</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="417.5" y="420.5" width="30" height="18"/>
+      <text class="st5" transform="translate(419.01 434)"><tspan x="0" y="0">1.41</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="695.5" y="420.5" width="30" height="18"/>
+      <text class="st5" transform="translate(697.01 434)"><tspan x="0" y="0">2.63</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="179.5" y="580.5" width="30" height="18"/>
+      <text class="st5" transform="translate(181.01 594)"><tspan x="0" y="0">1.69</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="428.5" y="580.5" width="30" height="18"/>
+      <text class="st5" transform="translate(430.01 594)"><tspan x="0" y="0">1.83</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="687.5" y="580.5" width="30" height="18"/>
+      <text class="st5" transform="translate(689.01 594)"><tspan x="0" y="0">2.36</tspan></text>
+    </g>
+    <g>
+      <rect class="st13" x="29.25" y="347.25" width="20" height="76"/>
+      <text class="st3" transform="translate(44.75 421.74) rotate(-90)"><tspan x="0" y="0">Frequency</tspan></text>
+    </g>
+  </g>
+</svg>

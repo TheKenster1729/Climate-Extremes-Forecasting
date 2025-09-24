@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 import plotly.graph_objects as go
-import json
 import plotly.express as px
 from scipy.stats import norm
 import pandas as pd
@@ -12,24 +11,34 @@ from plotly.subplots import make_subplots
 from typing import Optional, Tuple, Dict
 from plotly.colors import n_colors, hex_to_rgb
 import pymannkendall as mk
-import os
-from pathlib import Path
-from datetime import datetime
+from scipy.stats import pearsonr
 
 class AppFunctionsforPooledData:
     def __init__(self, scenario, var = "T2MMAX", end_year = 2050):
         self.scenario = scenario
         self.var = var
         self.end_year = end_year
-        self.data = pd.read_csv(r"full_processed_data.csv")
+        
+        # Load appropriate data file based on variable
+        if var == "T2MMAX":
+            self.data = pd.read_csv(r"full_processed_data_t2mmax.csv")
+            self.regression_results = pd.read_csv(r"Regression Results/pooled_bootstrap_results_t2mmax.csv")
+            self.uncertainty_intervals = pd.read_csv(r"Regression Results/uncertainty_intervals_t2mmax.csv")
+        elif var == "T2MMEAN":
+            self.data = pd.read_csv(r"full_processed_data_t2mmean.csv")
+            self.regression_results = pd.read_csv(r"Regression Results/pooled_bootstrap_results_t2mmean.csv")
+            self.uncertainty_intervals = pd.read_csv(r"Regression Results/uncertainty_intervals_t2mmean_percentiles.csv")
+        elif var == "T2MMIN":
+            self.data = pd.read_csv(r"full_processed_data_t2mmin.csv")
+            self.regression_results = pd.read_csv(r"Regression Results/pooled_bootstrap_results_t2mmin.csv")
+            self.uncertainty_intervals = pd.read_csv(r"Regression Results/uncertainty_intervals_t2mmin_percentiles.csv")
+        else:
+            raise ValueError(f"Unsupported variable: {var}. Use T2MMAX, T2MMEAN, or T2MMIN.")
+        
         self.regression_years = self.data.Year.unique()
         # global data is the same for all months, so we can use any month to get the global mean temp
         self.era5_global_mean_temp = self.data[(self.data["Year"].isin(self.regression_years)) & (self.data["Dataset"] == "era5") & (self.data["Month"] == "Jan")]["Global_Temp"].mean()
         self.merra2_global_mean_temp = self.data[(self.data["Year"].isin(self.regression_years)) & (self.data["Dataset"] == "merra2") & (self.data["Month"] == "Jan")]["Global_Temp"].mean()
-
-        self.regression_results = pd.read_csv(r"Regression Results/pooled_bootstrap_results.csv")
-        # Use the old format uncertainty intervals file for now
-        self.uncertainty_intervals = pd.read_csv(r"Regression Results/uncertainty_intervals.csv")
 
     def get_merra2_historical_data(self, region):
         m2_data = self.data[(self.data["Dataset"] == "merra2") & (self.data["Region"] == region)]
@@ -52,15 +61,6 @@ class AppFunctionsforPooledData:
 
     def _get_bootstrap_coeffs(self, region: str, month: str) -> Tuple[np.ndarray, np.ndarray, float]:
         """Get bootstrap coefficients and residual std for region/month."""
-        try:
-            boot = pd.read_csv(r"Regression Results/uncertainty_intervals_with_prediction_bands.csv")
-            sub = boot[(boot["state"] == region) & (boot["month"] == month)]
-            if not sub.empty:
-                return sub["intercept"].values, sub["slope"].values, sub["resid_std"].iloc[0]
-        except Exception:
-            pass
-
-        # Fallback to percentile approximation
         qi = self.uncertainty_intervals[(self.uncertainty_intervals["Region"] == region) & 
                                        (self.uncertainty_intervals["Month"] == month)]
         if not qi.empty:
@@ -166,9 +166,20 @@ class AppFunctionsforPooledData:
     def make_by_temp_plot(self, region):
         # Use PlotlySlopeMap for historical data and regression
         try:
-            coeff_df = pd.read_csv(r"Regression Results/uncertainty_intervals_with_prediction_bands.csv")
+            # Use variable-specific prediction bands file
+            if self.var == "T2MMAX":
+                prediction_bands_file = r"Regression Results/uncertainty_intervals_with_prediction_bands_t2mmax.csv"
+            elif self.var == "T2MMEAN":
+                prediction_bands_file = r"Regression Results/uncertainty_intervals_with_prediction_bands_t2mmean.csv"
+            elif self.var == "T2MMIN":
+                prediction_bands_file = r"Regression Results/uncertainty_intervals_with_prediction_bands_t2mmin.csv"
+            else:
+                # Fallback to old naming convention
+                prediction_bands_file = r"Regression Results/uncertainty_intervals_with_prediction_bands.csv"
+            
+            coeff_df = pd.read_csv(prediction_bands_file)
             slope_map = PlotlySlopeMap(coeff_df=coeff_df, hist_df=self.data)
-            fig = slope_map.create_prediction_grid(state=region)
+            fig = slope_map.create_combined_grid(state=region)
         except Exception:
             # Fallback to manual plotting if PlotlySlopeMap fails
             months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
@@ -210,8 +221,8 @@ class AppFunctionsforPooledData:
                                          scenario_names[self.scenario], row, col)
         
         fig.update_layout(
-            title=f"Historical Data and Future Projections: {region}",
-            height=800, width=1200
+            title=f"Historical Data and Future Projections by Global Temperature: {region}",
+            height=800, width=1200,
         )
         
         return fig
@@ -261,8 +272,31 @@ class AppFunctionsforPooledData:
                                               scenario_names[self.scenario], row, col)
         
         fig.update_layout(
-            title=f"Historical Data and Future Projections by Year: {region}",
-            height=800, width=1200
+            template="simple_white",  # White background
+            title=dict(text=f"Historical Data and Future Projections by Year: {region}", 
+                       ),
+            height=800, width=1200,  # 400-100, 900-100
+            margin=dict(l=60, r=60, t=60, b=80),  # Add margins to prevent cutoff
+        )
+        
+        # Add shared axis labels in the middle of the entire plot area
+        fig.add_annotation(
+            text="Year",
+            xref="paper", yref="paper",
+            x=0.5, y=-0.08,  # Middle of plot area, below subplots
+            showarrow=False,
+            font=dict(size=14, color="black"),  # Smaller font for smaller plot
+            xanchor="center"
+        )
+        
+        fig.add_annotation(
+            text="Regional Temperature (°C)",
+            xref="paper", yref="paper",
+            x=-0.04, y=0.5,  # Left of plot area, middle height
+            showarrow=False,
+            font=dict(size=14, color="black"),  # Smaller font for smaller plot
+            textangle=-90,  # Rotate 90 degrees
+            xanchor="center", yanchor="middle"
         )
         
         return fig
@@ -343,10 +377,14 @@ class AppFunctionsforPooledData:
         year_fig = self.make_by_year_plot(region = region)
         return temp_fig, year_fig
 
-    def pregenerate_all_plots(self, output_dir="static_plots"):
+    def pregenerate_all_plots(self, output_dir="static_plots", variables=None):
         """
-        Pre-generate all state/scenario combinations as static HTML files for webapp.
+        Pre-generate state/scenario/variable combinations as static HTML files for webapp.
         This minimizes compute time and enables ~1s loading.
+        
+        Args:
+            output_dir: Directory to save plots
+            variables: List of variables to generate. If None, generates for all available variables.
         """
         import os
         from pathlib import Path
@@ -361,16 +399,24 @@ class AppFunctionsforPooledData:
         states = self.data["Region"].unique()
         scenarios = ["aa", "ct"]
         
+        # Use specified variables or default to all
+        if variables is None:
+            variables = ["T2MMAX", "T2MMEAN", "T2MMIN"]
+        
+        var_folders = {"T2MMAX": "Max", "T2MMEAN": "Mean", "T2MMIN": "Min"}
+        
         # Track generation metadata
         metadata = {
             "generated_at": datetime.now().isoformat(),
-            "total_plots": len(states) * len(scenarios) * 2,  # 2 plot types per state/scenario
+            "total_plots": len(states) * len(scenarios) * len(variables) * 2,  # 2 plot types per state/scenario/variable
             "states": states.tolist(),
             "scenarios": scenarios,
+            "variables": variables,
             "plot_types": ["temp", "year"]
         }
         
-        print(f"Pre-generating {metadata['total_plots']} plots for {len(states)} states...")
+        print(f"Pre-generating {metadata['total_plots']} plots for {len(states)} states × {len(scenarios)} scenarios × {len(variables)} variables...")
+        print(f"Variables to generate: {', '.join(variables)}")
         
         # Generate plots for each combination
         for i, state in enumerate(states):
@@ -381,31 +427,34 @@ class AppFunctionsforPooledData:
                 scenario_dir = base_path / scenario
                 scenario_dir.mkdir(exist_ok=True)
                 
-                try:
-                    # Create instance for this scenario
-                    app_instance = AppFunctionsforPooledData(scenario=scenario)
+                for variable in variables:
+                    # Create variable-specific subdirectory
+                    var_dir = scenario_dir / var_folders[variable]
+                    var_dir.mkdir(exist_ok=True)
                     
-                    # Generate temperature plot
-                    temp_fig = app_instance.make_by_temp_plot(region=state)
-                    temp_file = scenario_dir / f"{state}_temp.html"
-                    temp_fig.write_html(
-                        str(temp_file),
-                        include_plotlyjs='cdn',  # Use CDN for smaller files
-                        config={'displayModeBar': False}  # Hide toolbar for cleaner look
-                    )
-                    
-                    # Generate year plot
-                    year_fig = app_instance.make_by_year_plot(region=state)
-                    year_file = scenario_dir / f"{state}_year.html"
-                    year_fig.write_html(
-                        str(year_file),
-                        include_plotlyjs='cdn',
-                        config={'displayModeBar': False}
-                    )
-                    
-                except Exception as e:
-                    print(f"Error generating plots for {state}/{scenario}: {e}")
-                    continue
+                    try:
+                        # Create instance for this scenario and variable
+                        app_instance = AppFunctionsforPooledData(scenario=scenario, var=variable)
+                        
+                        # Generate temperature plot
+                        temp_fig = app_instance.make_by_temp_plot(region=state)
+                        temp_file = var_dir / f"{state}_temp.html"
+                        temp_fig.write_html(
+                            str(temp_file),
+                            include_plotlyjs='cdn',  # Use CDN for smaller files
+                        )
+                        
+                        # Generate year plot
+                        year_fig = app_instance.make_by_year_plot(region=state)
+                        year_file = var_dir / f"{state}_year.html"
+                        year_fig.write_html(
+                            str(year_file),
+                            include_plotlyjs='cdn',
+                        )
+                        
+                    except Exception as e:
+                        print(f"Error generating plots for {state}/{scenario}/{variable}: {e}")
+                        continue
         
         # Save metadata
         with open(base_path / "metadata.json", "w") as f:
@@ -425,8 +474,7 @@ class AppFunctionsforPooledData:
         
         return metadata
 
-    @staticmethod
-    def get_plot_path(state, scenario, plot_type, base_dir="static_plots"):
+    def get_plot_path(state, scenario, plot_type, variable="T2MMAX", base_dir="static_plots"):
         """
         Get the file path for a specific plot combination.
         
@@ -434,9 +482,101 @@ class AppFunctionsforPooledData:
             state: State code (e.g., 'MA')
             scenario: 'aa' or 'ct'
             plot_type: 'temp' or 'year'
+            variable: 'T2MMAX', 'T2MMEAN', or 'T2MMIN'
             base_dir: Base directory for static plots
         """
-        return f"{base_dir}/{scenario}/{state}_{plot_type}.html"
+        var_folders = {"T2MMAX": "Max", "T2MMEAN": "Mean", "T2MMIN": "Min"}
+        var_folder = var_folders.get(variable, "Max")
+        return f"{base_dir}/{scenario}/{var_folder}/{state}_{plot_type}.html"
+
+    def get_r2(self, region: str, month: str, dataset: str = {"era5", "merra2"}) -> float:
+        """
+        Calculate R² (coefficient of determination) for a specific region and month
+        using historical data and regression parameters.
+        
+        Parameters
+        ----------
+        region : str
+            Region code (e.g., 'MA', 'CA')
+        month : str
+            Month name (e.g., 'Jan', 'Feb')
+        dataset : str, optional
+            Dataset to use ('era5', 'merra2', or None for pooled)
+            If None, uses pooled regression parameters
+        
+        Returns
+        -------
+        float
+            R² value (coefficient of determination)
+        """
+        if dataset == "era5":
+            hist_data = self.get_era5_historical_data(region = region)
+        elif dataset == "merra2":
+            hist_data = self.get_merra2_historical_data(region = region)
+        
+        hist_data = hist_data[hist_data["Month"] == month]
+        
+        # Get regression parameters
+        qi = self.uncertainty_intervals[(self.uncertainty_intervals["Region"] == region) & 
+                                       (self.uncertainty_intervals["Month"] == month)]
+        
+        if qi.empty:
+            return np.nan
+        
+        # Use median parameters (50th percentile)
+        intercept = qi["Intercept_50th"].iloc[0]
+        slope = qi["Slope_50th"].iloc[0]
+        
+        # Get global temperature data and calculate centering mean
+        global_temps = hist_data["Global_Temp"].values
+        center_mean = global_temps.mean()
+        
+        # Calculate centered global temperature (predictor)
+        x_centered = global_temps - center_mean
+        
+        # Get observed regional temperatures (response)
+        y_observed = hist_data["Average_Temperature"].values
+        
+        # Calculate predicted values using regression equation
+        y_predicted = intercept + slope * x_centered
+        
+        # Calculate R²
+        r = pearsonr(y_observed, y_predicted)
+        r2 = r[0] ** 2
+        
+        return r2
+    
+    def plot_r2(self):
+        months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+        regions = self.data["Region"].unique()
+        r2_values = []
+        for month in months:
+            for region in regions:
+                era5_r2 = self.get_r2(region = region, month = month, dataset = "era5")
+                merra2_r2 = self.get_r2(region = region, month = month, dataset = "merra2")
+                r2 = (era5_r2 + merra2_r2) / 2
+                r2_values.append({"Region": region, "Month": month, "r2": r2})
+        df = pd.DataFrame(r2_values)
+        fig = px.choropleth(df,
+                            locations="Region", 
+                            locationmode="USA-states", 
+                            color="r2", 
+                            facet_col="Month",
+                            facet_col_wrap=4,
+                            facet_col_spacing=0,
+                            color_continuous_scale="Greens",
+                            scope="usa")
+        fig.update_layout(
+            title="R² Validations",
+            coloraxis_colorbar=dict(
+                title="R²",
+                x=1.0,
+                y=0.5
+            ),
+            width=1500,
+            height=1000
+        )
+        return fig
 
 class PooledEstimator:
     """
@@ -852,7 +992,7 @@ class UncertaintyIntervalLoader:
             return pd.DataFrame()
 
 class PlotlySlopeMap:
-    """Visualise bootstrap regression bands for US state–month pairs.
+    """Visualise bootstrap regression bands for US statemonth pairs.
 
     The class now supports **two modes** automatically:
 
@@ -1131,6 +1271,139 @@ class PlotlySlopeMap:
 
     def create_prediction_grid(self, *, state: str):
         return self._grid(state=state, prediction=True)
+    
+    def create_combined_grid(self, *, state: str):
+        """Create a grid with both confidence and prediction intervals."""
+        x_grid = self._x_grid()
+        fig = make_subplots(rows=3, cols=4, subplot_titles=self._MONTHS,
+                            shared_xaxes=True, shared_yaxes=False, vertical_spacing=0.05)
+
+        # Show legend only once per dataset / band type
+        showleg_line = {ds: True for ds in self.datasets}
+        showleg_ci = {ds: True for ds in self.datasets}
+        showleg_pi = {ds: True for ds in self.datasets}
+        showleg_era5 = True
+        showleg_merra2 = True
+
+        for idx, month in enumerate(self._MONTHS, start=1):
+            r = (idx - 1)//4 + 1
+            c = (idx - 1)%4 + 1
+            
+            # Add regression bands for each dataset
+            for ds in self.datasets:
+                ints, slps, sigma = self._subset_coeff(state=state, month=month, dataset=ds)
+                
+                # Center the x-grid values for the regression calculation
+                x_centered = x_grid - self.dataset_means[ds]
+                
+                # Calculate confidence intervals (CI)
+                ci_lo, ci_hi = self._bootstrap_band(x_centered, ints, slps,
+                                                   resid_std=None, alpha=self.alpha)
+                
+                # Calculate prediction intervals (PI)
+                pi_lo, pi_hi = self._bootstrap_band(x_centered, ints, slps,
+                                                   resid_std=sigma, alpha=self.alpha)
+                
+                y_hat = np.median(ints) + np.median(slps) * x_centered
+
+                # Plot median line
+                fig.add_trace(go.Scatter(x=x_grid, y=y_hat, mode="lines",
+                                          line=dict(color=self._LINE_COLOUR[ds], width=2),
+                                          name=f"{ds} median" if showleg_line[ds] else None,
+                                          legendgroup=f"{ds}_median",
+                                          showlegend=showleg_line[ds]),
+                               row=r, col=c)
+                
+                # Plot prediction interval (wider, lighter)
+                fig.add_trace(go.Scatter(x=np.concatenate([x_grid, x_grid[::-1]]),
+                                          y=np.concatenate([pi_lo, pi_hi[::-1]]), fill="toself",
+                                          fillcolor=self._BAND_COLOUR[ds].replace("0.3)", "0.15)"),  # Make lighter
+                                          line=dict(color="rgba(255,255,255,0)"), hoverinfo="skip",
+                                          name=f"{ds} PI" if showleg_pi[ds] else None,
+                                          legendgroup=f"{ds}_pi",
+                                          showlegend=showleg_pi[ds]),
+                               row=r, col=c)
+                
+                # Plot confidence interval (narrower, darker)
+                fig.add_trace(go.Scatter(x=np.concatenate([x_grid, x_grid[::-1]]),
+                                          y=np.concatenate([ci_lo, ci_hi[::-1]]), fill="toself",
+                                          fillcolor=self._BAND_COLOUR[ds],
+                                          line=dict(color="rgba(255,255,255,0)"), hoverinfo="skip",
+                                          name=f"{ds} CI" if showleg_ci[ds] else None,
+                                          legendgroup=f"{ds}_ci",
+                                          showlegend=showleg_ci[ds]),
+                               row=r, col=c)
+                
+                showleg_line[ds] = False
+                showleg_ci[ds] = False
+                showleg_pi[ds] = False
+
+            # Always add historical data for both datasets
+            for dataset_name in ["era5", "merra2"]:
+                dataset_data = self.hist_df[(self.hist_df["Dataset"].str.lower() == dataset_name) & 
+                                           (self.hist_df["Region"] == state) & 
+                                           (self.hist_df["Month"] == month)]
+                
+                if not dataset_data.empty:
+                    # Use different colors for each dataset
+                    colors = {"era5": "#5D1D95", "merra2": "#5DA9E9"}
+                    show_legend = showleg_era5 if dataset_name == "era5" else showleg_merra2
+                    fig.add_trace(go.Scatter(
+                        x=dataset_data["Global_Temp"], 
+                        y=dataset_data["Average_Temperature"],
+                        mode="markers", 
+                        name=f"{dataset_name.upper()} Historical" if show_legend else None,
+                        legendgroup=f"{dataset_name.upper()}_historical",
+                        marker=dict(color=colors[dataset_name], size=4),
+                        showlegend=show_legend
+                    ), row=r, col=c)
+                    
+                    if dataset_name == "era5":
+                        showleg_era5 = False
+                    else:
+                        showleg_merra2 = False
+
+        # Update layout with consistent styling
+        title = f"{state}: 95% Confidence & Prediction Intervals with Historical Data"
+        fig.update_layout(
+            template="simple_white", 
+            height=800,  
+            width=1200,   
+            title=dict(text=title, x=0.5, font=dict(size=14)),
+            showlegend=True,
+            legend=dict(
+                orientation="v",
+                yanchor="top",
+                y=1,
+                xanchor="left",
+                x=1.01,  # Closer to plot to prevent cutoff
+                font=dict(size=12)
+            ),
+            margin=dict(l=60, r=120, t=60, b=60),  # Add margins to prevent cutoff
+            autosize=True  # Allow plot to resize to container
+        )
+        
+        # Add axis labels - centered for the entire plot area
+        fig.add_annotation(
+            text="Global Temperature (°C)",
+            xref="paper", yref="paper",
+            x=0.5, y=-0.08,  # Center of plot area, below subplots
+            showarrow=False,
+            font=dict(size=14, color="black"),
+            xanchor="center"
+        )
+        
+        fig.add_annotation(
+            text="Regional Temperature (°C)",
+            xref="paper", yref="paper",
+            x=-0.04, y=0.5,  # Left of plot area, middle height
+            showarrow=False,
+            font=dict(size=14, color="black"),
+            textangle=-90,  # Rotate 90 degrees
+            xanchor="center", yanchor="middle"
+        )
+        
+        return fig
 
 class Plots:
     def __init__(self, df):
@@ -1162,6 +1435,7 @@ class Plots:
             facet_col = "Month",
             facet_col_wrap = 4,
             facet_col_spacing = 0,
+            facet_row_spacing = 0,
             color_continuous_scale = color_scale
         )
         fig.update_layout(width = 1500, height = 1000)
@@ -1460,40 +1734,14 @@ class Plots:
                            textangle = -90)
 
         return fig
-    
+
 class RiskAssessment:
-    def __init__(self, dataset = "MERRA2", var = "T2MMAX", state = "MA"):
-        self.dataset = dataset
-        self.var = var
+    def __init__(self, state = "MA"):
+        self.coef_df = pd.read_csv("Regression Results/pooled_bootstrap_results_t2mmax.csv")
         self.state = state
-        self.abbreviation_dict = self.abbreviation_to_full_name()
+        self.full_state_name = self.abbreviation_to_full_name()[state]
         self.state_populations = pd.read_csv(r"state_populations.csv")
         self.state_flowers = pd.read_csv(r"state_flowers.csv")
-        self.full_state_name = self.abbreviation_dict[self.state]
-
-    def load_data(self):
-        if self.dataset == "MERRA2":
-            data = json.load(open(r"MERRA2/JSON Files/Regional Aggregates/us-states-regions.json"))
-        elif self.dataset == "ERA5":
-            data = json.load(open(r"ERA5/Temperature Data/JSON Files/us-states-era5-t2m.json"))
-
-        return data
-    
-    def get_global_average_temp(self):
-        if self.dataset == "MERRA2":
-            data = pd.read_csv(r"global_average_temp_by_year.csv")["Average"].values
-        elif self.dataset == "ERA5":
-            data = RegressionAnalysisComplete(dataset = "ERA5", var = self.var).get_X()
-
-        return data
-
-    def get_regression_results(self):
-        if self.dataset == "MERRA2":
-            data = pd.read_csv(r"Regression Results/MERRA2/Max Temp/regression_results-merra2.csv")
-        elif self.dataset == "ERA5":
-            data = pd.read_csv(r"Regression Results/ERA5/Max Temp/regression_results-era5.csv")
-
-        return data
 
     def abbreviation_to_full_name(self):
         df = pd.read_csv(r"state_cmi.csv")
@@ -1502,10 +1750,9 @@ class RiskAssessment:
         return abbreviation_dict
 
     def get_risk_assessment(self):
-        regression_data = self.get_regression_results()
-        lower_third_percentile = np.percentile(regression_data.groupby("Region")["Slope"].mean(), 33.33)
-        upper_third_percentile = np.percentile(regression_data.groupby("Region")["Slope"].mean(), 66.66)
-        coef = regression_data[regression_data["Region"] == self.state]["Slope"].values.mean()
+        lower_third_percentile = np.percentile(self.coef_df.groupby("Region")["Pooled_Slope"].mean(), 33.33)
+        upper_third_percentile = np.percentile(self.coef_df.groupby("Region")["Pooled_Slope"].mean(), 66.66)
+        coef = self.coef_df[self.coef_df["Region"] == self.state]["Pooled_Slope"].values.mean()
 
         if coef > upper_third_percentile:
             return "HIGH", "red"
@@ -1525,13 +1772,6 @@ class RiskAssessment:
                         Text(f"Population: {self.state_populations[self.state_populations['State'] == self.full_state_name]['Population'].values[0]} ｜ State flower: {self.state_flowers[self.state_flowers['State'] == self.full_state_name]['Common name'].values[0]}", className = "animate__animated animate__fadeInRightBig animate__slow", style = {"fontSize": 20, "color": "black"}, id = f"state-info-{n_clicks}"),
                         html.Div(children = [Text(f"Warming Risk:", style = {"fontSize": 20, "color": "black"}, className = "animate__animated animate__fadeInRightBig animate__slow", id = f"risk-label-{n_clicks}"), Text(f"{risk}", className = "animate__animated animate__fadeInRightBig animate__slow", style = {"fontSize": 20, "color": color, "marginLeft": "10px"}, id = f"risk-value-{n_clicks}")], style = {"display": "flex", "alignItems": "left"})]
         )
-
-        # div_element = html.Div(
-        #     children = [html.H2(self.full_state_name),
-        #                 html.H4(f"Population: {self.state_populations[self.state_populations['State'] == self.full_state_name]['Population'].values[0]}｜State flower: {self.state_flowers[self.state_flowers['State'] == self.full_state_name]['Common name'].values[0]}"),
-        #                 html.Div(children = [html.H4(children = f"Warming Risk: ", style = {"marginRight": "10px"}), html.H4(children = f"{risk}", style = {"color": color, "display": "inline"})], style = {"display": "flex", "alignItems": "left"}),
-        #                 ]
-        # )
         return div_element
 
 class KMeansClustering:
@@ -1560,10 +1800,8 @@ class MannKendallTrendTest:
         self.months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
     def average_datasets(self):
-        """
-        For each year, month, and region grouping, average the values of Average_Temperature 
-        between the era5 and merra2 datasets.
-        """
+        # For each year, month, and region grouping, average the values of Average_Temperature 
+        # between the era5 and merra2 datasets.
         # Group by Year, Month, Region and average the datasets
         averaged_data = self.df.groupby(['Year', 'Month', 'Region'])['Average_Temperature'].mean().reset_index()
         
@@ -1733,11 +1971,33 @@ if __name__ == "__main__":
     # fig.write_image("Publication Plots/mann_kendall_trend_analysis.svg")
 
     # ==== APP FUNCTIONS ====
-    fig = AppFunctionsforPooledData(scenario = "aa").make_by_year_plot(region = "MA")
-    fig.show()
+    # fig = AppFunctionsforPooledData(scenario = "aa").make_by_year_plot(region = "MA")
+    # fig.show()
     
     # PRE-GENERATE ALL PLOTS FOR WEBAPP (run once)
     # Uncomment to generate all static HTML files:
     # app = AppFunctionsforPooledData(scenario="aa")  # scenario doesn't matter for pre-generation
     # metadata = app.pregenerate_all_plots(output_dir="webapp_plots")
     # print(f"Generated {metadata['total_plots']} plots in {metadata['generated_at']}")
+
+    # workflow
+    """
+    ERA5 data downloaded from download_data function in ERA5Data class in data_retrieval.py
+    ERA5 data converted to json using make_results_dict function in ERA5 in archived_analysis.py (includes rescaling)
+    MERRA2 data downloaded from RetrieveSingleVariable class in data_retrieval.py
+    MERRA2 data converted to json using aggregate_inside_points_temp_data function in CollectRegionalData class in data_retrieval.py
+    CompareRegressionResults class in archived_analysis.py creates the combined csv (need to update)
+    For generated static plots, there's a problem with how the uncertainty intervals are generated, which needs to be fixed
+    """
+    # df = pd.read_csv(r"full_processed_data_t2mmin.csv")
+    # PooledEstimator(df = df).save_pooled_bootstrap(outfile = "Regression Results/pooled_bootstrap_results_t2mmin.csv")
+
+    # Webapp plot SVGs for publication
+    # fig = AppFunctionsforPooledData(scenario = "aa").make_by_year_plot(region = "MA")
+    # fig.show()
+    fig = AppFunctionsforPooledData(scenario = "ct", var = "T2MMIN").make_by_temp_plot(region = "MO")
+    fig.write_image("MO_min_temp_example.svg")
+
+    # R2 validation
+    # fig = AppFunctionsforPooledData(scenario = "aa").plot_r2()
+    # fig.write_image("Publication Plots/r2_validation.svg")
