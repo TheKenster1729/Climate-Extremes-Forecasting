@@ -1774,6 +1774,14 @@ class RiskAssessment:
         )
         return div_element
 
+    def make_risk_assessment_csv(self):
+        df = self.coef_df
+        df = df.groupby("Region")["Pooled_Slope"].mean().reset_index()
+        df["risk"] = df["Pooled_Slope"].apply(self.get_risk_assessment)
+        df.to_csv("risk_assessment.csv", index = False)
+
+        return df
+
 class KMeansClustering:
     def __init__(self):
         self.df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
@@ -1995,9 +2003,13 @@ if __name__ == "__main__":
     # Webapp plot SVGs for publication
     # fig = AppFunctionsforPooledData(scenario = "aa").make_by_year_plot(region = "MA")
     # fig.show()
-    fig = AppFunctionsforPooledData(scenario = "ct", var = "T2MMIN").make_by_temp_plot(region = "MO")
-    fig.write_image("MO_min_temp_example.svg")
+    # fig = AppFunctionsforPooledData(scenario = "ct", var = "T2MMIN").make_by_temp_plot(region = "MO")
+    # fig.write_image("MO_min_temp_example.svg")
 
     # R2 validation
     # fig = AppFunctionsforPooledData(scenario = "aa").plot_r2()
     # fig.write_image("Publication Plots/r2_validation.svg")
+
+    # risk assessment csv
+    df = RiskAssessment(state = "MA").make_risk_assessment_csv()
+    print(df)
