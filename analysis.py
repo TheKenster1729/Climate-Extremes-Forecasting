@@ -1776,11 +1776,13 @@ class RiskAssessment:
 
     def make_risk_assessment_csv(self):
         df = self.coef_df
-        df = df.groupby("Region")["Pooled_Slope"].mean().reset_index()
-        df["risk"] = df["Pooled_Slope"].apply(self.get_risk_assessment)
-        df.to_csv("risk_assessment.csv", index = False)
+        lower_third_percentile = np.percentile(df.groupby("Region")["Pooled_Slope"].mean(), 33.33)
+        upper_third_percentile = np.percentile(df.groupby("Region")["Pooled_Slope"].mean(), 66.66)
 
-        return df
+        df = df.groupby("Region")["Pooled_Slope"].mean().reset_index()
+        df["risk"] = np.where(df["Pooled_Slope"] > upper_third_percentile, "HIGH", np.where(df["Pooled_Slope"] < lower_third_percentile, "LOW", "MEDIUM"))
+        df["risk_color"] = np.where(df["risk"] == "HIGH", "red", np.where(df["risk"] == "MEDIUM", "orange", "green"))
+        df.to_csv("risk_assessment.csv", index = False)
 
 class KMeansClustering:
     def __init__(self):
@@ -2012,4 +2014,3 @@ if __name__ == "__main__":
 
     # risk assessment csv
     df = RiskAssessment(state = "MA").make_risk_assessment_csv()
-    print(df)

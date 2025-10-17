@@ -11,13 +11,19 @@ import dash_mantine_components as dmc
 import json
 import os
 from pathlib import Path
+from dash import html, dcc, _dash_renderer
+from dash_mantine_components import Text
 _dash_renderer._set_react_version("18.2.0")
 
 server = Flask(__name__)
 app = dash.Dash(__name__, server = server, external_stylesheets = [dbc.themes.MINTY])
-naming_df = pd.read_csv(r"region_names.csv")
-states = pd.read_csv("Regression Results/pooled_bootstrap_results_t2mmax.csv")["Region"].unique()
-states_dict = {i: i for i in states}
+risk_assessment_df = pd.read_csv(r"risk_assessment.csv")
+state_populations = pd.read_csv(r"state_populations.csv")
+state_flowers = pd.read_csv(r"state_flowers.csv")
+state_names_df = pd.read_csv(r"state_cmi.csv")
+state_names_df = state_names_df[state_names_df["state"] != "D.C."]
+abbreviation_dict = {key: value for value, key in zip(state_names_df["state"], state_names_df["abbreviation"])}
+states = {value: key for key, value in abbreviation_dict.items()}
 
 # Utility function to check static plot availability
 def check_static_plots_availability():
@@ -49,7 +55,7 @@ card_built_in_regions = html.Div(id = "card-built-in-regions", children = [
                                         html.Div(id = "built-in-regions-div", children = [
                                             html.P(id = "built-in-regions-label", children = "Available Regions"),
                                             dcc.Dropdown(id = "built-in-regions",
-                                                         options = [{"label": states_dict[i], "value": i} for i in states],
+                                                         options = [{"label": i, "value": states[i]} for i in states],
                                                          style = {"width": "69.33%"}),
                                         ]),
                                     ]),
@@ -284,6 +290,7 @@ def update_analysis_graph(var, region_name, scenario):
             return "", "", True, True
 
 # callback for risk assessment
+# use risk assessment csv
 @app.callback(Output("risk-assessment-area", "children"),
               Output("region-name-store", "data"),
               Input("built-in-regions", "value"),
@@ -291,7 +298,15 @@ def update_analysis_graph(var, region_name, scenario):
               prevent_initial_call = True)
 def update_risk_assessment(region_name, region_name_store):
     region_name_store += 1
-    return RiskAssessment(state = region_name.upper()).risk_assessment_div_element(region_name_store), region_name_store
+    full_region_name = abbreviation_dict[region_name]
+    risk = risk_assessment_df[risk_assessment_df["Region"] == region_name]["risk"].values[0]
+    color = risk_assessment_df[risk_assessment_df["Region"] == region_name]["risk_color"].values[0]
+    div_element = html.Div(
+        children = [Text(f"{full_region_name}", className = "animate__animated animate__fadeInRightBig animate__slow", style = {"fontSize": 30, "color": "black"}, id = f"state-name-{region_name_store}"),
+                    Text(f"Population: {state_populations[state_populations['State'] == full_region_name]['Population'].values[0]} ｜ State flower: {state_flowers[state_flowers['State'] == full_region_name]['Common name'].values[0]}", className = "animate__animated animate__fadeInRightBig animate__slow", style = {"fontSize": 20, "color": "black"}, id = f"state-info-{region_name_store}"),
+                    html.Div(children = [Text(f"Warming Risk:", style = {"fontSize": 20, "color": "black"}, className = "animate__animated animate__fadeInRightBig animate__slow", id = f"risk-label-{region_name_store}"), Text(f"{risk}", className = "animate__animated animate__fadeInRightBig animate__slow", style = {"fontSize": 20, "color": color, "marginLeft": "10px"}, id = f"risk-value-{region_name_store}")], style = {"display": "flex", "alignItems": "left"})]
+    )
+    return div_element, region_name_store
 
 if __name__ == "__main__":
     app.run(debug = True)
