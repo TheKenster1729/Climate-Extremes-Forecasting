@@ -306,5 +306,6 @@ def update_risk_assessment(region_name, region_name_store):
     )
     return div_element, region_name_store
 
+
 if __name__ == "__main__":
-    app.run(debug = True)
+    app.run()
