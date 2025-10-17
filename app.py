@@ -5,8 +5,6 @@ from dash.dependencies import Input, Output, State
 from flask import Flask, request
 import pandas as pd
 import plotly.graph_objects as go
-from analysis import RiskAssessment, AppFunctionsforPooledData
-from styling import Naming
 import dash_mantine_components as dmc
 import json
 import os
