@@ -1,0 +1,26 @@
+# Use Rocky Linux 8 as base image
+FROM rockylinux:8
+
+# Update system packages
+RUN yum update -y
+
+# Install Python 3.11 and pip
+RUN yum install -y python3.11 python3.11-pip
+
+# Set working directory
+WORKDIR /home/extremes_user/Climate-Extremes-Forecasting
+
+# Create and activate virtual environment
+RUN python3.11 -m venv /home/extremes_user/venv
+
+# Copy requirements.txt first for better layer caching
+COPY requirements.txt .
+
+# Install Python dependencies in virtual environment
+RUN /home/extremes_user/venv/bin/pip install --upgrade pip && \
+    /home/extremes_user/venv/bin/pip install -r requirements.txt
+
+# Set the entrypoint to run the application using the virtual environment
+# Note: Application code will be mounted via bind mount at runtime
+ENTRYPOINT ["/home/extremes_user/venv/bin/python", "app.py"]
+

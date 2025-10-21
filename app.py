@@ -308,4 +308,7 @@ def update_risk_assessment(region_name, region_name_store):
 
 
 if __name__ == "__main__":
-    app.run()
+    if os.path.exists("/.dockerenv") or os.getenv("container") == "podman":
+        app.run_server(debug = True, host = "0.0.0.0")
+    else:
+        app.run()

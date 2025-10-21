@@ -1,0 +1,17 @@
+[Unit]
+Description=Climate Extremes Forecasting Application
+After=network.target
+
+[Service]
+Type=notify
+ExecStartPre=/bin/rm -f %t/%n.ctr-id
+ExecStart=/usr/bin/podman run --cidfile=%t/%n.ctr-id --cgroups=no-conmon --rm --sdnotify=conmon -d --name=extremes-2025 --replace -v /home/s_b/git/Climate-Extremes-Forecasting:/home/extremes_user/Climate-Extremes-Forecasting -p 8070:8050 extremes-2025
+ExecStop=/usr/bin/podman stop --ignore --cidfile=%t/%n.ctr-id
+ExecStopPost=/usr/bin/podman rm --ignore -f --cidfile=%t/%n.ctr-id
+TimeoutStartSec=300
+TimeoutStopSec=30
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=default.target
