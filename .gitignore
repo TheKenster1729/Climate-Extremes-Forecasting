@@ -34,7 +34,6 @@
 *.grib2
 *.h5
 *.hdf
-*.csv
 *.xlsx
 *.parquet
 =======
