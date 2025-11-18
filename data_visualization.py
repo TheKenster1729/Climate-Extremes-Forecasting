@@ -10,24 +10,42 @@ import numpy as np
 
 === Usage ===
 For global average temperature, set plot_type = "global", and temp_var = "min", "mean", or "max"
-for minimum, mean, or maximum average global temperature. Month, region, and dataset
-do not matter, so can be any value.
+for minimum, mean, or maximum average global temperature. Region does not matter, so can be any value.
 
 For local monthly average temperature, set plot_type = "local", and temp_var = "min", "mean", or "max"
-for minimum, mean, or maximum average local temperature. Region, month, and dataset
-must be specified.
+for minimum, mean, or maximum average local temperature. Region must be specified.
 """
 
 plot_type = "global"
 temp_var = "max"
-month = "Jan"
 region = "MO"
-dataset = "era5"
 
 def global_average_temperature(temp_var):
-    if temp_var == "min":
+    df = pd.read_csv(f"full_processed_data_t2m{temp_var}.csv")
+    df = df[(df["Month"] == "Jan") & (df["Region"] == "MA")]
+    fig = px.line(df, x="Year", y="Global_Temp", title=f"Global {temp_var.capitalize()} Temperature", color="Dataset", color_discrete_map={"era5": "#33b1ff", "merra2": "#24a148"})
+    fig.update_layout(legend_title_text="Dataset")
+    fig.for_each_yaxis(lambda yaxis: yaxis.update(title_text=None))
+    fig.update_yaxes(title_text=f"Global Average Temperature (°C)", row = 2, col = 1)
+    fig.for_each_trace(lambda t: t.update(name=t.name.upper()))
 
+    return fig
 
+def local_average_temperature(temp_var, region):
+    df = pd.read_csv(f"full_processed_data_t2m{temp_var}.csv")
+    df = df[df["Region"] == region]
+    fig = px.line(df, x="Year", y="Average_Temperature", title=f"{region} {temp_var.capitalize()} Temperature", color="Dataset", color_discrete_map={"era5": "#33b1ff", "merra2": "#24a148"}, facet_col="Month", facet_col_wrap=4)
+    fig.update_layout(legend_title_text="Dataset")
+    fig.for_each_trace(lambda t: t.update(name=t.name.upper()))
+    fig.for_each_yaxis(lambda yaxis: yaxis.update(title_text=None))
+    fig.update_yaxes(title_text=f"Local Average Temperature (°C)", row = 2, col = 1)
+
+    return fig
 
 if __name__ == "__main__":
-    pass
+    if plot_type == "global":
+        fig = global_average_temperature(temp_var)
+    elif plot_type == "local":
+        fig = local_average_temperature(temp_var, region)
+        
+    fig.show()

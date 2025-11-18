@@ -27,6 +27,7 @@
 /MERRA2/JSON Files/Regional Aggregates/us-states-regions-t2m-mean.json
 /MERRA2/JSON Files/Regional Aggregates/us-states-regions.json
 ~$*
+playground.py
 
 # Make sure all data files are ignored
 *.nc
