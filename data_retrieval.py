@@ -714,96 +714,6 @@ class EPPARegionAggregation:
 
         json.dump(self.results_dict, open(r"MERRA2/JSON Files/Regional Aggregates/eppa_regions.json", "w"))
 
-class StateCMI:
-    def __init__(self):
-        self.area_data = pd.read_excel(r"/Users/kcox1729/Downloads/LND01.xls", sheet_name = "Sheet1")
-        self.cmi_data = pd.read_csv(r"/Users/kcox1729/Downloads/Climate Moisture Index (1).csv")
-
-        self.area_data['STCOU'] = self.area_data['STCOU'].astype(str)
-        self.area_data['STCOU'] = self.area_data['STCOU'].str.zfill(5)
-
-        self.cmi_data['id'] = self.cmi_data['id'].astype(str)
-        self.cmi_data['id'] = self.cmi_data['id'].str.zfill(5)
-
-        self.abbreviation_to_name = {
-            # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#States.
-            "AK": "Alaska",
-            "AL": "Alabama",
-            "AR": "Arkansas",
-            "AZ": "Arizona",
-            "CA": "California",
-            "CO": "Colorado",
-            "CT": "Connecticut",
-            "DE": "Delaware",
-            "FL": "Florida",
-            "GA": "Georgia",
-            "HI": "Hawaii",
-            "IA": "Iowa",
-            "ID": "Idaho",
-            "IL": "Illinois",
-            "IN": "Indiana",
-            "KS": "Kansas",
-            "KY": "Kentucky",
-            "LA": "Louisiana",
-            "MA": "Massachusetts",
-            "MD": "Maryland",
-            "ME": "Maine",
-            "MI": "Michigan",
-            "MN": "Minnesota",
-            "MO": "Missouri",
-            "MS": "Mississippi",
-            "MT": "Montana",
-            "NC": "North Carolina",
-            "ND": "North Dakota",
-            "NE": "Nebraska",
-            "NH": "New Hampshire",
-            "NJ": "New Jersey",
-            "NM": "New Mexico",
-            "NV": "Nevada",
-            "NY": "New York",
-            "OH": "Ohio",
-            "OK": "Oklahoma",
-            "OR": "Oregon",
-            "PA": "Pennsylvania",
-            "RI": "Rhode Island",
-            "SC": "South Carolina",
-            "SD": "South Dakota",
-            "TN": "Tennessee",
-            "TX": "Texas",
-            "UT": "Utah",
-            "VA": "Virginia",
-            "VT": "Vermont",
-            "WA": "Washington",
-            "WI": "Wisconsin",
-            "WV": "West Virginia",
-            "WY": "Wyoming",
-            # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#Federal_district.
-            "DC": "D.C.",
-            # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#Inhabited_territories.
-            "AS": "American Samoa",
-            "GU": "Guam GU",
-            "MP": "Northern Mariana Islands",
-            "PR": "Puerto Rico PR",
-            "VI": "U.S. Virgin Islands",
-        }
-        self.name_to_abbreviation = {v: k for k, v in self.abbreviation_to_name.items()}
-
-    def get_data(self):
-        area_and_cmi_df = self.cmi_data.join(self.area_data.set_index('STCOU'), on = 'id', how = 'inner')
-
-        data = []
-        for state in area_and_cmi_df["state"].unique():
-            state_area = area_and_cmi_df[area_and_cmi_df["state"] == state]["LND010200D"].sum()
-
-            area_weighted_cmi = area_and_cmi_df[area_and_cmi_df["state"] == state]["value"] * area_and_cmi_df[area_and_cmi_df["state"] == state]["LND010200D"]/state_area
-
-            state_abbreviation = self.name_to_abbreviation[state]
-            data.append([state, state_abbreviation, round(area_weighted_cmi.sum(), 4)])
-
-        data_df = pd.DataFrame(data, columns = ["state", "abbreviation", "cmi"])
-
-        data_df.to_csv(r"state_cmi.csv", index = False)
-
 class ERA5Data:
     def __init__(self):
         self.data_folder = r"ERA5/Temperature Data/"
@@ -1119,13 +1029,31 @@ if __name__ == "__main__":
     # # eppa_data = EPPARegionAggregation()
     # # eppa_data.aggregate_inside_points_temp_data()
 
-    era5_data = ERA5Data()
-    era5_data.download_data(1980)
-    for year in range(1980, 2023):
-        era5_data.download_data(year)
+    # era5_data = ERA5Data()
+    # era5_data.download_data(1980)
+    # for year in range(1980, 2023):
+    #     era5_data.download_data(year)
     # era5_data.read_data()
     # era5_data.download_all_data()
     # era5_data = ERA5Data()
     # era5_data.process_state_data("Alaska")
     # era5_data.create_netcdf_files("Hawaii")
     # CollectRegionalData(polygon_data = r"US_states_combined.geojson", data_directory = r"MERRA2/Temperature Data/Mean Temp", var = "T2MMEAN", write_location = r"MERRA2/JSON Files/").aggregate_inside_points_temp_data()
+
+    data = json.load(open("Data/ERA5/us-states-era5-t2mmax-rescaled.json", "r"))
+    # Print only the top-level keys and their types to show the general structure
+    def print_json_structure(d, indent=0, max_depth=2):
+        if indent >= max_depth:
+            print(" " * indent + "...")
+            return
+        if isinstance(d, dict):
+            for k, v in d.items():
+                print(" " * indent + f"{repr(k)}: {type(v).__name__}")
+                if isinstance(v, (dict, list)):
+                    print_json_structure(v, indent + 4, max_depth)
+        elif isinstance(d, list):
+            print(" " * indent + f"[{len(d)} items]: {type(d[0]).__name__ if d else ''}")
+            if d and isinstance(d[0], (dict, list)):
+                print_json_structure(d[0], indent + 4, max_depth)
+
+    print_json_structure(data["data"]["MA"]["results"]["2020"]["Mar"])

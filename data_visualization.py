@@ -9,19 +9,19 @@ import numpy as np
 2. Visualize local monthly average temperature (choose region, month, and dataset)
 
 === Usage ===
-For global average temperature, set plot_type = "global", and temp_var = "min", "mean", or "max"
-for minimum, mean, or maximum average global temperature. Region does not matter, so can be any value.
+For global average temperature, set plot_type = "global". The global mean average temperature
+was used as the predictor variable for all regressions, so global max and min were not calculated.
 
 For local monthly average temperature, set plot_type = "local", and temp_var = "min", "mean", or "max"
 for minimum, mean, or maximum average local temperature. Region must be specified.
 """
 
 plot_type = "global"
-temp_var = "max"
-region = "MO"
+temp_var = "min"
+region = "AL"
 
-def global_average_temperature(temp_var):
-    df = pd.read_csv(f"full_processed_data_t2m{temp_var}.csv")
+def global_average_temperature():
+    df = pd.read_csv(f"full_processed_data_t2mmean.csv")
     df = df[(df["Month"] == "Jan") & (df["Region"] == "MA")]
     fig = px.line(df, x="Year", y="Global_Temp", title=f"Global {temp_var.capitalize()} Temperature", color="Dataset", color_discrete_map={"era5": "#33b1ff", "merra2": "#24a148"})
     fig.update_layout(legend_title_text="Dataset")

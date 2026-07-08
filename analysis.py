@@ -674,10 +674,10 @@ class PooledEstimator:
         return intercept, slope, se_int, se_slope
 
     @staticmethod
-    def _wald_p(est, se):
+    def _wald_p(est, se, null=0):
         if np.isnan(est) or np.isnan(se) or se == 0:
             return np.nan
-        z = np.abs(est / se)
+        z = np.abs((est - null) / se)
         return 2 * (1 - norm.cdf(z))
 
     # ------------------------------------------------------------------
@@ -695,7 +695,7 @@ class PooledEstimator:
                              Dataset=dat,
                              Slope=slope,
                              Slope_SE=se_slope,
-                             Slope_p=self._wald_p(slope, se_slope)))
+                             Slope_p=self._wald_p(slope, se_slope, null=1)))
         return (pd.DataFrame(rows)
                 .sort_values(["Region", "Month", "Dataset"])
                 .reset_index(drop=True))
@@ -761,7 +761,7 @@ class PooledEstimator:
                     Region=reg, Month=mon,
                     Pooled_Intercept=int_mean, Intercept_SE=int_se,
                     Pooled_Slope=slp_mean,     Slope_SE=slp_se,
-                    Slope_p=self._wald_p(slp_mean, slp_se)
+                    Slope_p=self._wald_p(slp_mean, slp_se, null=1)
                 ))
 
         return (pd.DataFrame(pooled_rows)
@@ -870,7 +870,6 @@ class PooledEstimator:
                 cols = ["state", "month", "member", "intercept", "slope", "resid_std"]
                 for k, (b0, b1) in enumerate(zip(ints, slps)):
                     uncertainty_rows.append((reg, mon, k, b0, b1, sigma))
-                                
         return (pd.DataFrame(uncertainty_rows, columns=cols)
                 .sort_values(["state", "month", "member"])
                 .reset_index(drop=True))
@@ -996,25 +995,25 @@ class PlotlySlopeMap:
 
     The class now supports **two modes** automatically:
 
-    1. **Per‑dataset** mode – when the coefficient dataframe *has* a
+    1. **Per-dataset** mode - when the coefficient dataframe *has* a
        `dataset` column (e.g., ERA5 vs MERRA2).  The figure overlays one band
        per dataset.
-    2. **Pooled** mode – when `dataset` is *absent*.  The coefficients are
-       treated as coming from a single, already‑pooled model and only one band
+    2. **Pooled** mode - when `dataset` is *absent*.  The coefficients are
+       treated as coming from a single, already-pooled model and only one band
        is drawn.
 
     Parameters
     ----------
     coeff_df : pandas.DataFrame
-        Long‑format bootstrap coefficient table with columns
+        Long-format bootstrap coefficient table with columns
         `state, month, member, intercept, slope, resid_std` and *optionally*
         `dataset`.
     hist_df : pandas.DataFrame
         Historical observations table (kept for possible scatter overlays).
     alpha : float, default 0.05
-        Tail probability → 1‑alpha is the nominal coverage (0.05 → 95 %).
+        Tail probability -> 1-alpha is the nominal coverage (0.05 -> 95 %).
     x_range : (float, float) | None, default None
-        Range of the global‑temperature x‑axis.  Defaults to the min/max of
+        Range of the global-temperature x-axis.  Defaults to the min/max of
         `hist_df['Global_Temp']`.
     """
 
@@ -1037,7 +1036,7 @@ class PlotlySlopeMap:
         if base_cols - set(self.coeff_df.columns):
             raise ValueError(f"coeff_df missing columns: {base_cols - set(self.coeff_df.columns)}")
 
-        # detect whether we have per‑dataset coefficients or a pooled model
+        # detect whether we have per-dataset coefficients or a pooled model
         self.per_dataset = "dataset" in self.coeff_df.columns
         if self.per_dataset:
             self.datasets = sorted(self.coeff_df["dataset"].unique().tolist())
@@ -1442,12 +1441,16 @@ class Plots:
 
         return fig
     
-    def significant_trends_by_month(self, month):
-        """
-        Plot a heatmap of the slope values for each region and month.
-        """
-        month_df = self.df[self.df["Month"] == month]
-        print(month_df[month_df["Slope_p"] < 0.05])
+    def significant_trends_by_month(self, alpha=0.05, p_col="Slope_p"):
+        sig = self.df[self.df[p_col] < alpha]
+        for month in self.months:
+            states = sorted(sig.loc[sig["Month"] == month, "Region"].tolist())
+            print(f"\n{month}")
+            if states:
+                for s in states:
+                    print(f"  {s}")
+            else:
+                print("  (none)")
 
     def example_regression(self, dataset):
         example_state = "ND"
@@ -1936,6 +1939,14 @@ class MannKendallTrendTest:
         
         return fig
 
+def test_same_data_with_different_null(pooled_bootstrap_results_df, null, output_file_name):
+    df = pooled_bootstrap_results_df.copy()
+    col = f"P_value_Null_{null}"
+    z = np.abs((df["Pooled_Slope"] - null) / df["Slope_SE"])
+    df[col] = 2 * (1 - norm.cdf(z))
+    df.to_csv(output_file_name, index=False)
+    return df
+
 if __name__ == "__main__":
     # Temperature-temperature plot
     # fig = PlotlySlopeMap(coeff_df = pd.read_csv("Regression Results/uncertainty_intervals_with_prediction_bands.csv"), 
@@ -1948,9 +1959,8 @@ if __name__ == "__main__":
     # fig.show()
 
     # chloropleth slope
-    # df = pd.read_csv("Regression Results/pooled_bootstrap_results.csv")
-    # fig = Plots(df).plot_slope_map()
-    # fig.show()
+    df = pd.read_csv(r"Regression Results/pooled_bootstrap_results_t2mmax_null_1.csv")
+    Plots(df).significant_trends_by_month(alpha=0.05, p_col="Slope_p")
 
     # clustering analysis
     # KMeansClustering().generate_clusters("clustering_results_pooled_bootstrap_data", n_clusters = 4)
@@ -2013,4 +2023,13 @@ if __name__ == "__main__":
     # fig.write_image("Publication Plots/r2_validation.svg")
 
     # risk assessment csv
-    df = RiskAssessment(state = "MA").make_risk_assessment_csv()
+    # df = RiskAssessment(state = "MA").make_risk_assessment_csv()
+    # df = pd.read_csv(r"full_processed_data_t2mmax.csv")
+    # e = PooledEstimator(df = df)
+    # e.save_dataset_regressions(outfile = "Regression Results/dataset_regressions_t2mmin_null_1.csv")
+    # e.save_pooled_bootstrap(outfile = "Regression Results/pooled_bootstrap_results_t2mmin_null_1.csv")
+    # e.save_uncertainty_intervals(outfile = "Regression Results/uncertainty_intervals_t2mmin_null_1.csv")
+
+    # test same data with different nulls
+    # df = pd.read_csv(r"Regression Results/pooled_bootstrap_results_t2mmax.csv")
+    # df = test_same_data_with_different_null(df, 1, "Regression Results/pooled_bootstrap_results_t2mmax_null_1_original_bootstrap.csv")
