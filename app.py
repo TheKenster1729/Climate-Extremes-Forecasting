@@ -308,4 +308,4 @@ def update_risk_assessment(region_name, region_name_store):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port=8050) # for the webapp
